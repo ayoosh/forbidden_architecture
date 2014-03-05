@@ -1,0 +1,4 @@
+Github Rules
+1. Keep any code in its respective assigned folder only. Inside the module specific folders Subteams can organise the way they want.
+2. Only keep the main code files here. Create projects outside of this. Xilinx ISE, ModelSim and possibly perl/system c compilers may create lot of temporary files. Temp files pollute GitHub and makes code versioning so much more difficult.
+3. Everyone is free to use the main branch for now. During integration we will change this.
