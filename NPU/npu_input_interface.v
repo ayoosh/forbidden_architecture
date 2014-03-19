@@ -106,8 +106,7 @@ npu_float2fixed npu_float2fixed (
 									 ((npu_input_convert_format[14:0] == 20) ? npu_input_data[28:13] :
 									 ((npu_input_convert_format[14:0] == 21) ? npu_input_data[29:14] :
 									 ((npu_input_convert_format[14:0] == 22) ? npu_input_data[30:15] :
-									 ((npu_input_convert_format[14:0] == 23) ? npu_input_data[31:16] :
-									 ((npu_input_convert_format[14:0] == 24) ? npu_input_data[32:17] : 0 )))))))))))))))))))))))));
+									 ((npu_input_convert_format[14:0] == 23) ? npu_input_data[31:16] : 0 ))))))))))))))))))))))));
 
 always @(posedge CLK) begin
   if (npu_rst) begin

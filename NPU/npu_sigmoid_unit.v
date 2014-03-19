@@ -27,5 +27,6 @@ module npu_sigmoid_unit(
     output [15:0] npu_sigmoid_dout // output of the sigmoid unit, will be routed to sigmoid fifo or the output fifo as required.
     );
 
-
+// Junk, remove when implementing
+assign npu_sigmoid_dout = npu_sigmoid_din[15:0];
 endmodule

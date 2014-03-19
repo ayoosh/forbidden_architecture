@@ -25,7 +25,7 @@ module npu(
     input npu_input_fifo_write_enable,
     input [25:0] npu_config_data,
     input npu_config_fifo_write_enable,
-    input npu_output__fifo_read_enable,
+    input npu_output_fifo_read_enable,
     output [31:0] npu_output_data,
     output npu_output_fifo_empty,
     output npu_input_fifo_full,
@@ -82,6 +82,13 @@ module npu(
   // npu_compute_unit
   wire [47:0] npu_sigmoid_din;
   
+  // Sigmoid unit
+  wire [15:0] npu_sigmoid_dout;
+
+  // npu_output_interface
+  // wire [31:0] npu_output_data;
+  wire npu_output_fifo_full;
+  // wire npu_output_fifo_empty;
   
   npu_state_machine npu_state_machine (
     CLK,
@@ -92,7 +99,7 @@ module npu(
     npu_config_fifo_empty, // input npu_config_fifo_empty,  // Config FIFO Empty signal
 	 npu_input_fifo_empty, // input npu_input_fifo_empty,
 	 npu_sched_input_fifo_read_en, // input npu_sched_input_fifo_read_en,
-    , // input npu_output_fifo_full,
+    npu_output_fifo_full, // input npu_output_fifo_full,
 	 npu_sched_output_fifo_write_en, // input npu_sched_output_fifo_write_en,
 	 npu_input_fifo_read_en,
 	 npu_output_fifo_write_en,
@@ -159,7 +166,7 @@ module npu(
     npu_input_data, //input [32:0] npu_input_data,
     npu_input_format_write_en, //input npu_input_interface_conf_data_en,
     npu_config_dout, //input [15:0] npu_input_interface_conf_data,
-    npu_input_interface_data_out, //output [15:0] npu_input_interface_data_out,
+	 npu_input_interface_data_out, //output [15:0] npu_input_interface_data_out,
     npu_input_fifo_full, //output npu_input_fifo_full,
     npu_input_fifo_empty // output npu_input_fifo_empty
     );
@@ -181,11 +188,35 @@ module npu(
     npu_sched_sigmoid_fifo_read_en, // input npu_sched_sigmoid_fifo_read_en,
     npu_sched_sigmoid_fifo_write_en, // input npu_sched_sigmoid_fifo_write_en,
     npu_sched_pe_select_in, // input [2:0] npu_sched_pe_select_in,
-    npu_input_interface_data_out, // input [15:0] npu_pe_input_data_bus,
+    npu_input_interface_data_out, // input [15:0] npu_input_fifo_data_bus,
+	 npu_sigmoid_dout, // input [15:0] npu_sigmoid_out_data_bus,
     npu_sched_pe_write_en, // input npu_sched_pe_write_en,
     npu_sched_acc_fifo_read_en, // input npu_sched_acc_fifo_read_en,
     npu_sched_acc_fifo_write_en, // input npu_sched_acc_fifo_write_en,
     npu_sched_sigmoid_input_sel_pe, // input [2:0] npu_sched_sigmoid_input_sel_pe,
     npu_sigmoid_din // output [47:0] npu_pe_dout
     );
+
+  npu_sigmoid_unit npu_sigmoid_unit(
+    CLK,
+    npu_rst, // NPU internal reset. Active with global reset or new config triggered reset
+    npu_sigmoid_din, // input [47:0] npu_sigmoid_din, // data from PEs selected as per scheduling logic
+    npu_sched_sigmoid_function_sel, // input [1:0] npu_sched_sigmoid_function_sel, // 2 bits to select which sigmoid function to use. Comes from Sheduling logic
+    npu_sched_sigmoid_input_en, // input npu_sched_sigmoid_input_en, // Active high. If active an input is read from npu_sigmoid_din to calculate sigmoid value
+    npu_sigmoid_dout // output [15:0] npu_sigmoid_dout // output of the sigmoid unit, will be routed to sigmoid fifo or the output fifo as required.
+    );
+  
+  npu_output_interface npu_output_interface(
+    CLK,
+    npu_rst,
+    npu_sigmoid_dout, // input [15:0] npu_output_interface_din,
+    npu_output_fifo_write_en, // input npu_output_fifo_write_en,
+    npu_output_fifo_read_enable, // input npu_output_fifo_read_en,
+    npu_config_dout, // input [15:0] npu_config_data_bus,
+    npu_output_format_write_en, // input npu_ouput_format_write_en,
+	 npu_output_data, // output [31:0] npu_output_interface_dout,
+    npu_output_fifo_full, // output npu_output_fifo_full,
+    npu_output_fifo_empty // output npu_output_fifo_empty
+    );
+	 
 endmodule

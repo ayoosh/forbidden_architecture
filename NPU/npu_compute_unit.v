@@ -35,7 +35,8 @@ module npu_compute_unit(
     input npu_sched_sigmoid_fifo_read_en,
     input npu_sched_sigmoid_fifo_write_en,
     input [2:0] npu_sched_pe_select_in,
-    input [15:0] npu_pe_input_data_bus,
+    input [15:0] npu_input_fifo_data_bus,
+	 input [15:0] npu_sigmoid_out_data_bus,
     input npu_sched_pe_write_en,
     input npu_sched_acc_fifo_read_en,
     input npu_sched_acc_fifo_write_en,
@@ -91,6 +92,10 @@ module npu_compute_unit(
   wire [15:0] npu_offset_bram_dout;
   wire [47:0] npu_pe0_cin;
   assign npu_pe0_cin = npu_sched_acc_fifo_read_en ? npu_accum_fifo_dout : {32'd0, npu_offset_bram_dout[15:0]};
+  
+  wire [15:0] npu_sigmoid_fifo_dout;
+  wire [15:0] npu_pe_input_data_bus;
+  assign npu_pe_input_data_bus = npu_sched_sigmoid_fifo_read_en ? npu_sigmoid_fifo_dout : npu_input_fifo_data_bus;
   
   npu_circ_buf_small npu_offset_bram(
 	 CLK,  // Global 100 Mhz clock
@@ -267,4 +272,18 @@ module npu_compute_unit(
     .full(), // output full
     .empty() // output empty
     );
+
+  // Sigmoid FIFO
+  // Empty and Full signals and not checked. Read / Write should happen properly by design.	 
+  npu_sigmoid_fifo npu_sigmoid_fifo (
+  .clk(CLK), // input clk
+  .rst(npu_rst), // input rst
+  .din(npu_sigmoid_out_data_bus), // input [15 : 0] din
+  .wr_en(npu_sched_sigmoid_fifo_write_en), // input wr_en
+  .rd_en(npu_sched_sigmoid_fifo_read_en), // input rd_en
+  .dout(npu_sigmoid_fifo_dout), // output [15 : 0] dout
+  .full(), // output full
+  .empty() // output empty
+  );
+
 endmodule
