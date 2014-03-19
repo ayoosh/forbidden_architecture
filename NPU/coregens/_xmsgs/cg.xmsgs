@@ -5,7 +5,7 @@
      behavior or data corruption.  It is strongly advised that
      users do not edit the contents of this file. -->
 <messages>
-<msg type="info" file="sim" num="927" delta="new" >Generating component instance &apos;<arg fmt="%s" index="1">npu_circ_buf_fifo_small</arg>&apos; of &apos;<arg fmt="%s" index="2">xilinx.com:ip:fifo_generator:8.1</arg>&apos; from &apos;<arg fmt="%s" index="3">C:\Xilinx\13.1\ISE_DS\ISE\coregen\ip\xilinx\primary\com\xilinx\ip\fifo_generator_v8_1\component.xml</arg>&apos;.
+<msg type="info" file="sim" num="927" delta="new" >Generating component instance &apos;<arg fmt="%s" index="1">npu_shifter</arg>&apos; of &apos;<arg fmt="%s" index="2">xilinx.com:ip:c_shift_ram:11.0</arg>&apos; from &apos;<arg fmt="%s" index="3">C:\Xilinx\13.1\ISE_DS\ISE\coregen\ip\xilinx\primary\com\xilinx\ip\c_shift_ram_v11_0\component.xml</arg>&apos;.
 </msg>
 
 </messages>

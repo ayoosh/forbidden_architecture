@@ -1,14 +1,12 @@
 CoreGen has not been configured with any user repositories.
 CoreGen has been configured with the following Xilinx repositories:
  - 'C:\Xilinx\13.1\ISE_DS\ISE\coregen\' []
-INFO:sim:927 - Generating component instance 'npu_circ_buf_fifo_small' of
-   'xilinx.com:ip:fifo_generator:8.1' from
-   'C:\Xilinx\13.1\ISE_DS\ISE\coregen\ip\xilinx\primary\com\xilinx\ip\fifo_gener
-   ator_v8_1\component.xml'.
-Applying current project options...
-Finished applying current project options.
+INFO:sim:927 - Generating component instance 'npu_shifter' of
+   'xilinx.com:ip:c_shift_ram:11.0' from
+   'C:\Xilinx\13.1\ISE_DS\ISE\coregen\ip\xilinx\primary\com\xilinx\ip\c_shift_ra
+   m_v11_0\component.xml'.
 Executing Tcl generator...
 Cancelled executing Tcl generator.
 Wrote file for project
-'C:\Users\Ayoosh\Documents\GitHub\forbidden_architecture\NPU\coregens\npu_circ_b
-uf_fifo_small.cgp'.
+'C:\Users\Ayoosh\Documents\GitHub\forbidden_architecture\NPU\coregens\npu_shifte
+r.cgp'.
