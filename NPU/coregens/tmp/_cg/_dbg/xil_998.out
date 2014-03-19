@@ -1,0 +1,17 @@
+SET_PARAMETER c_a_type 0
+SET_PARAMETER c_verbosity 0
+SET_PARAMETER c_ce_overrides_sclr 0
+SET_PARAMETER c_b_type 0
+SET_PARAMETER c_out_low 0
+SET_PARAMETER c_use_pcin false
+SET_PARAMETER c_c_latency 0
+SET_PARAMETER c_c_type 0
+SET_PARAMETER component_name npu_mul_add_dsp
+SET_PARAMETER c_c_width 48
+SET_PARAMETER c_b_width 16
+SET_PARAMETER c_a_width 16
+SET_PARAMETER c_out_high 47
+SET_PARAMETER c_ab_latency 0
+SET_ERROR_CODE 2
+SET_ERROR_MSG  CANCEL: Customization cancelled.
+SET_ERROR_TEXT Finished initializing IP model.	

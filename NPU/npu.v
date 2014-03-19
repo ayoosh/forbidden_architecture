@@ -79,6 +79,9 @@ module npu(
   // wire npu_input_fifo_full;
   wire npu_input_fifo_empty;
 
+  // npu_compute_unit
+  wire [47:0] npu_sigmoid_din;
+  
   
   npu_state_machine npu_state_machine (
     CLK,
@@ -161,4 +164,28 @@ module npu(
     npu_input_fifo_empty // output npu_input_fifo_empty
     );
 
+  npu_compute_unit npu_compute_unit(
+    CLK,
+    npu_rst,
+    npu_state_compute, // input npu_state_compute,
+    npu_config_dout, // input [15:0] npu_config_data,
+    npu_offset_buf_write_en, // input npu_config_offset_buf_write_en,
+    npu_weight0_write_en, // input npu_wbuf0_wren,
+    npu_weight1_write_en, // input npu_wbuf1_wren,
+    npu_weight2_write_en, // input npu_wbuf2_wren,
+    npu_weight3_write_en, // input npu_wbuf3_wren,
+    npu_weight4_write_en, // input npu_wbuf4_wren,
+    npu_weight5_write_en, // input npu_wbuf5_wren,
+    npu_weight6_write_en, // input npu_wbuf6_wren,
+    npu_weight7_write_en, // input npu_wbuf7_wren,
+    npu_sched_sigmoid_fifo_read_en, // input npu_sched_sigmoid_fifo_read_en,
+    npu_sched_sigmoid_fifo_write_en, // input npu_sched_sigmoid_fifo_write_en,
+    npu_sched_pe_select_in, // input [2:0] npu_sched_pe_select_in,
+    npu_input_interface_data_out, // input [15:0] npu_pe_input_data_bus,
+    npu_sched_pe_write_en, // input npu_sched_pe_write_en,
+    npu_sched_acc_fifo_read_en, // input npu_sched_acc_fifo_read_en,
+    npu_sched_acc_fifo_write_en, // input npu_sched_acc_fifo_write_en,
+    npu_sched_sigmoid_input_sel_pe, // input [2:0] npu_sched_sigmoid_input_sel_pe,
+    npu_sigmoid_din // output [47:0] npu_pe_dout
+    );
 endmodule

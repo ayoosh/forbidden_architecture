@@ -21,6 +21,7 @@
 module npu_proc_eng(
     input CLK,  // Global 100 Mhz clock
     input npu_rst,  // npu level active high synchronous reset. global reset || npu config change
+	 input npu_pe_new_input_wren, // new input needs to be stored into the PE
     input npu_pe_en,  // Active high enable signal to PE.
     input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
     input [15:0] npu_pe_weight_in,  // Weight input
