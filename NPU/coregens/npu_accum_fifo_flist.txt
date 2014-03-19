@@ -1,0 +1,16 @@
+# Output products list for <npu_accum_fifo>
+_xmsgs\pn_parser.xmsgs
+fifo_generator_readme.txt
+fifo_generator_ug175.pdf
+npu_accum_fifo.asy
+npu_accum_fifo.gise
+npu_accum_fifo.ngc
+npu_accum_fifo.sym
+npu_accum_fifo.v
+npu_accum_fifo.veo
+npu_accum_fifo.vhd
+npu_accum_fifo.vho
+npu_accum_fifo.xco
+npu_accum_fifo.xise
+npu_accum_fifo_flist.txt
+npu_accum_fifo_xmdf.tcl
