@@ -91,7 +91,7 @@ module npu_compute_unit(
   wire [47:0] npu_accum_fifo_dout;
   wire [15:0] npu_offset_bram_dout;
   wire [47:0] npu_pe0_cin;
-  assign npu_pe0_cin = npu_sched_acc_fifo_read_en ? npu_accum_fifo_dout : {32'd0, npu_offset_bram_dout[15:0]};
+  assign npu_pe0_cin = npu_sched_acc_fifo_read_en ? npu_accum_fifo_dout : {{25{npu_offset_bram_dout[15]}}, npu_offset_bram_dout[15:0], 7'd0};
   
   wire [15:0] npu_sigmoid_fifo_dout;
   wire [15:0] npu_pe_input_data_bus;
