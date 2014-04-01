@@ -38,6 +38,7 @@ module npu_scheduler(
     );
 
 wire [15:0] npu_sched_val_cur;
+wire [15:0] npu_sched_fifo_dout;
 
 npu_circ_buf_large npu_sched_buf(
     CLK,  // Global 100 Mhz clock
@@ -45,9 +46,9 @@ npu_circ_buf_large npu_sched_buf(
 	 npu_state_compute, // input npu_circ_buf_read_en,  // Active high, read enable for this circular buffer. Cannot be high when write enable is also high.
     npu_sched_write_en, // input npu_circ_buf_write_en,  // Active high, write enable for this circular buffer. Cannot be high when read enable is also high.
     npu_sched_din, // input [15:0] npu_circ_buf_data_input,  // Input data from the Config FIFO writing interface
-    npu_sched_val_cur // output [15:0] npu_circ_buf_data_output  // Output of this circular buffer
+    npu_sched_fifo_dout // output [15:0] npu_circ_buf_data_output  // Output of this circular buffer
     );
-
+assign npu_sched_val_cur = npu_state_compute ? npu_sched_fifo_dout : 0;
 assign npu_sched_input_fifo_read_en = npu_sched_val_cur[0];
 assign npu_sched_sigmoid_fifo_read_en = npu_sched_val_cur[1];
 assign npu_sched_sigmoid_fifo_write_en = npu_sched_val_cur[2];
