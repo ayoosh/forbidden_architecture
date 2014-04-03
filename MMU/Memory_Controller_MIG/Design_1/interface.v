@@ -164,7 +164,7 @@ module interface #
 	wire clk200_out;
 	
 	wire [35:0] control;
-	wire [833:0] dataport;
+	wire [835:0] dataport;
 	wire [7:0] trigger;
 	
 	wire data_wren_1 = data_wren && phy_init_done;
@@ -394,7 +394,7 @@ module interface #
    .ddr2_ck(ddr2_ck),
    .ddr2_ck_n(ddr2_ck_n)
 	);
-	*/	
+	*/
 	
 	
 		icon icon_1
@@ -425,6 +425,8 @@ module interface #
 	assign dataport[831] = data_wren_1;
 	assign dataport[832] = data_rden_1;
 	assign dataport[833] = mc_wr_rdy;
+	assign dataport[834] = app_af_afull;
+	assign dataport[835] = app_wdf_afull;
 	assign trigger[0] = clk0_tb;
 	assign trigger[1] = mc_rd_valid;
 	assign trigger[2] = app_wdf_wren;

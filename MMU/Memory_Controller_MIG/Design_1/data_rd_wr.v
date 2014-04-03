@@ -76,7 +76,7 @@ module data_rd_wr  # (
 	reg read_data_end;
 	reg data_stored;
 	reg data_rdy;
-	reg [2:0] counter_wait;
+	reg [4:0] counter_wait;
 	reg data_sent;
 	
 	wire mig_data_wr;
@@ -171,24 +171,31 @@ module data_rd_wr  # (
 		end
 		else
 		begin
-			if(mig_data_wr && data_wren && !addr_change_wr)
+			app_af_wren <= 1'b0;
+			if(mig_data_wr && data_wren && !addr_change_wr && !data_rden)
 			begin
-				app_af_wren <= ~app_af_wren;				
+				app_af_wren <= 1'b1;				
 				addr_change_wr <= 1'b1;
 			end
-			else if((!mig_data_wr || !data_wren)&&(!data_rden)&& (addr_change_wr))
+			else if(mig_data_wr && data_wren && addr_change_wr && app_af_wren)
 			begin
 				app_af_wren	<= 1'b0;
+			end
+			else if(mc_wr_rdy)
+			begin
 				addr_change_wr <= 1'b0;
 			end
-			else if(mig_data_rd && data_rden && !addr_change_rd)
+			else if(mig_data_rd && data_rden && !addr_change_rd && !data_wren)
 			begin
 				app_af_wren <= 1'b1;				
 				addr_change_rd <= 1'b1;
 			end
-			else if(mc_rd_valid && addr_change_rd)
+			else if(mig_data_rd && data_rden && addr_change_rd && app_af_wren)
 			begin
 				app_af_wren <= 1'b0;
+			end
+			else if(mc_rd_valid)
+			begin
 				addr_change_rd <= 1'b0;
 			end
 			else
@@ -210,23 +217,26 @@ module data_rd_wr  # (
 		end
 		else
 		begin
-			if((mig_data_wr)&&(data_wren)&&(!new_data_wr))
+			if((mig_data_wr)&&(data_wren)&&(!new_data_wr)&&(!app_wdf_wren)&&(!data_rden))
 			begin
 				app_wdf_data <= data_wr[127:0];
 				new_data_wr	 <= 1'b1;
 				app_wdf_wren <= 1'b1;
-				data_rdy <= 1'b0;
 			end
-			else if((mig_data_wr)&&(data_wren)&&(new_data_wr))
+			else if((mig_data_wr)&&(data_wren)&&(new_data_wr)&&(app_wdf_wren)&&(!data_rdy))
 			begin
 				app_wdf_data <= data_wr[255:128];
-				new_data_wr	 <= 1'b0;
 				app_wdf_wren <= 1'b1;
 				data_rdy <= 1'b1;
 			end
-			else if(counter_wait == 3'hFFF)
+			else if(data_rdy && app_wdf_wren)
+			begin
+				app_wdf_wren <= 1'b0;
+			end
+			else if(counter_wait == 5'b00101)
 			begin
 				data_rdy <= 1'b0;
+				new_data_wr	 <= 1'b0;
 			end
 			else
 			begin
@@ -240,7 +250,7 @@ module data_rd_wr  # (
 		if(rst)
 		begin
 			data_sent <= 1'b0;
-			counter_wait <= 3'd0;
+			counter_wait <= 5'd0;
 		end
 		else
 		begin
@@ -250,10 +260,10 @@ module data_rd_wr  # (
 			end
 			else
 			begin
-				counter_wait <= 3'd0;
+				counter_wait <= 5'd0;
 			end
 			
-			if(counter_wait == 3'hFFD)
+			if(counter_wait == 5'b00101)
 			begin
 				data_sent <= 1'b1;
 			end
@@ -304,13 +314,20 @@ module data_rd_wr  # (
 		begin
 			if(read_data_end)
 			begin
-				data_rd <= {mig_data_out[1], mig_data_out[0]};
 				mc_rd_valid <= 1'b1;
 			end
 			else
 			begin
-				data_rd <= data_rd;
 				mc_rd_valid <= 1'b0;
+			end
+			
+			if(read_data_end && data_rden)
+			begin
+				data_rd <= {mig_data_out[1], mig_data_out[0]};
+			end
+			else
+			begin
+				data_rd <= data_rd;
 			end
 		end
 	end
