@@ -13,9 +13,13 @@ ERROR:sim -    Depth A number of entires.ERROR:sim:781 - An invalid core
    configuration has been detected during
 ERROR:sim -    Customization. Core parameters will be reset to their default
    values.
+WARNING:sim - A core named 'blk_mem_gen_v6_1' already exists in the project.
+   Output products for this core may be overwritten.
 Finished executing Tcl generator.
 Executing Tcl generator...
 INFO:sim - Resolving generics for 'blk_mem_gen_v6_1'...
+WARNING:sim - A core named 'blk_mem_gen_v6_1' already exists in the project.
+   Output products for this core may be overwritten.
 INFO:sim - Applying external generics to 'blk_mem_gen_v6_1'...
 Finished executing Tcl generator.
 Executing Tcl generator...
