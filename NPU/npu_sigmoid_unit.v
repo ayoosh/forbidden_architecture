@@ -27,6 +27,32 @@ module npu_sigmoid_unit(
     output [15:0] npu_sigmoid_dout // output of the sigmoid unit, will be routed to sigmoid fifo or the output fifo as required.
     );
 
-// Junk, remove when implementing
-assign npu_sigmoid_dout = npu_sigmoid_din[15:0];
+reg [47:0]npu_sigmoid_data_reg;
+wire [15:0]npu_sigmoid_tanh_out;
+wire [15:0]npu_sigmoid_linear_out;
+wire [15:0]pu_sigmoid_log_out;
+wire [15:0]npu_tansig_lut_data_out;
+wire [10:0]npu_tansig_lut_addr;
+
+assign npu_sigmoid_dout = ((npu_sched_sigmoid_function_sel == 0) ? npu_sigmoid_tanh_out :
+								  ((npu_sched_sigmoid_function_sel == 1) ? npu_sigmoid_linear_out : 0));
+
+assign npu_sigmoid_linear_out = npu_sigmoid_data_reg[22:7];
+
+assign npu_tansig_lut_addr = (npu_sigmoid_din >= 0) ? npu_sigmoid_din[15:5] : -npu_sigmoid_din[15:5];
+
+assign npu_sigmoid_tanh_out =	((npu_sigmoid_data_reg > 48'h00000000c7a0) ? 16'h0080 :
+										((npu_sigmoid_data_reg < 48'hFFFFFFFF3860) ? 16'hFF80 :
+										((npu_sigmoid_data_reg >= 0) ? npu_tansig_lut_data_out : -npu_tansig_lut_data_out)));
+
+tansig tansig_lut (
+  .clka(CLK), // input clka
+  .addra(npu_tansig_lut_addr), // input [10 : 0] addra
+  .douta(npu_tansig_lut_data_out) // output [15 : 0] douta
+);
+
+always @(posedge CLK) begin
+	npu_sigmoid_data_reg <= npu_sigmoid_din;
+end
+
 endmodule

@@ -2,6 +2,7 @@ memory_initialization_radix=16;
 memory_initialization_vector=
 0000,
 0000,
+0000,
 0001,
 0001,
 0001,
@@ -1596,4 +1597,4 @@ memory_initialization_vector=
 007f,
 007f,
 007f,
-0080,
+0080;
