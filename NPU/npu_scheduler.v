@@ -48,6 +48,7 @@ npu_circ_buf_large npu_sched_buf(
     npu_sched_din, // input [15:0] npu_circ_buf_data_input,  // Input data from the Config FIFO writing interface
     npu_sched_fifo_dout // output [15:0] npu_circ_buf_data_output  // Output of this circular buffer
     );
+
 assign npu_sched_val_cur = npu_state_compute ? npu_sched_fifo_dout : 0;
 assign npu_sched_input_fifo_read_en = npu_sched_val_cur[0];
 assign npu_sched_sigmoid_fifo_read_en = npu_sched_val_cur[1];
