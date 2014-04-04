@@ -1,0 +1,2 @@
+make NPU_MODE=VANILLA_RUN
+
