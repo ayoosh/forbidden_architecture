@@ -160,7 +160,7 @@ module npu(
 
   npu_input_interface npu_input_interface(
     CLK, //input CLK,
-    npu_reset, //input RST,
+    npu_rst, //input RST,
     npu_input_fifo_write_enable, //input npu_input_fifo_write_en,
     npu_input_fifo_read_en, //input npu_input_fifo_read_en,
     npu_input_data, //input [32:0] npu_input_data,

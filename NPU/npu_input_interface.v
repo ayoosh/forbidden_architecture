@@ -23,7 +23,7 @@ module npu_input_interface(
     input npu_rst,
     input npu_input_fifo_write_en,
     input npu_input_fifo_read_en,
-    input [32:0] npu_input_data,
+    input [31:0] npu_input_data,
     input npu_input_interface_conf_data_en,
     input [15:0] npu_input_interface_conf_data,
     output [15:0] npu_input_interface_data_out,
@@ -31,11 +31,11 @@ module npu_input_interface(
     output npu_input_fifo_empty
     );
 
-wire [15:0] npu_signed2fixed;
-wire [15:0] npu_float2fixed_data;
-wire [15:0] npu_input_fifo_din;
+wire signed [15:0] npu_signed2fixed;
+wire signed [15:0] npu_float2fixed_data;
+wire signed [15:0] npu_input_fifo_din;
 
-reg [15:0] npu_input_convert_format;
+reg signed [15:0] npu_input_convert_format;
 assign npu_input_fifo_din = npu_input_convert_format[15] ? npu_float2fixed_data : npu_signed2fixed; // 0:signed int; 1:single precision floating
 
 npu_io_fifo npu_input_fifo (
@@ -50,38 +50,8 @@ npu_io_fifo npu_input_fifo (
 );
 
 npu_float2fixed npu_float2fixed (
-	.a({npu_input_data[31], npu_input_data[30:23] + npu_input_convert_format[14:0], npu_input_data[22:0]}), // input [31 : 0] a
+	.a({npu_input_data[31], npu_input_data[30:23] + npu_input_convert_format[7:0], npu_input_data[22:0]}), // input [31 : 0] a
 	.result(npu_float2fixed_data)); // ouput [15 : 0] result
-
-
-//case (npu_input_convert_format[14:0])
-//  0:  assign npu_signed2fixed = {npu_input_data[8:0],  7'h0};
-//  1:  assign npu_signed2fixed = {npu_input_data[9:0],  6'h0};
-//  2:  assign npu_signed2fixed = {npu_input_data[10:0], 5'h0};
-//  3:  assign npu_signed2fixed = {npu_input_data[11:0], 4'h0};
-//  4:  assign npu_signed2fixed = {npu_input_data[12:0], 3'h0};
-//  5:  assign npu_signed2fixed = {npu_input_data[13:0], 2'h0};
-//  6:  assign npu_signed2fixed = {npu_input_data[14:0], 1'h0};
-//  7:  assign npu_signed2fixed = npu_input_data[15:0];
-//  8:  assign npu_signed2fixed = npu_input_data[16:1];
-//  9:  assign npu_signed2fixed = npu_input_data[17:2];
-//  10: assign npu_signed2fixed = npu_input_data[18:3];
-//  11: assign npu_signed2fixed = npu_input_data[19:4];
-//  12: assign npu_signed2fixed = npu_input_data[20:5];
-//  13: assign npu_signed2fixed = npu_input_data[21:6];
-//  14: assign npu_signed2fixed = npu_input_data[22:7];
-//  15: assign npu_signed2fixed = npu_input_data[23:8];
-//  16: assign npu_signed2fixed = npu_input_data[24:9];
-//  17: assign npu_signed2fixed = npu_input_data[25:10];
-//  18: assign npu_signed2fixed = npu_input_data[26:11];
-//  19: assign npu_signed2fixed = npu_input_data[27:12];
-//  20: assign npu_signed2fixed = npu_input_data[28:13];
-//  21: assign npu_signed2fixed = npu_input_data[29:14];
-//  22: assign npu_signed2fixed = npu_input_data[30:15];
-//  23: assign npu_signed2fixed = npu_input_data[31:16];
-//  24: assign npu_signed2fixed = npu_input_data[32:17];
-//  default: assign npu_signed2fixed = {npu_input_data[8:0], 7'h0}; // default is no shift
-//endcase
 
   assign npu_signed2fixed = ((npu_input_convert_format[14:0] ==  0) ? {npu_input_data[ 8:0], 7'h0} :
 									 ((npu_input_convert_format[14:0] ==  1) ? {npu_input_data[ 9:0], 6'h0} :

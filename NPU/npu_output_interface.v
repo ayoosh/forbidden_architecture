@@ -38,7 +38,7 @@ module npu_output_interface(
   wire [31:0] npu_fixed2float_scaled_data;
   wire [31:0] npu_fixed2signed;
 
-  assign npu_fixed2float_scaled_data = {npu_fixed2float_data[31], npu_fixed2float_data[30:23] + npu_output_convert_format[14:0], npu_fixed2float_data[22:0]};
+  assign npu_fixed2float_scaled_data = {npu_fixed2float_data[31], npu_fixed2float_data[30:23] + npu_output_convert_format[7:0], npu_fixed2float_data[22:0]};
   assign npu_output_interface_dout = npu_output_convert_format[15] ? npu_fixed2float_scaled_data : npu_fixed2signed; // 0:signed int; 1:single precision floating
 
   assign npu_fixed2signed = ((npu_output_convert_format[14:0] ==  0) ? {{23{npu_output_fifo_dout[15]}}, npu_output_fifo_dout[15:7]} :

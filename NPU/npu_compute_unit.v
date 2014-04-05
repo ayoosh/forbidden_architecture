@@ -179,7 +179,6 @@ module npu_compute_unit(
     npu_pe_input_data_bus, // input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
     npu_w0_data, // input [15:0] npu_pe_weight_in,  // Weight input
     npu_pe0_cin, // input [47:0] npu_pe_acc_in, // Flowing accumulated value or the offset input for first PE
-    , // output reg [47:0] npu_pe_acc_val, // output of this PE for next PE or Acc FIFO
 	 npu_pe_acc_val_dout0 // output reg [47:0] npu_pe_acc_output // output of this PE for Sigmoid Unit
     );
   npu_proc_eng npu_pe1(
@@ -190,7 +189,6 @@ module npu_compute_unit(
     npu_pe_input_data_bus, // input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
     npu_w0_data, // input [15:0] npu_pe_weight_in,  // Weight input
     npu_pe_acc_val_dout0, // input [47:0] npu_pe_acc_in, // Flowing accumulated value or the offset input for first PE
-    , // output reg [47:0] npu_pe_acc_val, // output of this PE for next PE or Acc FIFO
 	 npu_pe_acc_val_dout1 // output reg [47:0] npu_pe_acc_output // output of this PE for Sigmoid Unit
     );
   npu_proc_eng npu_pe2(
@@ -201,7 +199,6 @@ module npu_compute_unit(
     npu_pe_input_data_bus, // input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
     npu_w0_data, // input [15:0] npu_pe_weight_in,  // Weight input
     npu_pe_acc_val_dout1, // input [47:0] npu_pe_acc_in, // Flowing accumulated value or the offset input for first PE
-    , // output reg [47:0] npu_pe_acc_val, // output of this PE for next PE or Acc FIFO
 	 npu_pe_acc_val_dout2 // output reg [47:0] npu_pe_acc_output // output of this PE for Sigmoid Unit
     );
   npu_proc_eng npu_pe3(
@@ -212,7 +209,6 @@ module npu_compute_unit(
     npu_pe_input_data_bus, // input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
     npu_w0_data, // input [15:0] npu_pe_weight_in,  // Weight input
     npu_pe_acc_val_dout2, // input [47:0] npu_pe_acc_in, // Flowing accumulated value or the offset input for first PE
-    , // output reg [47:0] npu_pe_acc_val, // output of this PE for next PE or Acc FIFO
 	 npu_pe_acc_val_dout3 // output reg [47:0] npu_pe_acc_output // output of this PE for Sigmoid Unit
     );
   npu_proc_eng npu_pe4(
@@ -223,7 +219,6 @@ module npu_compute_unit(
     npu_pe_input_data_bus, // input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
     npu_w0_data, // input [15:0] npu_pe_weight_in,  // Weight input
     npu_pe_acc_val_dout3, // input [47:0] npu_pe_acc_in, // Flowing accumulated value or the offset input for first PE
-    , // output reg [47:0] npu_pe_acc_val, // output of this PE for next PE or Acc FIFO
 	 npu_pe_acc_val_dout4 // output reg [47:0] npu_pe_acc_output // output of this PE for Sigmoid Unit
     );
   npu_proc_eng npu_pe5(
@@ -234,7 +229,6 @@ module npu_compute_unit(
     npu_pe_input_data_bus, // input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
     npu_w0_data, // input [15:0] npu_pe_weight_in,  // Weight input
     npu_pe_acc_val_dout4, // input [47:0] npu_pe_acc_in, // Flowing accumulated value or the offset input for first PE
-    , // output reg [47:0] npu_pe_acc_val, // output of this PE for next PE or Acc FIFO
 	 npu_pe_acc_val_dout5 // output reg [47:0] npu_pe_acc_output // output of this PE for Sigmoid Unit
     );
   npu_proc_eng npu_pe6(
@@ -245,7 +239,6 @@ module npu_compute_unit(
     npu_pe_input_data_bus, // input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
     npu_w0_data, // input [15:0] npu_pe_weight_in,  // Weight input
     npu_pe_acc_val_dout5, // input [47:0] npu_pe_acc_in, // Flowing accumulated value or the offset input for first PE
-    , // output reg [47:0] npu_pe_acc_val, // output of this PE for next PE or Acc FIFO
 	 npu_pe_acc_val_dout6 // output reg [47:0] npu_pe_acc_output // output of this PE for Sigmoid Unit
     );
   npu_proc_eng npu_pe7(
@@ -256,7 +249,6 @@ module npu_compute_unit(
     npu_pe_input_data_bus, // input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
     npu_w0_data, // input [15:0] npu_pe_weight_in,  // Weight input
     npu_pe_acc_val_dout6, // input [47:0] npu_pe_acc_in, // Flowing accumulated value or the offset input for first PE
-    , // output reg [47:0] npu_pe_acc_val, // output of this PE for next PE or Acc FIFO
 	 npu_pe_acc_val_dout7 // output reg [47:0] npu_pe_acc_output // output of this PE for Sigmoid Unit
     );
 	 

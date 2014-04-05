@@ -23,6 +23,13 @@ module junk_top_level(
     input RST
     );
 	 
+	 /*wire CLK0;
+	 IBUFG buf0
+	 (
+		.I(CLK),
+		.O(CLK0)
+	 );
+	 */
 	npu npu(
     CLK,
     RST,
