@@ -118,46 +118,6 @@ module top_module #
 		input 									  clk,
 		input 									  rst,
 		output memory_read_error,
-
-	// D-cache
-	
-//	input  	   [255:0] mem_data_wr2,
-//								// Input data from cache
-//								
-//	output   [255:0] mem_data_rd2,
-//								// Output the data to cache
-//								
-//   input       [27:0]  mem_data_addr2,
-//								// DDR2 address from cache to read/write the data from/to
-//								
-//	input               mem_rw_data2,
-//	                     // To indicate read/write command from cache
-//								
-//	input               mem_valid_data2,
-//	                     // To indicate from cache if command is valid
-//								
-//	output 				  mem_ready_data2,
-//                        // To indicate to cache that response is ready
-//	
-//	// VGA 
-//	
-//	input  	   [255:0] mem_data_wr3,
-//								// Input data from cache
-//								
-//	output   [255:0] mem_data_rd3,
-//								// Output the data to cache
-//								
-//   input       [27:0]  mem_data_addr3,
-//								// DDR2 address from cache to read/write the data from/to
-//								
-//	input               mem_rw_data3,
-//	                     // To indicate read/write command from cache
-//								
-//	input               mem_valid_data3,
-//	                     // To indicate from cache if command is valid
-//								
-//	output   				  mem_ready_data3,
-//                        // To indicate to cache that response is ready
 		
 		inout  [DQ_WIDTH-1:0]              ddr2_dq,
 		output [ROW_WIDTH-1:0]             ddr2_a,
@@ -187,6 +147,12 @@ module top_module #
 	wire data_wren;
 	wire data_rden;
 	
+		// Error monitor
+	wire memory_read_error1;
+	wire memory_read_error2;
+	wire memory_read_error3;
+	assign memory_read_error = (memory_read_error1 | memory_read_error2 | memory_read_error3);
+	
 	wire app_wdf_wren;
 	wire app_af_wren;
 	
@@ -197,48 +163,6 @@ module top_module #
 	wire [7:0] trigger;
 	
 	
-	// Temporary logic
-		wire  	   [255:0] mem_data_wr2 = 256'd0;
-								// Input data from cache
-								
-	wire   [255:0] mem_data_rd2 = 256'd0;
-								// Output the data to cache
-								
-   wire       [27:0]  mem_data_addr2 = 28'd0;
-								// DDR2 address from cache to read/write the data from/to
-								
-	wire               mem_rw_data2 = 0;
-	                     // To indicate read/write command from cache
-								
-	wire               mem_valid_data2 = 0;
-	                     // To indicate from cache if command is valid
-								
-	wire 				  mem_ready_data2 = 0;
-                        // To indicate to cache that response is ready
-	
-	// VGA 
-	
-	// Temporary logic
-		wire  	   [255:0] mem_data_wr3 = 256'd0;
-								// Input data from cache
-								
-	wire   [255:0] mem_data_rd3 = 256'd0;
-								// Output the data to cache
-								
-   wire       [27:0]  mem_data_addr3 = 28'd0;
-								// DDR2 address from cache to read/write the data from/to
-								
-	wire               mem_rw_data3 = 0;
-	                     // To indicate read/write command from cache
-								
-	wire               mem_valid_data3 = 0;
-	                     // To indicate from cache if command is valid
-								
-	wire 				  mem_ready_data3 = 0;
-                        // To indicate to cache that response is ready
-								
-								// End of temporary logic
-	
 	// I-cache wires
 		wire [255:0]  mem_data_wr1;
 		wire [255:0]  mem_data_rd1;
@@ -246,6 +170,22 @@ module top_module #
 		wire mem_rw_data1; 
 		wire mem_valid_data1;
 		wire mem_ready_data1;
+		
+					// D-cache wires
+		wire [255:0]  mem_data_wr2;
+		wire [255:0]  mem_data_rd2;
+		wire [27:0]   mem_data_addr2;
+		wire mem_rw_data2; 
+		wire mem_valid_data2;
+		wire mem_ready_data2;
+		
+			// DVI wires
+		wire [255:0]  mem_data_wr3;
+		wire [255:0]  mem_data_rd3;
+		wire [27:0]   mem_data_addr3;
+		wire mem_rw_data3; 
+		wire mem_valid_data3;
+		wire mem_ready_data3;
 	
 		Arbiter arbiter_module (
 		.clk(clk), 
@@ -315,7 +255,7 @@ module top_module #
 	);
 	
 
-	cache_dummy uut (
+	Icache_dummy Icache_dummy (
 		.clk(clk), 
 		.rst(rst), 
 		.mem_data_wr1(mem_data_wr1), 
@@ -324,8 +264,33 @@ module top_module #
 		.mem_rw_data1(mem_rw_data1), 
 		.mem_valid_data1(mem_valid_data1), 
 		.mem_ready_data1(mem_ready_data1),
-		.error(memory_read_error)
+		.error(memory_read_error1)
 	);
+	
+	Dcache_dummy Dcache_dummy (
+		.clk(clk), 
+		.rst(rst), 
+		.mem_data_wr1(mem_data_wr2), 
+		.mem_data_rd1(mem_data_rd2), 
+		.mem_data_addr1(mem_data_addr2), 
+		.mem_rw_data1(mem_rw_data2), 
+		.mem_valid_data1(mem_valid_data2), 
+		.mem_ready_data1(mem_ready_data2),
+		.error(memory_read_error2)
+	);
+	
+		DVI_dummy DVI_dummy (
+		.clk(clk), 
+		.rst(rst), 
+		.mem_data_wr1(mem_data_wr3), 
+		.mem_data_rd1(mem_data_rd3), 
+		.mem_data_addr1(mem_data_addr3), 
+		.mem_rw_data1(mem_rw_data3), 
+		.mem_valid_data1(mem_valid_data3), 
+		.mem_ready_data1(mem_ready_data3),
+		.error(memory_read_error3)
+	);
+	
 	
 		icon icon_1
 	(
@@ -349,6 +314,8 @@ module top_module #
 	
 	assign dataport[696:666] = data_addr;
 	
+	assign dataport[825] = mem_ready_data3;
+	assign dataport[826] = mem_ready_data2;
 	assign dataport[827] = memory_read_error;
 	assign dataport[828] = mem_valid_data1;
 	assign dataport[829] = mem_ready_data1;

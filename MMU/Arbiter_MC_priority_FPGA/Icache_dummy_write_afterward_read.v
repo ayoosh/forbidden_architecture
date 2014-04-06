@@ -18,8 +18,8 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module cache_dummy #(
-      parameter CYCLE_DELAY = 0
+module Icache_dummy #(
+      parameter CYCLE_DELAY = 12
 		)
 (
 		input clk,
@@ -42,7 +42,7 @@ module cache_dummy #(
 								
 	input 				  mem_ready_data1,
 	
-	output   			error
+	output   reg			error
                         // To indicate to cache that response is ready	
     );
 
@@ -55,8 +55,20 @@ module cache_dummy #(
 	assign mem_data_wr1 = temp_mem[rom_addr];
    assign mem_data_addr1 = temp_mem_addr[rom_addr];
 	
-	assign error = (mem_ready_data1 & mem_valid_data1 & ~mem_rw_data1) ? ( (mem_data_rd1 == temp_mem[rom_addr]) ? 0 : 1) : 1'b0;
 	
+	
+	//assign error = (mem_ready_data1 & mem_valid_data1 & ~mem_rw_data1) ? ( (mem_data_rd1 == temp_mem[rom_addr]) ? 0 : 1) : 1'b0;
+	
+	always @(posedge clk)
+	begin
+	if(rst)
+	error <= 0;
+	else
+		begin
+		if((mem_ready_data1 & mem_valid_data1 & ~mem_rw_data1) & (mem_data_rd1 != temp_mem[rom_addr]))
+		error <= 1;
+		end
+	end
 	
 	always @(posedge clk)
 	begin
@@ -102,7 +114,10 @@ module cache_dummy #(
 						rom_addr <= 4'd0;
 						end
 					else if(mem_ready_count == 2)
-					mem_rw_data1 <= 0;
+						begin
+						mem_rw_data1 <= 0;
+						rom_addr <= 4'd0;
+						end
 					end
 					
 					else
@@ -123,13 +138,16 @@ module cache_dummy #(
 					mem_valid_data1 <= 1;
 					cycle_count <= 0;
 					enable_cycle <= 0;
-					if(mem_ready_count == 1)  // Last Command was read, so now write
+					if(mem_ready_count == 2)  // Last Command was write, so now write
 						begin
 						mem_rw_data1 <= 1;
 						rom_addr <= rom_addr+1;
 						end
-					else if(mem_ready_count == 2)
-					mem_rw_data1 <= 0;
+					else if(mem_ready_count == 1)
+						begin
+						rom_addr <= rom_addr+1;
+						mem_rw_data1 <= 0;
+						end
 					end
 					
 					else
@@ -165,4 +183,3 @@ module cache_dummy #(
 	
 	
 endmodule
-

@@ -218,12 +218,105 @@ begin
 		else if(mem_valid_data2 == 1 & ~enable1_active & ~enable3_active) 
 		
 			begin
-						
+				if(mc_wr_rdy_accept | enable2_active)  // If memory controller ready or the process is active
+		      begin
+				
+				// Enable active logic
+				if( (mem_rw_data2 == 1)  & mc_wr_rdy  & enable2_active) // First time won't be executed
+					begin
+					mem_ready_data2 <= 1;
+					data_wren <= 0;
+					sel <= 2'b00;
+					mem_wr_rdy_tmp <= 1;
+					end
+					
+				else if(mem_ready_data2 & (mem_rw_data2 == 1))
+					begin
+					mem_ready_data2 <= 0;
+					enable2_active <= 0;
+					end
+					
+				else if(mem_rw_data2 == 0 & mc_rd_valid) //read command is completed, so de-assert enable
+					begin
+					mem_ready_data2 <= 1;
+					mem_data_rd2 <= data_rd;
+					data_rden <= 0;
+					sel <= 2'b00;
+		         mem_wr_rdy_tmp <= 1;
+               end   
+				else if(mem_rw_data2 == 0 & mem_ready_data2 )  // For read command it is set high
+				   begin
+					enable2_active <= 0;
+					mem_data_rd2 <= 256'd0;
+					mem_ready_data2 <= 0;
+					end
+					
+					
+				else // For write/read command, set high
+					begin
+					enable2_active <= 1;
+					mem_wr_rdy_tmp <= 0;
+					sel <= 2'b10;
+					if(mem_rw_data2)
+					data_wren <= 1;  
+					else
+					data_rden <= 1;
+					end		
+		
+			   end  // end of mc_rd_rdy
+				
 			end  // end of priority 2
 			
 		else if(mem_valid_data3 == 1 & ~enable1_active & ~enable2_active)
 			begin
-			end
+			
+				if(mc_wr_rdy_accept | enable3_active)  // If memory controller ready or the process is active
+		      begin
+				
+				// Enable active logic
+				if( (mem_rw_data3 == 1)  & mc_wr_rdy  & enable3_active) // First time won't be executed
+					begin
+					mem_ready_data3 <= 1;
+					data_wren <= 0;
+					sel <= 2'b00;
+					mem_wr_rdy_tmp <= 1;
+					end
+					
+				else if(mem_ready_data3 & (mem_rw_data3 == 1))
+					begin
+					mem_ready_data3 <= 0;
+					enable3_active <= 0;
+					end
+					
+				else if(mem_rw_data3 == 0 & mc_rd_valid) //read command is completed, so de-assert enable
+					begin
+					mem_ready_data3 <= 1;
+					mem_data_rd3 <= data_rd;
+					data_rden <= 0;
+					sel <= 2'b00;
+		         mem_wr_rdy_tmp <= 1;
+               end   
+				else if(mem_rw_data3 == 0 & mem_ready_data3 )  // For read command it is set high
+				   begin
+					enable3_active <= 0;
+					mem_data_rd3 <= 256'd0;
+					mem_ready_data3 <= 0;
+					end
+					
+					
+				else // For write/read command, set high
+					begin
+					enable3_active <= 1;
+					mem_wr_rdy_tmp <= 0;
+					sel <= 2'b11;
+					if(mem_rw_data3)
+					data_wren <= 1;  
+					else
+					data_rden <= 1;
+					end		
+		
+			   end  // end of mc_rd_rdy			
+			end   // end of priority 2
 		
 	
 	end // end of else
