@@ -332,12 +332,15 @@ $offset_count = $#offset;
 #-----------------------------------------------------------------
 #From here its about picking values from the arrays and creating the output array of 32 bit
 
+print $output_conf "memory_initialization_radix=16;\nmemory_initialization_vector=\n";
+
+
 #first will be all 32 1s
 $destination[0]="83ffffff"; #first 6 bits are 100000 in enqc0
 #print $destination[$line_number];
 #print "\n";
 
-print $output_conf "$destination[$line_number] \n";
+print $output_conf "$destination[$line_number], \n";
 
 $line_number =$line_number+1;
 
@@ -350,7 +353,7 @@ convert();
 #print "\n";
 #
 #
-print $output_conf "$destination[$line_number] \n";
+print $output_conf "$destination[$line_number], \n";
 
 $line_number =$line_number+1;
 
@@ -362,7 +365,7 @@ convert();
 #print $destination[$line_number];
 #print "\n";
 #
-print $output_conf "$destination[$line_number] \n";
+print $output_conf "$destination[$line_number], \n";
 
 $line_number =$line_number + 1;
 
@@ -375,7 +378,7 @@ convert();
 #print $destination[$line_number];
 #print "\n";
 #
-print $output_conf "$destination[$line_number] \n";
+print $output_conf "$destination[$line_number], \n";
 
 $line_number =$line_number+1;
 
@@ -387,7 +390,7 @@ convert();
 #print $destination[$line_number];
 #print "\n";
 #
-print $output_conf "$destination[$line_number] \n";
+print $output_conf "$destination[$line_number], \n";
 
 $line_number =$line_number+1;
 
@@ -407,7 +410,7 @@ for $wb_count(0..$weight_buf_fin_count_0)
 	convert();
 	#print $destination[$line_number];
 	#print "\n";
-	print $output_conf "$destination[$line_number] \n";
+	print $output_conf "$destination[$line_number], \n";
 
 	$line_number =$line_number+1;
 }
@@ -421,7 +424,7 @@ for $wb_count(0..$weight_buf_fin_count_1)
 	convert();
  	#      print $destination[$line_number];
         #print "\n";
-        print $output_conf "$destination[$line_number] \n";
+        print $output_conf "$destination[$line_number], \n";
 
         $line_number =$line_number+1;
 }
@@ -436,7 +439,7 @@ for $wb_count(0..$weight_buf_fin_count_2)
         convert();
 #        print $destination[$line_number];
 #        print "\n";
-	print $output_conf "$destination[$line_number] \n";
+	print $output_conf "$destination[$line_number], \n";
 
         $line_number =$line_number+1;
 }
@@ -451,7 +454,7 @@ for $wb_count(0..$weight_buf_fin_count_3)
         convert();
        # print $destination[$line_number];
        # print "\n";
-       print $output_conf "$destination[$line_number] \n";
+       print $output_conf "$destination[$line_number], \n";
 
         $line_number =$line_number+1;
 }
@@ -466,7 +469,7 @@ for $wb_count(0..$weight_buf_fin_count_4)
         convert();
 #        print $destination[$line_number];
 #        print "\n";
-	print $output_conf "$destination[$line_number] \n";
+	print $output_conf "$destination[$line_number], \n";
 
         $line_number =$line_number+1;
 }
@@ -481,7 +484,7 @@ for $wb_count(0..$weight_buf_fin_count_5)
         convert();
 #        print $destination[$line_number];
 #        print "\n";
-	print $output_conf "$destination[$line_number] \n";
+	print $output_conf "$destination[$line_number], \n";
 
         $line_number =$line_number+1;
 }
@@ -497,7 +500,7 @@ for $wb_count(0..$weight_buf_fin_count_6)
         convert();
 #        print $destination[$line_number];
 #        print "\n";
-	print $output_conf "$destination[$line_number] \n";
+	print $output_conf "$destination[$line_number], \n";
         $line_number =$line_number+1;
 }
 print "Writing into WB6 successful !! \n";
@@ -511,7 +514,7 @@ for $wb_count(0..$weight_buf_fin_count_7)
         convert();
 #        print $destination[$line_number];
 #        print "\n";
-	print $output_conf "$destination[$line_number] \n";
+	print $output_conf "$destination[$line_number], \n";
 
         $line_number =$line_number+1;
 }
@@ -531,7 +534,7 @@ for $sch_count(0..$scheduling_buffer_count)
         convert();
         #print $destination[$line_number];
         #print "\n";
-        print $output_conf "$destination[$line_number] \n";
+        print $output_conf "$destination[$line_number], \n";
         $line_number =$line_number+1;
 }
 print "Scheduling logic written successfully !!\n";
@@ -543,16 +546,17 @@ print "\n Offset array starts here \n";
 #offset buffer array to machine code
 for $off_count(0..$offset_count)
 {
-        $inter= $common."1110".$common1.$offset_buffer[$off_count];
+        $inter= $common."1110".$common1.$offset[$off_count];
         $parameter = 3;
         convert();
        # print $destination[$line_number];
        # print "\n";
-	print $output_conf "$destination[$line_number] \n";
+	print $output_conf "$destination[$line_number], \n";
 
         $line_number =$line_number+1;
 }
 
+print $output_conf "00000000;";
 print "Offset buffer written successfully !!";
 #------------------------------------------------------------
 print "Hurray !! End of code \n \n";

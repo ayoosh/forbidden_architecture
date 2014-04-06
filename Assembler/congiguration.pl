@@ -2,15 +2,15 @@ use Switch;
 #use sitrict; 
 
 open my $output_conf, '>>', 'configuration.coe' or die "error trying to overwrite: $!";
-@weight_0= (0x0055, 0x0055, 0x0055,0x0055,0x0092,0xff7b,0x006d,0x006d,0xff38,0xff2b,0x0003,0x00c6, 0x003d, 0x04c0),
-@weight_1= (0xff9d,0x0030,0xff5a,0x0071,0xff86,0xffff,0x00b7,0x00a9, 0x0031), 
-@weight_2= (0x00de,0x001b,0xff2c,0xff2f,0xff83,0x00be,0xff15,0x0088, 0x002c),  
-@weight_3= (0xff91,0x0109,0xffaa,0xff6e,0xff6b,0x0048,0xffe9,0xffc0, 0x004a),  
-@weight_4= (0xffa4),  
-@weight_5= (0xfff9),  
-@weight_6= (0x0020),  
-@weight_7= (0xfffd);  
-@sigmoid = (1,0,0) ;
+@weight_0= (0x0055, 0x0055, 0x0180,0x0050),
+@weight_1= (0x0200), 
+@weight_2= (),  
+@weight_3= (),  
+@weight_4= (),  
+@weight_5= (),  
+@weight_6= (),  
+@weight_7= ();  
+@sigmoid = (1,0) ;
 $output_sigmoid=1 ;
 
 @weight_0_addr=0;
@@ -48,14 +48,14 @@ $offset_buf_count = $#offset_array;
 
 $input_format = "0000000000000000";
 $output_format = "0000000000000000";
-$input_count = "0004";
-$input = 0x0004; 
+$input_count = "0002";
+$input = 0x0002; 
 $output_count1 = "0001";
 $output_count = 0x0001;
 $sigmoid_function = 1; # check again
-@input_per_layer = (4,8);
-@neurons_per_layer = (8,1);
-$layer_count=2;
+@input_per_layer = (2);
+@neurons_per_layer = (1);
+$layer_count=1;
 
 %buf = ("sigmoid_function_select_1" => 0x8000, "sigmoid_function_select_0" => 0x4000, "set_sigmoid_input_enable" => 0x2000, "sigmoid_input_select_2" => 0x1000, 
 	"sigmoid_input_select_1" => 0x0800 , "sigmoid_input_select_0" => 0x0400, "accumulator_fifo_write_enable" => 0x0200, 
@@ -212,7 +212,7 @@ while($layer_count > 0)
 		$w_7_hex = sprintf("%04x", $present_weight_7[$p]);
                 $weight_buf_fin_7[$s-$values] = $w_7_hex;
 		
-#		print "$s - $scheduling_buffer[$s] - $offset_buffer[$s] - $weight_buf_fin_0[$s] - $weight_buf_fin_1[$s-$values] -$weight_buf_fin_2[$s-$values] -  $weight_buf_fin_3[$s-$values] - $weight_buf_fin_4[$s-$values] - $weight_buf_fin_5[$s-$values] - $weight_buf_fin_6[$s-$values] - $weight_buf_fin_7[$s-$values] \n";  
+		print "$s - $scheduling_buffer[$s] - $offset_buffer[$s] - $weight_buf_fin_0[$s] - $weight_buf_fin_1[$s-$values] -$weight_buf_fin_2[$s-$values] -  $weight_buf_fin_3[$s-$values] - $weight_buf_fin_4[$s-$values] - $weight_buf_fin_5[$s-$values] - $weight_buf_fin_6[$s-$values] - $weight_buf_fin_7[$s-$values] \n";  
 		$p = $p + 1;
 	} 
 
@@ -547,7 +547,7 @@ print "\n Offset array starts here \n";
 #offset buffer array to machine code
 for $off_count(0..$offset_count)
 {
-        $inter= $common."1110".$common1.$offset_buffer[$off_count];
+        $inter= $common."1110".$common1.$offset[$off_count];
         $parameter = 3;
         convert();
        # print $destination[$line_number];

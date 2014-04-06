@@ -1,59 +1,9 @@
-ffffffffffffff2b 
-ffffffffffffff2b 
-ffffffffffffff2b 
-ffffffffffffff2b 
-0055 
-0055 
-0055 
-0055 
-fffffffffffffed9 
-00d7 
-ffffffffffffff84 
-ffffffffffffffd6 
-ffffffffffffffd5 
-ffffffffffffff7d 
-ffffffffffffff26 
-012c 
-0092 
-ffffffffffffff7b 
-006d 
-006d 
-ffffffffffffff38 
-ffffffffffffff2b 
-0003 
-00c6 
-ffffffffffffff9d 
-0030 
-ffffffffffffff5a 
-0071 
-ffffffffffffff86 
-ffffffffffffffff 
-00b7 
-00a9 
-00de 
-001b 
-ffffffffffffff2c 
-ffffffffffffff2f 
-ffffffffffffff83 
-00be 
-ffffffffffffff15 
-0088 
-ffffffffffffff91 
-0109 
-ffffffffffffffaa 
-ffffffffffffff6e 
-ffffffffffffff6b 
-0048 
-ffffffffffffffe9 
-ffffffffffffffc0 
-001c 
-003d 
-0031 
-002c 
-004a 
-ffffffffffffffa4 
-fffffffffffffff9 
-0020 
-fffffffffffffffd 
-ffffffffffffffc0 
-04c0 
+ffffffffffffffab 0
+ffffffffffffff56 0
+0055 w
+0055 w
+ffffffffffffff80 0
+0180 w0
+0200 w1
+0080 0
+0500 w0
