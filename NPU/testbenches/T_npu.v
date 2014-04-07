@@ -46,7 +46,7 @@ module T_npu;
 		.RST(RST), 
 		.npu_input_data(npu_input_data), 
 		.npu_input_fifo_write_enable(npu_input_fifo_write_enable), 
-		.npu_config_data(npu_config_data), 
+		.npu_config_data(npu_config_data[25:0]), 
 		.npu_config_fifo_write_enable(npu_config_fifo_write_enable), 
 		.npu_output_fifo_read_enable(npu_output_fifo_read_enable), 
 		.npu_output_data(npu_output_data), 
@@ -65,11 +65,16 @@ testbench_rom testy_rom (
 		// Initialize Inputs
 		CLK = 0;
 		RST = 1;
+		npu_input_data = 0;
+		npu_input_fifo_write_enable = 0;
+		npu_config_fifo_write_enable = 0;
+		npu_output_fifo_read_enable = 0;
 		#31
 		RST = 0;
 		npu_config_fifo_write_enable = 1;
-		#3770
+		#3740
 		npu_config_fifo_write_enable = 0;
+		npu_input_fifo_write_enable = 1;
 	end
 		
 	
@@ -85,7 +90,7 @@ end
    always
 	#5 CLK = ~CLK;
 	initial 
-	#1000 $stop;  
+	#5000 $stop;  
 
 endmodule
 
