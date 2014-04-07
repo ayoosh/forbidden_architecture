@@ -41,6 +41,7 @@ module npu_compute_unit(
     input npu_sched_acc_fifo_read_en,
     input npu_sched_acc_fifo_write_en,
     input [2:0] npu_sched_sigmoid_input_sel_pe,
+	 input npu_offset_bram_read_en,
     output [47:0] npu_pe_dout
     );
   
@@ -100,7 +101,7 @@ module npu_compute_unit(
   npu_circ_buf_small npu_offset_bram(
 	 CLK,  // Global 100 Mhz clock
     npu_rst,  // npu level active high synchronous reset. global reset || npu config change
-	 ~npu_sched_acc_fifo_read_en, // input npu_circ_buf_read_en,  // Active high, read enable for this circular buffer. Cannot be high when write enable is also high.
+	 npu_offset_bram_read_en, // input npu_circ_buf_read_en,  // Active high, read enable for this circular buffer. Cannot be high when write enable is also high.
     npu_config_offset_buf_write_en, // input npu_circ_buf_write_en,  // Active high, write enable for this circular buffer. Cannot be high when read enable is also high.
     npu_config_data, // input [15:0] npu_circ_buf_data_input,  // Input data from the Config FIFO writing interface
     npu_offset_bram_dout // output [15:0] npu_circ_buf_data_output  // Output of this circular buffer
@@ -187,7 +188,7 @@ module npu_compute_unit(
     npu_pe_new_indata_en1, // input npu_pe_new_input_wren, // new input needs to be stored into the PE
 	 npu_state_compute, // input npu_pe_en,  // Active high enable signal to PE.
     npu_pe_input_data_bus, // input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
-    npu_w0_data, // input [15:0] npu_pe_weight_in,  // Weight input
+    npu_w1_data, // input [15:0] npu_pe_weight_in,  // Weight input
     npu_pe_acc_val_dout0, // input [47:0] npu_pe_acc_in, // Flowing accumulated value or the offset input for first PE
 	 npu_pe_acc_val_dout1 // output reg [47:0] npu_pe_acc_output // output of this PE for Sigmoid Unit
     );
@@ -197,7 +198,7 @@ module npu_compute_unit(
     npu_pe_new_indata_en2, // input npu_pe_new_input_wren, // new input needs to be stored into the PE
 	 npu_state_compute, // input npu_pe_en,  // Active high enable signal to PE.
     npu_pe_input_data_bus, // input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
-    npu_w0_data, // input [15:0] npu_pe_weight_in,  // Weight input
+    npu_w2_data, // input [15:0] npu_pe_weight_in,  // Weight input
     npu_pe_acc_val_dout1, // input [47:0] npu_pe_acc_in, // Flowing accumulated value or the offset input for first PE
 	 npu_pe_acc_val_dout2 // output reg [47:0] npu_pe_acc_output // output of this PE for Sigmoid Unit
     );
@@ -207,7 +208,7 @@ module npu_compute_unit(
     npu_pe_new_indata_en3, // input npu_pe_new_input_wren, // new input needs to be stored into the PE
 	 npu_state_compute, // input npu_pe_en,  // Active high enable signal to PE.
     npu_pe_input_data_bus, // input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
-    npu_w0_data, // input [15:0] npu_pe_weight_in,  // Weight input
+    npu_w3_data, // input [15:0] npu_pe_weight_in,  // Weight input
     npu_pe_acc_val_dout2, // input [47:0] npu_pe_acc_in, // Flowing accumulated value or the offset input for first PE
 	 npu_pe_acc_val_dout3 // output reg [47:0] npu_pe_acc_output // output of this PE for Sigmoid Unit
     );
@@ -217,7 +218,7 @@ module npu_compute_unit(
     npu_pe_new_indata_en4, // input npu_pe_new_input_wren, // new input needs to be stored into the PE
 	 npu_state_compute, // input npu_pe_en,  // Active high enable signal to PE.
     npu_pe_input_data_bus, // input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
-    npu_w0_data, // input [15:0] npu_pe_weight_in,  // Weight input
+    npu_w4_data, // input [15:0] npu_pe_weight_in,  // Weight input
     npu_pe_acc_val_dout3, // input [47:0] npu_pe_acc_in, // Flowing accumulated value or the offset input for first PE
 	 npu_pe_acc_val_dout4 // output reg [47:0] npu_pe_acc_output // output of this PE for Sigmoid Unit
     );
@@ -227,7 +228,7 @@ module npu_compute_unit(
     npu_pe_new_indata_en5, // input npu_pe_new_input_wren, // new input needs to be stored into the PE
 	 npu_state_compute, // input npu_pe_en,  // Active high enable signal to PE.
     npu_pe_input_data_bus, // input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
-    npu_w0_data, // input [15:0] npu_pe_weight_in,  // Weight input
+    npu_w5_data, // input [15:0] npu_pe_weight_in,  // Weight input
     npu_pe_acc_val_dout4, // input [47:0] npu_pe_acc_in, // Flowing accumulated value or the offset input for first PE
 	 npu_pe_acc_val_dout5 // output reg [47:0] npu_pe_acc_output // output of this PE for Sigmoid Unit
     );
@@ -237,7 +238,7 @@ module npu_compute_unit(
     npu_pe_new_indata_en6, // input npu_pe_new_input_wren, // new input needs to be stored into the PE
 	 npu_state_compute, // input npu_pe_en,  // Active high enable signal to PE.
     npu_pe_input_data_bus, // input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
-    npu_w0_data, // input [15:0] npu_pe_weight_in,  // Weight input
+    npu_w6_data, // input [15:0] npu_pe_weight_in,  // Weight input
     npu_pe_acc_val_dout5, // input [47:0] npu_pe_acc_in, // Flowing accumulated value or the offset input for first PE
 	 npu_pe_acc_val_dout6 // output reg [47:0] npu_pe_acc_output // output of this PE for Sigmoid Unit
     );
@@ -247,7 +248,7 @@ module npu_compute_unit(
     npu_pe_new_indata_en7, // input npu_pe_new_input_wren, // new input needs to be stored into the PE
 	 npu_state_compute, // input npu_pe_en,  // Active high enable signal to PE.
     npu_pe_input_data_bus, // input [15:0] npu_pe_data_in,  // Data input, to be registered inside PE
-    npu_w0_data, // input [15:0] npu_pe_weight_in,  // Weight input
+    npu_w7_data, // input [15:0] npu_pe_weight_in,  // Weight input
     npu_pe_acc_val_dout6, // input [47:0] npu_pe_acc_in, // Flowing accumulated value or the offset input for first PE
 	 npu_pe_acc_val_dout7 // output reg [47:0] npu_pe_acc_output // output of this PE for Sigmoid Unit
     );

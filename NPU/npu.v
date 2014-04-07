@@ -51,7 +51,7 @@ module npu(
   wire npu_sched_acc_fifo_read_en;
   wire npu_sched_acc_fifo_write_en;
   wire [2:0] npu_sched_sigmoid_input_sel_pe;
-  wire npu_sched_sigmoid_input_en;
+  wire npu_offset_bram_read_en;
   wire [1:0] npu_sched_sigmoid_function_sel;
 
   // npu_config_interface
@@ -126,7 +126,7 @@ module npu(
     npu_sched_acc_fifo_read_en, // output npu_sched_acc_fifo_read_en,
     npu_sched_acc_fifo_write_en, // output npu_sched_acc_fifo_write_en,
     npu_sched_sigmoid_input_sel_pe, // output [2:0] npu_sched_sigmoid_input_sel_pe,
-    npu_sched_sigmoid_input_en, // output npu_sched_sigmoid_input_en,
+    npu_offset_bram_read_en, // output npu_offset_bram_read_en,
     npu_sched_sigmoid_function_sel // output [1:0] npu_sched_sigmoid_function_sel
     );
 	 
@@ -194,6 +194,7 @@ module npu(
     npu_sched_acc_fifo_read_en, // input npu_sched_acc_fifo_read_en,
     npu_sched_acc_fifo_write_en, // input npu_sched_acc_fifo_write_en,
     npu_sched_sigmoid_input_sel_pe, // input [2:0] npu_sched_sigmoid_input_sel_pe,
+	 npu_offset_bram_read_en, // input npu_offset_bram_read_en
     npu_sigmoid_din // output [47:0] npu_pe_dout
     );
 
@@ -202,7 +203,6 @@ module npu(
     npu_rst, // NPU internal reset. Active with global reset or new config triggered reset
     npu_sigmoid_din, // input [47:0] npu_sigmoid_din, // data from PEs selected as per scheduling logic
     npu_sched_sigmoid_function_sel, // input [1:0] npu_sched_sigmoid_function_sel, // 2 bits to select which sigmoid function to use. Comes from Sheduling logic
-    npu_sched_sigmoid_input_en, // input npu_sched_sigmoid_input_en, // Active high. If active an input is read from npu_sigmoid_din to calculate sigmoid value
     npu_sigmoid_dout // output [15:0] npu_sigmoid_dout // output of the sigmoid unit, will be routed to sigmoid fifo or the output fifo as required.
     );
   

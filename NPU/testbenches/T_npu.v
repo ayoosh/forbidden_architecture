@@ -29,10 +29,11 @@ module T_npu;
 	reg RST;
 	reg [31:0] npu_input_data;
 	reg npu_input_fifo_write_enable;
-	reg [25:0] npu_config_data;
+	wire [31:0] npu_config_data;
 	reg npu_config_fifo_write_enable;
 	reg npu_output_fifo_read_enable;
-
+	reg [9:0] addr;
+	
 	// Outputs
 	wire [31:0] npu_output_data;
 	wire npu_output_fifo_empty;
@@ -54,39 +55,37 @@ module T_npu;
 		.npu_config_fifo_full(npu_config_fifo_full)
 	);
 
+testbench_rom testy_rom (
+  .clka(CLK), // input clka
+  .addra(addr), // input [9 : 0] addra
+  .douta(npu_config_data) // output [31 : 0] douta
+);
+
 	initial begin
 		// Initialize Inputs
 		CLK = 0;
 		RST = 1;
-		#50 RST =0;
+		#31
+		RST = 0;
+		npu_config_fifo_write_enable = 1;
+		#3770
+		npu_config_fifo_write_enable = 0;
 	end
 		
 	
-	always@(posedge CLK)begin
+always@(posedge CLK)begin
 	if(RST)begin
-		npu_input_data <= 0;
-		npu_input_fifo_write_enable <= 0;
-		npu_config_data <= 0;
-		npu_config_fifo_write_enable <= 0;
-		npu_output_fifo_read_enable <= 0;
+		addr <= 0;
 	end
 	else begin
-		npu_config_fifo_write_enable<=1;
-		npu_config_data <= npu_config_data+1;
+		addr <= addr + 1;
 	end
-		// Wait 100 ns for global reset to finish
-	end
-      
-		// Add stimulus here
-		//npu_config_data = 26'h3fffff;
-		//npu_config_fifo_write_enable = 1;
-		
+end
 
-
-	
    always
 	#5 CLK = ~CLK;
 	initial 
 	#1000 $stop;  
+
 endmodule
 

@@ -19,20 +19,13 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module junk_top_level(
-    input CLK,
-    input RST
+    input clk,
+    input rst
     );
-	 
-	 /*wire CLK0;
-	 IBUFG buf0
-	 (
-		.I(CLK),
-		.O(CLK0)
-	 );
-	 */
+
 	npu npu(
-    CLK,
-    RST,
+    clk,
+    rst,
     ,// input [31:0] npu_input_data,
     ,// input npu_input_fifo_write_enable,
     ,// input [25:0] npu_config_data,
@@ -119,80 +112,8 @@ module junk_top_level(
 //    .npu_pe_data_in(),  // Data input, to be registered inside PE
 //    .npu_pe_weight_in(),  // Weight input
 //    .npu_pe_acc_in(), // Flowing accumulated value
-//    .npu_pe_acc_val(), // output of this PE for next PE or Acc FIFO
 //	 .npu_pe_acc_output() // output of this PE for Sigmoid Unit
 //    );
-//npu_proc_eng pe1(
-//    .CLK(CLK),  // Global 100 Mhz clock
-//    .npu_rst(RST),  // npu level active low synchronous reset. global reset && npu config change
-//    .npu_pe_en(),  // Active low stall signal, low if NPU is in stall state
-//    .npu_pe_data_in(),  // Data input, to be registered inside PE
-//    .npu_pe_weight_in(),  // Weight input
-//    .npu_pe_acc_in(), // Flowing accumulated value
-//    .npu_pe_acc_val(), // output of this PE for next PE or Acc FIFO
-//	 .npu_pe_acc_output() // output of this PE for Sigmoid Unit
-//    );
-//npu_proc_eng pe2(
-//    .CLK(CLK),  // Global 100 Mhz clock
-//    .npu_rst(RST),  // npu level active low synchronous reset. global reset && npu config change
-//    .npu_pe_en(),  // Active low stall signal, low if NPU is in stall state
-//    .npu_pe_data_in(),  // Data input, to be registered inside PE
-//    .npu_pe_weight_in(),  // Weight input
-//    .npu_pe_acc_in(), // Flowing accumulated value
-//    .npu_pe_acc_val(), // output of this PE for next PE or Acc FIFO
-//	 .npu_pe_acc_output() // output of this PE for Sigmoid Unit
-//    );
-//npu_proc_eng pe3(
-//    .CLK(CLK),  // Global 100 Mhz clock
-//    .npu_rst(RST),  // npu level active low synchronous reset. global reset && npu config change
-//    .npu_pe_en(),  // Active low stall signal, low if NPU is in stall state
-//    .npu_pe_data_in(),  // Data input, to be registered inside PE
-//    .npu_pe_weight_in(),  // Weight input
-//    .npu_pe_acc_in(), // Flowing accumulated value
-//    .npu_pe_acc_val(), // output of this PE for next PE or Acc FIFO
-//	 .npu_pe_acc_output() // output of this PE for Sigmoid Unit
-//    );
-//npu_proc_eng pe4(
-//    .CLK(CLK),  // Global 100 Mhz clock
-//    .npu_rst(RST),  // npu level active low synchronous reset. global reset && npu config change
-//    .npu_pe_en(),  // Active low stall signal, low if NPU is in stall state
-//    .npu_pe_data_in(),  // Data input, to be registered inside PE
-//    .npu_pe_weight_in(),  // Weight input
-//    .npu_pe_acc_in(), // Flowing accumulated value
-//    .npu_pe_acc_val(), // output of this PE for next PE or Acc FIFO
-//	 .npu_pe_acc_output() // output of this PE for Sigmoid Unit
-//    );
-//npu_proc_eng pe5(
-//    .CLK(CLK),  // Global 100 Mhz clock
-//    .npu_rst(RST),  // npu level active low synchronous reset. global reset && npu config change
-//    .npu_pe_en(),  // Active low stall signal, low if NPU is in stall state
-//    .npu_pe_data_in(),  // Data input, to be registered inside PE
-//    .npu_pe_weight_in(),  // Weight input
-//    .npu_pe_acc_in(), // Flowing accumulated value
-//    .npu_pe_acc_val(), // output of this PE for next PE or Acc FIFO
-//	 .npu_pe_acc_output() // output of this PE for Sigmoid Unit
-//    );
-//npu_proc_eng pe6(
-//    .CLK(CLK),  // Global 100 Mhz clock
-//    .npu_rst(RST),  // npu level active low synchronous reset. global reset && npu config change
-//    .npu_pe_en(),  // Active low stall signal, low if NPU is in stall state
-//    .npu_pe_data_in(),  // Data input, to be registered inside PE
-//    .npu_pe_weight_in(),  // Weight input
-//    .npu_pe_acc_in(), // Flowing accumulated value
-//    .npu_pe_acc_val(), // output of this PE for next PE or Acc FIFO
-//	 .npu_pe_acc_output() // output of this PE for Sigmoid Unit
-//    );
-//npu_proc_eng pe7(
-//    .CLK(CLK),  // Global 100 Mhz clock
-//    .npu_rst(RST),  // npu level active low synchronous reset. global reset && npu config change
-//    .npu_pe_en(),  // Active low stall signal, low if NPU is in stall state
-//    .npu_pe_data_in(),  // Data input, to be registered inside PE
-//    .npu_pe_weight_in(),  // Weight input
-//    .npu_pe_acc_in(), // Flowing accumulated value
-//    .npu_pe_acc_val(), // output of this PE for next PE or Acc FIFO
-//	 .npu_pe_acc_output() // output of this PE for Sigmoid Unit
-//    );
-//
 //
 //npu_circ_buf_large cbufl0(
 //    .CLK(CLK),  // Global 100 Mhz clock
@@ -277,4 +198,70 @@ module junk_top_level(
 //    .npu_circ_buf_data_output()  // Output of this circular buffer
 //    );
 //
+
+//
+//	// Inputs
+//	reg CLK;
+//	reg RST;
+//	reg [31:0] npu_input_data;
+//	reg npu_input_fifo_write_enable;
+//	wire [31:0] npu_config_data;
+//	reg npu_config_fifo_write_enable;
+//	reg npu_output_fifo_read_enable;
+//	reg [9:0] addr;
+//	
+//	// Outputs
+//	wire [31:0] npu_output_data;
+//	wire npu_output_fifo_empty;
+//	wire npu_input_fifo_full;
+//	wire npu_config_fifo_full;
+//
+//	// Instantiate the Unit Under Test (UUT)
+//	npu uut (
+//		.CLK(CLK), 
+//		.RST(RST), 
+//		.npu_input_data(npu_input_data), 
+//		.npu_input_fifo_write_enable(npu_input_fifo_write_enable), 
+//		.npu_config_data(npu_config_data), 
+//		.npu_config_fifo_write_enable(npu_config_fifo_write_enable), 
+//		.npu_output_fifo_read_enable(npu_output_fifo_read_enable), 
+//		.npu_output_data(npu_output_data), 
+//		.npu_output_fifo_empty(npu_output_fifo_empty), 
+//		.npu_input_fifo_full(npu_input_fifo_full), 
+//		.npu_config_fifo_full(npu_config_fifo_full)
+//	);
+//
+//testbench_rom testy_rom (
+//  .clka(CLK), // input clka
+//  .addra(addr), // input [9 : 0] addra
+//  .douta(npu_config_data) // output [31 : 0] douta
+//);
+//
+//	initial begin
+//		// Initialize Inputs
+//		CLK = 0;
+//		RST = 1;
+//		#31
+//		RST = 0;
+//		npu_config_fifo_write_enable = 1;
+//		#3770
+//		npu_config_fifo_write_enable = 0;
+//	end
+//		
+//	
+//always@(posedge CLK)begin
+//	if(RST)begin
+//		addr <= 0;
+//	end
+//	else begin
+//		addr <= addr + 1;
+//	end
+//end
+//
+//   always
+//	#5 CLK = ~CLK;
+//	initial 
+//	#1000 $stop;  
+
+
 endmodule

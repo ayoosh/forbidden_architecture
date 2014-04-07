@@ -5,7 +5,16 @@
      behavior or data corruption.  It is strongly advised that
      users do not edit the contents of this file. -->
 <messages>
-<msg type="info" file="sim" num="927" delta="new" >Generating component instance &apos;<arg fmt="%s" index="1">npu_config_fifo</arg>&apos; of &apos;<arg fmt="%s" index="2">xilinx.com:ip:fifo_generator:8.1</arg>&apos; from &apos;<arg fmt="%s" index="3">C:\Xilinx\13.1\ISE_DS\ISE\coregen\ip\xilinx\primary\com\xilinx\ip\fifo_generator_v8_1\component.xml</arg>&apos;.
+<msg type="info" file="sim" num="927" delta="new" >Generating component instance &apos;<arg fmt="%s" index="1">tansig</arg>&apos; of &apos;<arg fmt="%s" index="2">xilinx.com:ip:blk_mem_gen:6.1</arg>&apos; from &apos;<arg fmt="%s" index="3">C:\Xilinx\13.1\ISE_DS\ISE\coregen\ip\xilinx\primary\com\xilinx\ip\blk_mem_gen_v6_1\component.xml</arg>&apos;.
+</msg>
+
+<msg type="error" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">The Memory Initialization vector can contain between 1 to Write</arg>
+</msg>
+
+<msg type="error" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">   Depth A number of entires.ERROR:sim:781 - An invalid core configuration has been detected during</arg>
+</msg>
+
+<msg type="error" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">   Customization. Core parameters will be reset to their default values.</arg>
 </msg>
 
 </messages>

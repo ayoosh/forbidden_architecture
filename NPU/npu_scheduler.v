@@ -33,7 +33,7 @@ module npu_scheduler(
     output npu_sched_acc_fifo_read_en,
     output npu_sched_acc_fifo_write_en,
     output [2:0] npu_sched_sigmoid_input_sel_pe,
-    output npu_sched_sigmoid_input_en,
+    output npu_offset_bram_read_en,
     output [1:0] npu_sched_sigmoid_function_sel
     );
 
@@ -59,7 +59,7 @@ assign npu_sched_pe_write_en = npu_sched_val_cur[7];
 assign npu_sched_acc_fifo_read_en = npu_sched_val_cur[8];
 assign npu_sched_acc_fifo_write_en = npu_sched_val_cur[9];
 assign npu_sched_sigmoid_input_sel_pe[2:0] = npu_sched_val_cur[12:10];
-assign npu_sched_sigmoid_input_en = npu_sched_val_cur[13];
+assign npu_offset_bram_read_en = npu_sched_val_cur[13];
 assign npu_sched_sigmoid_function_sel[1:0] = npu_sched_val_cur[15:14];
 
 endmodule
