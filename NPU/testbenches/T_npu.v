@@ -32,7 +32,7 @@ module T_npu;
 	wire [31:0] npu_config_data;
 	reg npu_config_fifo_write_enable;
 	reg npu_output_fifo_read_enable;
-	reg [9:0] addr;
+	reg [10:0] addr;
 	
 	// Outputs
 	wire [31:0] npu_output_data;

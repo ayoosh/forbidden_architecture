@@ -8,9 +8,11 @@ npu_circ_buf_fifo_large.ngc
 npu_circ_buf_fifo_large.sym
 npu_circ_buf_fifo_large.v
 npu_circ_buf_fifo_large.veo
-npu_circ_buf_fifo_large.vhd
-npu_circ_buf_fifo_large.vho
 npu_circ_buf_fifo_large.xco
 npu_circ_buf_fifo_large.xise
+npu_circ_buf_fifo_large\doc\fifo_generator_ds317.pdf
+npu_circ_buf_fifo_large\doc\fifo_generator_ug175.pdf
+npu_circ_buf_fifo_large\doc\fifo_generator_v8_1_vinfo.html
+npu_circ_buf_fifo_large\doc\xapp992.pdf
 npu_circ_buf_fifo_large_flist.txt
 npu_circ_buf_fifo_large_xmdf.tcl

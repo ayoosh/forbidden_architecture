@@ -5,16 +5,25 @@
      behavior or data corruption.  It is strongly advised that
      users do not edit the contents of this file. -->
 <messages>
-<msg type="info" file="sim" num="927" delta="new" >Generating component instance &apos;<arg fmt="%s" index="1">tansig</arg>&apos; of &apos;<arg fmt="%s" index="2">xilinx.com:ip:blk_mem_gen:6.1</arg>&apos; from &apos;<arg fmt="%s" index="3">C:\Xilinx\13.1\ISE_DS\ISE\coregen\ip\xilinx\primary\com\xilinx\ip\blk_mem_gen_v6_1\component.xml</arg>&apos;.
+<msg type="warning" file="sim" num="991" delta="old" >The project IP instance &apos;<arg fmt="%s" index="1">npu_circ_buf_fifo_large</arg>&apos; for IP &apos;<arg fmt="%s" index="2">Fifo Generator v8.1</arg>&apos; was generated with a different version of the IP than is currently in the IP Catalog. It was originally generated using IP with the packaged timestamp &apos;<arg fmt="%s" index="3">2011-02-03+22:23</arg>&apos;; the IP in the current catalog has a different packaged timestamp &apos;<arg fmt="%s" index="4">2013-10-13+18:02</arg>&apos;. This mismatch is due to changes made to the IP in the user repositories. It may affect some functionality of the IP, if there are differences between these two versions of the IP.
 </msg>
 
-<msg type="error" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">The Memory Initialization vector can contain between 1 to Write</arg>
+<msg type="info" file="sim" num="172" delta="old" >Generating IP...
 </msg>
 
-<msg type="error" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">   Depth A number of entires.ERROR:sim:781 - An invalid core configuration has been detected during</arg>
+<msg type="warning" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">A core named &apos;npu_circ_buf_fifo_large&apos; already exists in the project. Output products for this core may be overwritten.</arg>
 </msg>
 
-<msg type="error" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">   Customization. Core parameters will be reset to their default values.</arg>
+<msg type="warning" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">A core named &apos;npu_circ_buf_fifo_large&apos; already exists in the project. Output products for this core may be overwritten.</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Pre-processing HDL files for &apos;npu_circ_buf_fifo_large&apos;...</arg>
+</msg>
+
+<msg type="info" file="sim" num="949" delta="new" >Finished generation of ASY schematic symbol.
+</msg>
+
+<msg type="info" file="sim" num="948" delta="new" >Finished FLIST file generation.
 </msg>
 
 </messages>

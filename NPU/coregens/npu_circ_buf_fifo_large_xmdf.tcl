@@ -14,7 +14,7 @@ namespace eval ::npu_circ_buf_fifo_large_xmdf {
 # Optional when the use context does not require the param or ports
 # arrays to be available.
 proc ::npu_circ_buf_fifo_large_xmdf::xmdfInit { instance } {
-# Variable containg name of library into which module is compiled
+# Variable containing name of library into which module is compiled
 # Recommendation: <module_name>
 # Required
 utilities_xmdf::xmdfSetData $instance Module Attributes Name npu_circ_buf_fifo_large
@@ -30,8 +30,7 @@ set fcount 0
 # Examples include unisim and xilinxcorelib
 # Optional
 # In this example, we assume that the unisim library will
-# be magically
-# available to the simulation and synthesis tool
+# be available to the simulation and synthesis tool
 utilities_xmdf::xmdfSetData $instance FileSet $fcount type logical_library
 utilities_xmdf::xmdfSetData $instance FileSet $fcount logical_library unisim
 incr fcount
@@ -42,6 +41,22 @@ incr fcount
 
 utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path fifo_generator_ug175.pdf
 utilities_xmdf::xmdfSetData $instance FileSet $fcount type AnyView
+incr fcount
+
+utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path npu_circ_buf_fifo_large/doc/fifo_generator_ds317.pdf
+utilities_xmdf::xmdfSetData $instance FileSet $fcount type Ignore
+incr fcount
+
+utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path npu_circ_buf_fifo_large/doc/fifo_generator_ug175.pdf
+utilities_xmdf::xmdfSetData $instance FileSet $fcount type Ignore
+incr fcount
+
+utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path npu_circ_buf_fifo_large/doc/fifo_generator_v8_1_vinfo.html
+utilities_xmdf::xmdfSetData $instance FileSet $fcount type Ignore
+incr fcount
+
+utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path npu_circ_buf_fifo_large/doc/xapp992.pdf
+utilities_xmdf::xmdfSetData $instance FileSet $fcount type Ignore
 incr fcount
 
 utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path npu_circ_buf_fifo_large.asy
@@ -62,14 +77,6 @@ incr fcount
 
 utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path npu_circ_buf_fifo_large.veo
 utilities_xmdf::xmdfSetData $instance FileSet $fcount type verilog_template
-incr fcount
-
-utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path npu_circ_buf_fifo_large.vhd
-utilities_xmdf::xmdfSetData $instance FileSet $fcount type vhdl
-incr fcount
-
-utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path npu_circ_buf_fifo_large.vho
-utilities_xmdf::xmdfSetData $instance FileSet $fcount type vhdl_template
 incr fcount
 
 utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path npu_circ_buf_fifo_large.xco

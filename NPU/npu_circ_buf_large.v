@@ -26,7 +26,7 @@ wire [15:0] npu_write_data;
 
 npu_circ_buf_fifo_large npu_circ_buf_fifo (
   .clk(CLK), // input clk
-  .rst(npu_rst), // input rst
+  .srst(npu_rst), // input rst
   .din(npu_write_data), // input [15 : 0] din
   .wr_en(npu_cbuf_wre), // input wr_en
   .rd_en(npu_circ_buf_read_en), // input rd_en

@@ -1,27 +1,26 @@
 /*******************************************************************************
-*     This file is owned and controlled by Xilinx and must be used             *
-*     solely for design, simulation, implementation and creation of            *
-*     design files limited to Xilinx devices or technologies. Use              *
-*     with non-Xilinx devices or technologies is expressly prohibited          *
-*     and immediately terminates your license.                                 *
+*     This file is owned and controlled by Xilinx and must be used solely      *
+*     for design, simulation, implementation and creation of design files      *
+*     limited to Xilinx devices or technologies. Use with non-Xilinx           *
+*     devices or technologies is expressly prohibited and immediately          *
+*     terminates your license.                                                 *
 *                                                                              *
-*     XILINX IS PROVIDING THIS DESIGN, CODE, OR INFORMATION "AS IS"            *
-*     SOLELY FOR USE IN DEVELOPING PROGRAMS AND SOLUTIONS FOR                  *
-*     XILINX DEVICES.  BY PROVIDING THIS DESIGN, CODE, OR INFORMATION          *
-*     AS ONE POSSIBLE IMPLEMENTATION OF THIS FEATURE, APPLICATION              *
-*     OR STANDARD, XILINX IS MAKING NO REPRESENTATION THAT THIS                *
-*     IMPLEMENTATION IS FREE FROM ANY CLAIMS OF INFRINGEMENT,                  *
-*     AND YOU ARE RESPONSIBLE FOR OBTAINING ANY RIGHTS YOU MAY REQUIRE         *
-*     FOR YOUR IMPLEMENTATION.  XILINX EXPRESSLY DISCLAIMS ANY                 *
-*     WARRANTY WHATSOEVER WITH RESPECT TO THE ADEQUACY OF THE                  *
+*     XILINX IS PROVIDING THIS DESIGN, CODE, OR INFORMATION "AS IS" SOLELY     *
+*     FOR USE IN DEVELOPING PROGRAMS AND SOLUTIONS FOR XILINX DEVICES.  BY     *
+*     PROVIDING THIS DESIGN, CODE, OR INFORMATION AS ONE POSSIBLE              *
+*     IMPLEMENTATION OF THIS FEATURE, APPLICATION OR STANDARD, XILINX IS       *
+*     MAKING NO REPRESENTATION THAT THIS IMPLEMENTATION IS FREE FROM ANY       *
+*     CLAIMS OF INFRINGEMENT, AND YOU ARE RESPONSIBLE FOR OBTAINING ANY        *
+*     RIGHTS YOU MAY REQUIRE FOR YOUR IMPLEMENTATION.  XILINX EXPRESSLY        *
+*     DISCLAIMS ANY WARRANTY WHATSOEVER WITH RESPECT TO THE ADEQUACY OF THE    *
 *     IMPLEMENTATION, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OR           *
 *     REPRESENTATIONS THAT THIS IMPLEMENTATION IS FREE FROM CLAIMS OF          *
-*     INFRINGEMENT, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS          *
-*     FOR A PARTICULAR PURPOSE.                                                *
+*     INFRINGEMENT, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A    *
+*     PARTICULAR PURPOSE.                                                      *
 *                                                                              *
-*     Xilinx products are not intended for use in life support                 *
-*     appliances, devices, or systems. Use in such applications are            *
-*     expressly prohibited.                                                    *
+*     Xilinx products are not intended for use in life support appliances,     *
+*     devices, or systems.  Use in such applications are expressly             *
+*     prohibited.                                                              *
 *                                                                              *
 *     (c) Copyright 1995-2014 Xilinx, Inc.                                     *
 *     All rights reserved.                                                     *
@@ -39,7 +38,7 @@
 
 module npu_circ_buf_fifo_large(
   clk,
-  rst,
+  srst,
   din,
   wr_en,
   rd_en,
@@ -49,7 +48,7 @@ module npu_circ_buf_fifo_large(
 );
 
 input clk;
-input rst;
+input srst;
 input [15 : 0] din;
 input wr_en;
 input rd_en;
@@ -85,7 +84,7 @@ output empty;
     .C_AXIS_TYPE(0),
     .C_COMMON_CLOCK(1),
     .C_COUNT_TYPE(0),
-    .C_DATA_COUNT_WIDTH(13),
+    .C_DATA_COUNT_WIDTH(10),
     .C_DEFAULT_VALUE("BlankString"),
     .C_DIN_WIDTH(16),
     .C_DIN_WIDTH_AXIS(1),
@@ -144,15 +143,15 @@ output empty;
     .C_HAS_PROG_FLAGS_WRCH(0),
     .C_HAS_RD_DATA_COUNT(0),
     .C_HAS_RD_RST(0),
-    .C_HAS_RST(1),
+    .C_HAS_RST(0),
     .C_HAS_SLAVE_CE(0),
-    .C_HAS_SRST(0),
+    .C_HAS_SRST(1),
     .C_HAS_UNDERFLOW(0),
     .C_HAS_VALID(0),
     .C_HAS_WR_ACK(0),
     .C_HAS_WR_DATA_COUNT(0),
     .C_HAS_WR_RST(0),
-    .C_IMPLEMENTATION_TYPE(4),
+    .C_IMPLEMENTATION_TYPE(0),
     .C_IMPLEMENTATION_TYPE_AXIS(1),
     .C_IMPLEMENTATION_TYPE_RACH(1),
     .C_IMPLEMENTATION_TYPE_RDCH(1),
@@ -161,14 +160,14 @@ output empty;
     .C_IMPLEMENTATION_TYPE_WRCH(1),
     .C_INIT_WR_PNTR_VAL(0),
     .C_INTERFACE_TYPE(0),
-    .C_MEMORY_TYPE(4),
+    .C_MEMORY_TYPE(1),
     .C_MIF_FILE_NAME("BlankString"),
     .C_MSGON_VAL(1),
     .C_OPTIMIZATION_MODE(0),
     .C_OVERFLOW_LOW(0),
     .C_PRELOAD_LATENCY(1),
     .C_PRELOAD_REGS(0),
-    .C_PRIM_FIFO_TYPE("8kx4"),
+    .C_PRIM_FIFO_TYPE("1kx18"),
     .C_PROG_EMPTY_THRESH_ASSERT_VAL(2),
     .C_PROG_EMPTY_THRESH_ASSERT_VAL_AXIS(1022),
     .C_PROG_EMPTY_THRESH_ASSERT_VAL_RACH(1022),
@@ -184,14 +183,14 @@ output empty;
     .C_PROG_EMPTY_TYPE_WACH(5),
     .C_PROG_EMPTY_TYPE_WDCH(5),
     .C_PROG_EMPTY_TYPE_WRCH(5),
-    .C_PROG_FULL_THRESH_ASSERT_VAL(8191),
+    .C_PROG_FULL_THRESH_ASSERT_VAL(1022),
     .C_PROG_FULL_THRESH_ASSERT_VAL_AXIS(1023),
     .C_PROG_FULL_THRESH_ASSERT_VAL_RACH(1023),
     .C_PROG_FULL_THRESH_ASSERT_VAL_RDCH(1023),
     .C_PROG_FULL_THRESH_ASSERT_VAL_WACH(1023),
     .C_PROG_FULL_THRESH_ASSERT_VAL_WDCH(1023),
     .C_PROG_FULL_THRESH_ASSERT_VAL_WRCH(1023),
-    .C_PROG_FULL_THRESH_NEGATE_VAL(8190),
+    .C_PROG_FULL_THRESH_NEGATE_VAL(1021),
     .C_PROG_FULL_TYPE(0),
     .C_PROG_FULL_TYPE_AXIS(5),
     .C_PROG_FULL_TYPE_RACH(5),
@@ -200,10 +199,10 @@ output empty;
     .C_PROG_FULL_TYPE_WDCH(5),
     .C_PROG_FULL_TYPE_WRCH(5),
     .C_RACH_TYPE(0),
-    .C_RD_DATA_COUNT_WIDTH(13),
-    .C_RD_DEPTH(8192),
+    .C_RD_DATA_COUNT_WIDTH(10),
+    .C_RD_DEPTH(1024),
     .C_RD_FREQ(1),
-    .C_RD_PNTR_WIDTH(13),
+    .C_RD_PNTR_WIDTH(10),
     .C_RDCH_TYPE(0),
     .C_REG_SLICE_MODE_AXIS(0),
     .C_REG_SLICE_MODE_RACH(0),
@@ -215,7 +214,7 @@ output empty;
     .C_USE_COMMON_OVERFLOW(0),
     .C_USE_COMMON_UNDERFLOW(0),
     .C_USE_DEFAULT_SETTINGS(0),
-    .C_USE_DOUT_RST(0),
+    .C_USE_DOUT_RST(1),
     .C_USE_ECC(0),
     .C_USE_ECC_AXIS(0),
     .C_USE_ECC_RACH(0),
@@ -230,8 +229,8 @@ output empty;
     .C_WACH_TYPE(0),
     .C_WDCH_TYPE(0),
     .C_WR_ACK_LOW(0),
-    .C_WR_DATA_COUNT_WIDTH(13),
-    .C_WR_DEPTH(8192),
+    .C_WR_DATA_COUNT_WIDTH(10),
+    .C_WR_DEPTH(1024),
     .C_WR_DEPTH_AXIS(1024),
     .C_WR_DEPTH_RACH(16),
     .C_WR_DEPTH_RDCH(1024),
@@ -239,7 +238,7 @@ output empty;
     .C_WR_DEPTH_WDCH(1024),
     .C_WR_DEPTH_WRCH(16),
     .C_WR_FREQ(1),
-    .C_WR_PNTR_WIDTH(13),
+    .C_WR_PNTR_WIDTH(10),
     .C_WR_PNTR_WIDTH_AXIS(10),
     .C_WR_PNTR_WIDTH_RACH(4),
     .C_WR_PNTR_WIDTH_RDCH(10),
@@ -251,7 +250,7 @@ output empty;
   )
   inst (
     .CLK(clk),
-    .RST(rst),
+    .SRST(srst),
     .DIN(din),
     .WR_EN(wr_en),
     .RD_EN(rd_en),
@@ -260,7 +259,7 @@ output empty;
     .EMPTY(empty),
     .BACKUP(),
     .BACKUP_MARKER(),
-    .SRST(),
+    .RST(),
     .WR_CLK(),
     .WR_RST(),
     .RD_CLK(),
