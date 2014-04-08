@@ -60,6 +60,7 @@ testbench_rom testy_rom (
   .douta(npu_config_data) // output [31 : 0] douta
 );
 
+
 	initial begin
 		// Initialize Inputs
 		CLK = 0;
@@ -77,12 +78,14 @@ testbench_rom testy_rom (
 	
 always@(posedge CLK)begin
 	if(RST)begin
+		npu_output_fifo_read_enable <= 0;
 		addr <= 0;
 		npu_input_data <= 0;
 	end
 	else begin
+		npu_output_fifo_read_enable <= ~npu_output_fifo_empty;
 		addr <= addr + 1;
-		if (addr == 144) begin
+		if (addr == 162) begin
 			npu_config_fifo_write_enable <= 0;
 			npu_input_fifo_write_enable <= 1;
 			npu_input_data <= 32'h2;
