@@ -2,7 +2,7 @@ use Switch;
 #use sitrict; 
 
 open my $output_conf, '>>', 'configuration.coe' or die "error trying to overwrite: $!";
-@weight_0= (0x0055, 0x0055, 0x0180,0x0050),
+@weight_0= (0x0055, 0x0055, 0x0180,0x0500),
 @weight_1= (0x0200), 
 @weight_2= (),  
 @weight_3= (),  
@@ -41,7 +41,7 @@ $sch_count= 0 ;
 $schedule_buffer_count;
 
 @offset_buffer;
-@offset_array=(0xff2b, 0xff2b, 0xff2b, 0xff2b,0xfed9,0x00d7,0xff84,0xffd6,0xffd5,0xff7d,0xff26,0x012c,0x001c, 0xffc0);
+@offset_array=(0xffab, 0xff56, 0xff80,0x0080);
 $offset_buf_count = $#offset_array;
 
 #The following values need to be set before running the code
@@ -129,6 +129,13 @@ $layer_sch_count = $layer_sch_count + 4;
 for $yuvi(0..$layer_sch_count){
 	$present_offset[$yuvi] = 0x0000;
 	$present_weight_0[$yuvi] = 0x0000;
+	$present_weight_1[$yuvi]=0x0000;
+        $present_weight_2[$yuvi]=0x0000;
+        $present_weight_3[$yuvi]=0x0000;
+        $present_weight_4[$yuvi]=0x0000;
+        $present_weight_5[$yuvi]=0x0000;
+        $present_weight_6[$yuvi]=0x0000;
+        $present_weight_7[$yuvi]=0x0000;
 	set_sigmoid_function_in();
 }
 
@@ -152,15 +159,20 @@ for $pu($layer_start_address..($layer_start_address + $layer_sch_count)){
 		$weight_0_hex = sprintf("%04x", $present_weight_0[$p]);
                 $weight_buf_fin_0[$pu] = $weight_0_hex;
 		
+		$weight = sprintf("%04x", 0x0000);
+		$weight_buf_fin_1[$pu] = $weight;
+		$weight_buf_fin_2[$pu] = $weight;
+		$weight_buf_fin_3[$pu] = $weight;
+		$weight_buf_fin_4[$pu] = $weight;
+		$weight_buf_fin_5[$pu] = $weight;
+		$weight_buf_fin_6[$pu] = $weight;
+		$weight_buf_fin_7[$pu] = $weight;		
 		$p++;
 #		print "$pu --- $scheduling_buffer[$pu] ------ $offset_buffer[$pu] ------ $weight_buf_fin_0[$pu] \n";
 }
 
 
 $layer_start_address = $layer_start_address + $layer_sch_count + 1; #This becomes start address for the next layer
-
-$values = $layer_sch_count +1;
-
 
 #print "There are $values values already in the weight buffer 0  \n";
 
@@ -192,27 +204,27 @@ while($layer_count > 0)
 		$weight_buf_fin_0[$s] = $w_0_hex;
 
  	        $w_1_hex = sprintf("%04x", $present_weight_1[$p]);
-                $weight_buf_fin_1[$s-$values] = $w_1_hex;
+                $weight_buf_fin_1[$s] = $w_1_hex;
 
 		$w_2_hex = sprintf("%04x", $present_weight_2[$p]);
-                $weight_buf_fin_2[$s-$values] = $w_2_hex;
+                $weight_buf_fin_2[$s] = $w_2_hex;
 
 		$w_3_hex = sprintf("%04x", $present_weight_3[$p]);
-                $weight_buf_fin_3[$s-$values] = $w_3_hex;
+                $weight_buf_fin_3[$s] = $w_3_hex;
 
 		$w_4_hex = sprintf("%04x", $present_weight_4[$p]);
-                $weight_buf_fin_4[$s-$values] = $w_4_hex;
+                $weight_buf_fin_4[$s] = $w_4_hex;
 		
 		$w_5_hex = sprintf("%04x", $present_weight_5[$p]);
-                $weight_buf_fin_5[$s-$values] = $w_5_hex;
+                $weight_buf_fin_5[$s] = $w_5_hex;
 
 		$w_6_hex = sprintf("%04x", $present_weight_6[$p]);
-                $weight_buf_fin_6[$s-$values] = $w_6_hex;
+                $weight_buf_fin_6[$s] = $w_6_hex;
 		
 		$w_7_hex = sprintf("%04x", $present_weight_7[$p]);
-                $weight_buf_fin_7[$s-$values] = $w_7_hex;
+                $weight_buf_fin_7[$s] = $w_7_hex;
 		
-		print "$s - $scheduling_buffer[$s] - $offset_buffer[$s] - $weight_buf_fin_0[$s] - $weight_buf_fin_1[$s-$values] -$weight_buf_fin_2[$s-$values] -  $weight_buf_fin_3[$s-$values] - $weight_buf_fin_4[$s-$values] - $weight_buf_fin_5[$s-$values] - $weight_buf_fin_6[$s-$values] - $weight_buf_fin_7[$s-$values] \n";  
+#		print "$s - $scheduling_buffer[$s] - $offset_buffer[$s] - $weight_buf_fin_0[$s] - $weight_buf_fin_1[$s] -$weight_buf_fin_2[$s] -  $weight_buf_fin_3[$s] - $weight_buf_fin_4[$s] - $weight_buf_fin_5[$s] - $weight_buf_fin_6[$s] - $weight_buf_fin_7[$s] \n";  
 		$p = $p + 1;
 	} 
 
@@ -286,10 +298,20 @@ for $s($layer_start_address..($layer_start_address + $layer_sch_count)) {
 
         $w_0_hex = sprintf("%04x", $present_weight_0[$p]);
         $weight_buf_fin_0[$s] = $w_0_hex;
+	
+	$wei = sprintf("%04x", 0x0000);
+	$weight_buf_fin_1[$s] = $w_0_hex;
+	$weight_buf_fin_2[$s] = $w_0_hex;
+	$weight_buf_fin_3[$s] = $w_0_hex;
+	$weight_buf_fin_4[$s] = $w_0_hex;
+	$weight_buf_fin_5[$s] = $w_0_hex;
+	$weight_buf_fin_6[$s] = $w_0_hex;
+	$weight_buf_fin_7[$s] = $w_0_hex;
+ 
 
         $p = $p + 1;
 
-#	print "$s - $scheduling_buffer[$s] - $offset_buffer[$s] - $weight_buf_fin_0[$s]\n";
+#	print "$s - $scheduling_buffer[$s] - $offset_buffer[$s] - $weight_buf_fin_0[$s] - $weight_buf_fin_1[$s] - $weight_buf_fin_2[$s] - $weight_buf_fin_3[$s] - $weight_buf_fin_4[$s] - $weight_buf_fin_5[$s] - $weight_buf_fin_6[$s] - $weight_buf_fin_7[$s]\n";
 }
 
 
@@ -303,10 +325,13 @@ for $yt(0..($layer_start_address-1)){
 	$weight_buf_final_4[$yt] = $weight_buf_fin_4[$yt];
 	$weight_buf_final_5[$yt] = $weight_buf_fin_5[$yt];
 	$weight_buf_final_6[$yt] = $weight_buf_fin_6[$yt];
-	$weight_buf_final_7[$yt] = $weight_buf_fin_0[$yt];
+	$weight_buf_final_7[$yt] = $weight_buf_fin_7[$yt];
 
 	$schedule[$yt] = $scheduling_buffer[$yt];
 	$offset[$yt] = $offset_buffer[$yt];
+	
+	 print "$yt - $schedule[$yt] - $offset[$yt] - $weight_buf_final_0[$yt] - $weight_buf_final_1[$yt] - $weight_buf_final_3[$yt] - $weight_buf_final_4[$yt] - $weight_buf_final_5[$yt] - $weight_buf_fin_6[$yt] - $weight_buf_fin_7[$yt]\n";
+
 }
 
 $ui =sprintf("%04x", 0x0000);
