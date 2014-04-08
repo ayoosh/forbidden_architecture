@@ -1,5 +1,5 @@
-memory_initialization_radix = 16;
-memory_initialization_vector =
+memory_initialization_radix=16;
+memory_initialization_vector=
 83ffffff, 
 82400000, 
 82800000, 
@@ -14,6 +14,7 @@ memory_initialization_vector =
 80000000, 
 80000000, 
 80000180, 
+80000000, 
 80000000, 
 80000000, 
 80000000, 
@@ -39,6 +40,8 @@ memory_initialization_vector =
 80400000, 
 80400000, 
 80400000, 
+80400000, 
+80800000, 
 80800000, 
 80800000, 
 80800000, 
@@ -73,6 +76,8 @@ memory_initialization_vector =
 80c00000, 
 80c00000, 
 80c00000, 
+80c00000, 
+81000000, 
 81000000, 
 81000000, 
 81000000, 
@@ -107,6 +112,7 @@ memory_initialization_vector =
 81400000, 
 81400000, 
 81400000, 
+81400000, 
 81800000, 
 81800000, 
 81800000, 
@@ -124,6 +130,8 @@ memory_initialization_vector =
 81800000, 
 81800000, 
 81800000, 
+81800000, 
+81c00000, 
 81c00000, 
 81c00000, 
 81c00000, 
@@ -151,7 +159,8 @@ memory_initialization_vector =
 83402482, 
 83400490, 
 83400400, 
-83400404, 
+83400400, 
+83404004, 
 83404002, 
 83406080, 
 83404000, 
@@ -162,4 +171,4 @@ memory_initialization_vector =
 8380ff56, 
 8380ff80, 
 83800080, 
-00000000; 
+00000000;

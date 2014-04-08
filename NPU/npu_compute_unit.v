@@ -96,7 +96,8 @@ module npu_compute_unit(
   
   wire [15:0] npu_sigmoid_fifo_dout;
   wire [15:0] npu_pe_input_data_bus;
-  assign npu_pe_input_data_bus = npu_sched_sigmoid_fifo_read_en ? npu_sigmoid_fifo_dout : npu_input_fifo_data_bus;
+  reg  npu_sched_sigmoid_fifo_read_en_delayed;
+  assign npu_pe_input_data_bus = npu_sched_sigmoid_fifo_read_en_delayed ? npu_sigmoid_fifo_dout : npu_input_fifo_data_bus;
   
   npu_circ_buf_small npu_offset_bram(
 	 CLK,  // Global 100 Mhz clock
@@ -279,4 +280,12 @@ module npu_compute_unit(
   .empty() // output empty
   );
 
+always @(posedge CLK) begin
+	if (npu_rst) begin
+		npu_sched_sigmoid_fifo_read_en_delayed <= 0;
+	end else if (npu_state_compute) begin
+		npu_sched_sigmoid_fifo_read_en_delayed <= npu_sched_sigmoid_fifo_read_en;
+	end
+end
 endmodule
+

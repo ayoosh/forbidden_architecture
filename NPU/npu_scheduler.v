@@ -50,6 +50,7 @@ npu_circ_buf_large npu_sched_buf(
     );
 
 assign npu_sched_val_cur = npu_state_compute ? npu_sched_fifo_dout : 0;
+
 assign npu_sched_input_fifo_read_en = npu_sched_val_cur[0];
 assign npu_sched_sigmoid_fifo_read_en = npu_sched_val_cur[1];
 assign npu_sched_sigmoid_fifo_write_en = npu_sched_val_cur[2];
