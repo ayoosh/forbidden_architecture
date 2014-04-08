@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ns / 1ns
 
 ////////////////////////////////////////////////////////////////////////////////
 // Company: 
@@ -33,7 +33,6 @@ module T_npu;
 	reg npu_config_fifo_write_enable;
 	reg npu_output_fifo_read_enable;
 	reg [10:0] addr;
-	
 	// Outputs
 	wire [31:0] npu_output_data;
 	wire npu_output_fifo_empty;
@@ -72,25 +71,33 @@ testbench_rom testy_rom (
 		#31
 		RST = 0;
 		npu_config_fifo_write_enable = 1;
-		#3740
-		npu_config_fifo_write_enable = 0;
-		npu_input_fifo_write_enable = 1;
+		
 	end
 		
 	
 always@(posedge CLK)begin
 	if(RST)begin
 		addr <= 0;
+		npu_input_data <= 0;
 	end
 	else begin
 		addr <= addr + 1;
+		if (addr == 144) begin
+			npu_config_fifo_write_enable <= 0;
+			npu_input_fifo_write_enable <= 1;
+			npu_input_data <= 32'h2;
+		end else begin
+			npu_input_data <= 32'h3;
+		end
+		
 	end
 end
 
    always
 	#5 CLK = ~CLK;
-	initial 
-	#5000 $stop;  
+	
+	initial
+	#2000 $stop;
 
 endmodule
 

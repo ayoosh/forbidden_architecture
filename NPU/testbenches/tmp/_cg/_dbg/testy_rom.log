@@ -1,0 +1,79 @@
+Release 14.7 - xst P.20131013 (nt64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+--> Parameter xsthdpdir set to I:/GitHub/forbidden_architecture/NPU/testbenches/tmp/_cg/_dbg/testy_rom_xsd
+
+
+Total REAL time to Xst completion: 0.00 secs
+Total CPU time to Xst completion: 0.53 secs
+ 
+--> WARNING:Xst:1583 - You are using an internal switch '-use_new_parser'.
+WARNING:Xst:3152 - You have chosen to run a version of XST which is not the default solution
+   for the specified device family. You are free to use it in order to take
+   advantage of its enhanced HDL parsing/elaboration capabilities. However,
+   please be aware that you may be impacted by  language support differences.
+   This version may also result in circuit performance and device utilization
+   differences for your particular design. You can always revert back to the
+   default XST solution by setting the "use_new_parser" option to value "no" 
+   on the XST command line or in the XST process properties panel.
+Reading design: I:/GitHub/forbidden_architecture/NPU/testbenches/tmp/_cg/_dbg/testy_rom.prj
+
+TABLE OF CONTENTS
+  1) Synthesis Options Summary
+  2) HDL Parsing
+  3) HDL Elaboration
+  4) HDL Synthesis
+       4.1) HDL Synthesis Report
+  5) Advanced HDL Synthesis
+       5.1) Advanced HDL Synthesis Report
+  6) Low Level Synthesis
+  7) Partition Report
+  8) Design Summary
+       8.1) Primitive and Black Box Usage
+       8.2) Device utilization summary
+       8.3) Partition Resource Summary
+       8.4) Timing Report
+            8.4.1) Clock Information
+            8.4.2) Asynchronous Control Signals Information
+            8.4.3) Timing Summary
+            8.4.4) Timing Details
+            8.4.5) Cross Clock Domains Report
+
+
+=========================================================================
+*                      Synthesis Options Summary                        *
+=========================================================================
+---- Source Parameters
+Input File Name                    : "I:/GitHub/forbidden_architecture/NPU/testbenches/tmp/_cg/_dbg/testy_rom.prj"
+Input Format                       : VHDL
+
+---- Target Parameters
+Output Format                      : NGC
+Output File Name                   : "I:/GitHub/forbidden_architecture/NPU/testbenches/tmp/_cg/_dbg/testy_rom.ngc"
+Target Device                      : xc5vlx110t-1ff1136
+
+---- Source Options
+Work Library                       : work
+Entity Name                        : testy_rom
+Architecture Name                  : virtex5
+Top Module Name                    : testy_rom
+Use New Parser                     : yes
+
+---- Target Options
+Add IO Buffers                     : NO
+
+---- General Options
+Bus Delimiter                      : <>
+Library Search Order               : "I:/GitHub/forbidden_architecture/NPU/testbenches/tmp/_cg/_dbg/_default.lso"
+
+=========================================================================
+
+WARNING:Xst:29 - Optimization Effort not specified
+The following parameters have been added:
+Optimization Goal                  : SPEED
+
+=========================================================================
+
+=========================================================================
+*                          HDL Parsing                                  *
+=========================================================================
+Parsing VHDL file "\\filespace.cae.wisc.edu\people\a\ayoosh\GitHub\forbidden_architecture\NPU\testbenches\tmp\_cg\_dbg\blk_mem_gen_v7_3\blk_mem_gen_v7_3_xst_comp.vhd" into library blk_mem_gen_v7_3

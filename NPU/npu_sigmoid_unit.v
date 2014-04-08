@@ -29,7 +29,7 @@ module npu_sigmoid_unit(
 reg signed [47:0]npu_sigmoid_data_reg;
 wire signed [15:0]npu_sigmoid_tanh_out;
 wire signed [15:0]npu_sigmoid_linear_out;
-wire signed [15:0]pu_sigmoid_log_out;
+//wire signed [15:0]pu_sigmoid_log_out;
 wire signed [15:0]npu_tansig_lut_data_out;
 wire signed [10:0]npu_tansig_lut_addr;
 

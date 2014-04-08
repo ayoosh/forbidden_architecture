@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<document OS="nt64" product="ISE" version="14.7">
+
+  <!--The data in this file is primarily intended for consumption by Xilinx tools.
+    The structure and the elements are likely to change over the next few releases.
+    This means code written to parse this file will need to be revisited each subsequent release.-->
+
+  <application stringID="Xst" timeStamp="Mon Apr 07 23:24:26 2014">
+    <section stringID="User_Env">
+      <table stringID="User_EnvVar">
+        <column stringID="variable"/>
+        <column stringID="value"/>
+        <row stringID="row" value="0">
+          <item stringID="variable" value="Path"/>
+          <item stringID="value" value="C:\ProgramData\App-V\DAA02E26-5322-4947-BF0F-062031F30E14\5AC8F222-3DBC-4269-A8E9-FC4913A5D7C5\Root\14.7\ISE_DS\ISE\\lib\nt64;C:\ProgramData\App-V\DAA02E26-5322-4947-BF0F-062031F30E14\5AC8F222-3DBC-4269-A8E9-FC4913A5D7C5\Root\14.7\ISE_DS\ISE\\bin\nt64;C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\ISE\bin\nt64;C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\ISE\lib\nt64;C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\ISE\..\..\..\DocNav;C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\PlanAhead\bin;C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\EDK\bin\nt64;C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\EDK\lib\nt64;C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\EDK\gnu\microblaze\nt\bin;C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\EDK\gnu\powerpc-eabi\nt\bin;C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\EDK\gnuwin\bin;C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\EDK\gnu\arm\nt\bin;C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\EDK\gnu\microblaze\linux_toolchain\nt64_be\bin;C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\EDK\gnu\microblaze\linux_toolchain\nt64_le\bin;C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\common\bin\nt64;C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\common\lib\nt64;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\Program Files (x86)\Microsoft Application Virtualization Client;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;Z:.;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files\Common Files\Autodesk Shared\;C:\Program Files (x86)\QuickTime\QTSystem\"/>
+        </row>
+        <row stringID="row" value="1">
+          <item stringID="variable" value="PATHEXT"/>
+          <item stringID="value" value=".COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC"/>
+        </row>
+        <row stringID="row" value="2">
+          <item stringID="variable" value="XILINX"/>
+          <item stringID="value" value="C:\ProgramData\App-V\DAA02E26-5322-4947-BF0F-062031F30E14\5AC8F222-3DBC-4269-A8E9-FC4913A5D7C5\Root\14.7\ISE_DS\ISE\"/>
+        </row>
+        <row stringID="row" value="3">
+          <item stringID="variable" value="XILINXD_LICENSE_FILE"/>
+          <item stringID="value" value="27005@license.ece.wisc.edu"/>
+        </row>
+        <row stringID="row" value="4">
+          <item stringID="variable" value="XILINX_DSP"/>
+          <item stringID="value" value="C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\ISE"/>
+        </row>
+        <row stringID="row" value="5">
+          <item stringID="variable" value="XILINX_EDK"/>
+          <item stringID="value" value="C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\EDK"/>
+        </row>
+        <row stringID="row" value="6">
+          <item stringID="variable" value="XILINX_PLANAHEAD"/>
+          <item stringID="value" value="C:\Users\ayoosh\AppData\Local\Microsoft\AppV\Client\Integration\DAA02E26-5322-4947-BF0F-062031F30E14\Root\14.7\ISE_DS\PlanAhead"/>
+        </row>
+        <row stringID="row" value="7">
+          <item stringID="variable" value="XIL_CG_API_LOCKCOMPONENTNAME"/>
+          <item stringID="value" value="true"/>
+        </row>
+      </table>
+      <item stringID="User_EnvOs" value="OS Information">
+        <item stringID="User_EnvOsname" value="Microsoft Windows 7 , 64-bit"/>
+        <item stringID="User_EnvOsrelease" value="Service Pack 1  (build 7601)"/>
+      </item>
+      <item stringID="User_EnvHost" value="WIN-ECE-07"/>
+      <table stringID="User_EnvCpu">
+        <column stringID="arch"/>
+        <column stringID="speed"/>
+        <row stringID="row" value="0">
+          <item stringID="arch" value="Intel(R) Core(TM)2 Duo CPU     E8400  @ 3.00GHz"/>
+          <item stringID="speed" value="2992 MHz"/>
+        </row>
+      </table>
+    </section>
+    <section stringID="XST_OPTION_SUMMARY">
+      <item DEFAULT="" label="-ifn" stringID="XST_IFN" value="I:/GitHub/forbidden_architecture/NPU/testbenches/tmp/_cg/_dbg/testy_rom.prj"/>
+      <item DEFAULT="Mixed" label="-ifmt" stringID="XST_IFMT" value="VHDL"/>
+      <item DEFAULT="NGC" label="-ofmt" stringID="XST_OFMT" value="NGC"/>
+      <item DEFAULT="" label="-ofn" stringID="XST_OFN" value="I:/GitHub/forbidden_architecture/NPU/testbenches/tmp/_cg/_dbg/testy_rom.ngc"/>
+      <item DEFAULT="" label="-p" stringID="XST_P" value="xc5vlx110t-1ff1136"/>
+      <item DEFAULT="Yes" label="-iobuf" stringID="XST_IOBUF" value="NO"/>
+      <item DEFAULT="" label="-top" stringID="XST_TOP" value="testy_rom"/>
+      <item DEFAULT="&lt;>" label="-bus_delimiter" stringID="XST_BUSDELIMITER" value="&lt;>"/>
+      <item DEFAULT="" label="-lso" stringID="XST_LSO" value="&quot;I:/GitHub/forbidden_architecture/NPU/testbenches/tmp/_cg/_dbg/_default.lso&quot;"/>
+    </section>
+  </application>
+
+</document>
