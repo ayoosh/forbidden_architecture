@@ -14,7 +14,7 @@ open my $out_sak, '>>', 'configuration_sakshi.txt' or die "error rying to overwr
 @weight_6= (),
 @weight_7= ();
 
-@sigmoid = (1,0) ;
+@sigmoid = (0) ;
 $output_sigmoid=1 ;
 
 @weight_0_addr=0;
@@ -56,6 +56,7 @@ $sigmoid_function = 1; # check again
 @input_per_layer = (2);
 @neurons_per_layer = (1);
 $layer_count=1;
+$cur_layer = 1 ;
 
 %buf = ("sigmoid_function_select_1" => 0x8000, "sigmoid_function_select_0" => 0x4000, "set_offset_enable" => 0x2000,"sigmoid_input_select_2" => 0x1000,
 	"sigmoid_input_select_1" => 0x0800 , "sigmoid_input_select_0" => 0x0400, "accumulator_fifo_write_enable" => 0x0200, 
@@ -66,7 +67,6 @@ $layer_count=1;
 
 my @destination;
 
-$cur_layer = 1 ;
 
 $layer_start_address = 0;
 $weight_0_start_address =0;
@@ -93,7 +93,7 @@ for $v(0..8191){
 	$scheduling_buffer[$v] = $o;
 }
 
-$sigmoid_function = $sigmoid[0];
+
 $present_schedule[$layer_sch_count] = 0x0000;
 $present_schedule[$layer_sch_count+1] = $present_schedule[$layer_sch_count];
 $present_schedule[$layer_sch_count+2] = $present_schedule[$layer_sch_count];
@@ -148,7 +148,7 @@ for $pu($layer_start_address..($layer_start_address + $layer_sch_count)){
 		$weight_buf_fin_6[$pu] =$wei;
 		$weight_buf_fin_7[$pu] =$wei;
 
-		print "$pu-$scheduling_buffer[$pu]-$weight_buf_fin_0[$pu]-$weight_buf_fin_1[$pu]-$weight_buf_fin_2[$pu]-$weight_buf_fin_3[$pu]-$weight_buf_fin_4[$pu]-$weight_buf_fin_5[$pu]-$weight_buf_fin_6[$pu]-$weight_buf_fin_7[$pu] \n"; 
+#		print "$pu-$scheduling_buffer[$pu]-$weight_buf_fin_0[$pu]-$weight_buf_fin_1[$pu]-$weight_buf_fin_2[$pu]-$weight_buf_fin_3[$pu]-$weight_buf_fin_4[$pu]-$weight_buf_fin_5[$pu]-$weight_buf_fin_6[$pu]-$weight_buf_fin_7[$pu] \n"; 
 
 		$p++;
 }
@@ -164,7 +164,7 @@ while($layer_count > 0)
 
 	$cur_neurons = $neurons_per_layer[$cur_layer-1];
 	
-	$sigmoid_function = $sigmoid[$cur_layer];
+#	$sigmoid_function = $sigmoid[$cur_layer];
 	create_schedule_weight_offset();
 
 	$p= 0 ;
@@ -586,11 +586,12 @@ sub set_output_pe()
 
 sub set_sigmoid_function()
 {
-	switch($sigmoid_function){
-	case 0 {}
-	case 1 {$present_schedule[$layer_sch_count] = $present_schedule[$layer_sch_count] | 0x4000 ; }
-	case 2 {$present_schedule[$layer_sch_count] = $present_schedule[$layer_sch_count] | 0x8000 ;}
-	case 3 {$present_schedule[$layer_sch_count] = $present_schedule[$layer_sch_count] | 0xc000 ;}
+	#print "\n\n\n The layer needs $sigmoid[$cur_layer-1] function \n\n\n";
+	switch($sigmoid[$cur_layer-1]){
+	case 0 {$present_schedule[$b] = $present_schedule[$b] & 0x3fff;}
+	case 1 {$present_schedule[$b] = $present_schedule[$b] | 0x4000 ; }
+	case 2 {$present_schedule[$b] = $present_schedule[$b] | 0x8000 ;}
+	case 3 {$present_schedule[$b] = $present_schedule[$b] | 0xc000 ;}
 	}
 }
 
@@ -598,7 +599,8 @@ sub set_sigmoid_function_in()
 {
         switch($sigmoid_function){
         case 0 {}
-        case 1 {$present_schedule[$yuvi] = $present_schedule[$yuvi] | 0x4000 ; }
+        case 1 { #print "\n \n I am in this\n\n";
+			$present_schedule[$yuvi] = $present_schedule[$yuvi] | 0x4000 ; }
         case 2 {$present_schedule[$yuvi] = $present_schedule[$yuvi] | 0x8000 ;}
         case 3 {$present_schedule[$yuvi] = $present_schedule[$yuvi] | 0xc000 ;}
         }
@@ -625,7 +627,7 @@ sub create_schedule_weight_offset(){
 	$present_schedule[$layer_sch_count] = 0x0000 ;
 
 	set_output_pe(); #for every layer, select the output pe at which the the values become available
-        set_sigmoid_function(); #for every layer, sigmoid 
+#        set_sigmoid_function(); #for every layer, sigmoid 
 
 	$present_schedule[$layer_sch_count + 1] = $present_schedule[$layer_sch_count];
 
@@ -679,9 +681,9 @@ sub create_schedule_weight_offset(){
 	$present_schedule[$layer_sch_count] =  $present_schedule[$layer_sch_count] & 0xff02; #clear unnecesary elements
 	$present_schedule[$layer_sch_count+1] =  $present_schedule[$layer_sch_count+1] & 0xff02;
 
-	print "There are $neuron_cur neurons now \n";	
+	#print "There are $neuron_cur neurons now \n";	
 	for $k($layer_sch_count..($layer_sch_count+$neuron_cur-1)){
-		print "I am in this";
+	#	print "I am in this";
 		$present_schedule[$layer_sch_count+2] = $present_schedule[$layer_sch_count+2] | $buf{"set_sigmoid_fifo_write_enable"} ;
 		#$layer_sch_count = $layer_sch_count + 1 ;
 	}
@@ -733,6 +735,7 @@ sub create_schedule_weight_offset(){
 		$present_weight_5[$b]=0;
 		$present_weight_6[$b]=0;
 		$present_weight_7[$b]=0;
+		set_sigmoid_function();
 	}
 
 
