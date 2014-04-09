@@ -1,18 +1,32 @@
+#Have to read from the file then first set goes to the offset then weight0. Next for every layer, according to cur layer, get offset buf values then, read read into the weight buffers.  Repeat for every layer. Once done, write into offset buffer and weight buffers
 use Switch;
-#use sitrict; 
+#use sitrict;
 
 open my $output_conf, '>>', 'configuration_bansi.coe' or die "error trying to overwrite: $!";
 open my $out_sak, '>>', 'configuration_sakshi.txt' or die "error rying to overwrite: $!";
 
+open(DATA, "weights.txt") or die "Can't open";
+@lines = <DATA>;
+$n = @lines;
+close(DATA);
 
-@weight_0= (0x0055, 0x0055,0x0180, 0x0500),
-@weight_1= (0x0200),
-@weight_2= (),
-@weight_3= (),
-@weight_4= (),
-@weight_5= (),
-@weight_6= (),
-@weight_7= ();
+for $i(0..($n-1)){
+        $b = $lines[$i] *(1<<7) ;
+        $a = sprintf("%04x", $b);
+        $c = substr($a, 0, 4);
+        if($c == "ffff"){
+                $a = substr($a,12,4);}
+	$lines[$i] = $a;
+}
+
+@weight_0;
+@weight_1;
+@weight_2;
+@weight_3;
+@weight_4;
+@weight_5;
+@weight_6;
+@weight_7;
 
 @sigmoid = (0) ;
 $output_sigmoid=1 ;
@@ -35,28 +49,147 @@ $output_sigmoid=1 ;
 @weight_buf_fin_6;
 @weight_buf_fin_7;
 
-
-@scheduling_buffer; 
+@scheduling_buffer;
 $sch_count= 0 ;
 @schedule;
 $schedule_buffer_count;
 
-@offset_array=("ffab", "ff56", "ff80", "0080");
-$offset_count=$#offset_array; #This is count for offset array
+@offset_array;
 
 #The following values need to be set before running the code
 
 $input_format = "0000000000000000";
 $output_format = "0000000000000000";
-$input_count = "0002";
-$input = 0x0002; 
+$input_count = "0004";
+$input = 0x0004;
 $output_count1 = "0001";
 $output_count = 0x0001;
 $sigmoid_function = 1; # check again
-@input_per_layer = (2);
-@neurons_per_layer = (1);
+@input_per_layer = (4);
+@neurons_per_layer = (4);
 $layer_count=1;
-$cur_layer = 1 ;
+$layer_count_for_split = 1;
+$pe_pointer =0;
+$cur_layer = 1;
+$cur_layer_for_split = 0;
+
+#The following values need to be set before running the code
+$array_count = 0;
+
+#offset for input scaling...................................................
+for $i(0..($input-1))
+{
+	$index = $#offset_array;
+	$mis = substr($lines[$array_count], 0, 4);
+	$offset_array[$index+1] = $mis;
+	$array_count++;
+}
+
+#weights for input scaling...............................................
+for $j(0..($input-1))
+{
+        $index = $#weight_0;
+        $mis = substr($lines[$array_count], 0, 4);
+	$weight_0[$index+1] = $mis;
+        $array_count++;
+}
+
+
+#for so many values equal to the number of layers..........................
+while($layer_count_for_split > 0){
+	$pe_pointer =0;
+	$current_input = $input_per_layer[$cur_layer_for_split];	
+	$current_neuron = $neurons_per_layer[$cur_layer_for_split];
+
+	#grab offsets..................................
+	for $y(0..($current_neuron-1)){
+		$index = $#offset_array;
+	        $mis = substr($lines[$array_count], 0, 4);
+        	$offset_array[$index+1] = $mis;
+        	$array_count++;
+	}
+
+	#grab weights.................................
+	
+	while($current_input >0){	
+		
+		for $sp(0..($current_neuron-1)){
+			if($pe_pointer == 0){
+				$index = $#weight_0;
+			        $mis = substr($lines[$array_count], 0, 4);
+			        $weight_0[$index+1] = $mis;
+			        $array_count++;
+			}
+			if($pe_pointer == 1){
+                                $index = $#weight_1;
+                                $mis = substr($lines[$array_count], 0, 4);
+                                $weight_1[$index+1] = $mis;
+                                $array_count++;
+                        }
+			if($pe_pointer == 2){
+                                $index = $#weight_2;
+                                $mis = substr($lines[$array_count], 0, 4);
+                                $weight_2[$index+1] = $mis;
+                                $array_count++;
+                        }
+			if($pe_pointer == 3){
+                                $index = $#weight_3;
+                                $mis = substr($lines[$array_count], 0, 4);
+                                $weight_3[$index+1] = $mis;
+                                $array_count++;
+                        }
+			if($pe_pointer == 4){
+                                $index = $#weight_4;
+                                $mis = substr($lines[$array_count], 0, 4);
+                                $weight_4[$index+1] = $mis;
+                                $array_count++;
+                        }
+			if($pe_pointer == 5){
+                                $index = $#weight_5;
+                                $mis = substr($lines[$array_count], 0, 4);
+                                $weight_5[$index+1] = $mis;
+                                $array_count++;
+                        }
+			if($pe_pointer == 6){
+                                $index = $#weight_6;
+                                $mis = substr($lines[$array_count], 0, 4);
+                                $weight_6[$index+1] = $mis;
+                                $array_count++;
+                        }
+			if($pe_pointer == 7){
+                                $index = $#weight_7;
+                                $mis = substr($lines[$array_count], 0, 4);
+                                $weight_7[$index+1] = $mis;
+                                $array_count++;
+                        }
+		}
+		$current_input--;
+		$pe_pointer++;
+		if($pe_pointer == 8){
+			$pe_pointer = 0;
+		}
+	}
+	$cur_layer_for_split++;
+	$layer_count_for_split--;
+}
+
+for $i(0..($output_count-1))
+{
+        $index = $#offset_array;
+        $mis = substr($lines[$array_count], 0, 4);
+        $offset_array[$index+1] = $mis;
+        $array_count++;
+}
+
+#weights for input scaling...............................................
+for $j(0..($output_count-1))
+{
+        $index = $#weight_0;
+        $mis = substr($lines[$array_count], 0, 4);
+        $weight_0[$index+1] = $mis;
+        $array_count++;
+}
+
 
 %buf = ("sigmoid_function_select_1" => 0x8000, "sigmoid_function_select_0" => 0x4000, "set_offset_enable" => 0x2000,"sigmoid_input_select_2" => 0x1000,
 	"sigmoid_input_select_1" => 0x0800 , "sigmoid_input_select_0" => 0x0400, "accumulator_fifo_write_enable" => 0x0200, 
@@ -66,7 +199,6 @@ $cur_layer = 1 ;
 	"clear_sigmoid_unit_input_enable"=> 0xdfff, "clear_input_fifo_enable" => 0xfffe,"clear_sigmoid_fifo_write_enable"=> 0xfffd, "clear_sigmoid_fifo_read_enable"=> 0xfffd);  
 
 my @destination;
-
 
 $layer_start_address = 0;
 $weight_0_start_address =0;
@@ -79,7 +211,7 @@ $weight_6_start_address =0;
 $weight_7_start_address =0;
 
 $layer_sch_count = 0;
-
+$offset_count=$#offset_array; #This is count for offset array
 for $v(0..8191){
 	$o = sprintf("%04x", 0x0000);
 	$weight_buf_fin_0[$v] = $o;
@@ -119,7 +251,7 @@ $layer_sch_count = $layer_sch_count + 3;
 
 #generating offset buffer and weight 0 buffer-------------------------------
 for $yuvi(0..$layer_sch_count){
-	$present_weight_0[$yuvi] = 0x0000;
+	$present_weight_0[$yuvi] = sprintf("%04x", 0x0000);
 	set_sigmoid_function_in();
 }
 
@@ -136,8 +268,8 @@ for $pu($layer_start_address..($layer_start_address + $layer_sch_count)){
                 $in_hex = sprintf("%04x", $present_schedule[$p]) ;
                 $scheduling_buffer[$pu] = $in_hex ;
 
-                $weight_0_hex = sprintf("%04x", $present_weight_0[$p]);
-                $weight_buf_fin_0[$pu] = $weight_0_hex;
+#                $weight_0_hex = sprintf("%04x", $present_weight_0[$p]);
+                $weight_buf_fin_0[$pu] = $present_weight_0[$p];
 
 		$wei = sprintf("%04x", 0x0000);
 		$weight_buf_fin_1[$pu] =$wei;
@@ -172,29 +304,29 @@ while($layer_count > 0)
 		$in_hex = sprintf("%04x", $present_schedule[$p]) ;
 		$scheduling_buffer[$s] = $in_hex ; 
 
-		$w_0_hex = sprintf("%04x", $present_weight_0[$p]);
-		$weight_buf_fin_0[$s] = $w_0_hex;
+#		$w_0_hex = sprintf("%04x", $present_weight_0[$p]);
+		$weight_buf_fin_0[$s] = $present_weight_0[$p];
 
- 	        $w_1_hex = sprintf("%04x", $present_weight_1[$p]);
-                $weight_buf_fin_1[$s] = $w_1_hex;
+ #	        $w_1_hex = sprintf("%04x", $present_weight_1[$p]);
+                $weight_buf_fin_1[$s] = $present_weight_1[$p];
 
-		$w_2_hex = sprintf("%04x", $present_weight_2[$p]);
-                $weight_buf_fin_2[$s] = $w_2_hex;
+#		$w_2_hex = sprintf("%04x", $present_weight_2[$p]);
+                $weight_buf_fin_2[$s] = $present_weight_2[$p];
 
-		$w_3_hex = sprintf("%04x", $present_weight_3[$p]);
-                $weight_buf_fin_3[$s] = $w_3_hex;
+#		$w_3_hex = sprintf("%04x", $present_weight_3[$p]);
+                $weight_buf_fin_3[$s] = $present_weight_3[$p];
 
-		$w_4_hex = sprintf("%04x", $present_weight_4[$p]);
-                $weight_buf_fin_4[$s] = $w_4_hex;
+#		$w_4_hex = sprintf("%04x", $present_weight_4[$p]);
+                $weight_buf_fin_4[$s] = $present_weight_4[$p];
 		
-		$w_5_hex = sprintf("%04x", $present_weight_5[$p]);
-                $weight_buf_fin_5[$s] = $w_5_hex;
+#		$w_5_hex = sprintf("%04x", $present_weight_5[$p]);
+                $weight_buf_fin_5[$s] = $present_weight_5[$p];
 
-		$w_6_hex = sprintf("%04x", $present_weight_6[$p]);
-                $weight_buf_fin_6[$s] = $w_6_hex;
+#		$w_6_hex = sprintf("%04x", $present_weight_6[$p]);
+                $weight_buf_fin_6[$s] = $present_weight_6[$p];
 		
-		$w_7_hex = sprintf("%04x", $present_weight_7[$p]);
-                $weight_buf_fin_7[$s] = $w_7_hex;
+#		$w_7_hex = sprintf("%04x", $present_weight_7[$p]);
+                $weight_buf_fin_7[$s] = $present_weight_7[$p];
 		
 #		print "$s - $scheduling_buffer[$s] - $offset_buffer[$s] - $weight_buf_fin_0[$s] - $weight_buf_fin_1[$s-$values] -$weight_buf_fin_2[$s-$values] -  $weight_buf_fin_3[$s-$values] - $weight_buf_fin_4[$s-$values] - $weight_buf_fin_5[$s-$values] - $weight_buf_fin_6[$s-$values] - $weight_buf_fin_7[$s-$values] \n";  
 		$p = $p + 1;
@@ -237,7 +369,7 @@ $layer_sch_count = $layer_sch_count + 3;
 
 #generating offset buffer and weight 0 buffer-------------------------------
 for $doni(0..$layer_sch_count){
-        $present_weight_0[$doni] = 0x0000;
+        $present_weight_0[$doni] = sprintf("%04x", 0x0000);
 	set_sigmoid_function_2();
 }
 
@@ -253,8 +385,8 @@ for $s($layer_start_address..($layer_start_address + $layer_sch_count)) {
         $in_hex = sprintf("%04x", $present_schedule[$p]) ;
         $scheduling_buffer[$s] = $in_hex ;
 
-        $w_0_hex = sprintf("%04x", $present_weight_0[$p]);
-        $weight_buf_fin_0[$s] = $w_0_hex;
+#        $w_0_hex = sprintf("%04x", $present_weight_0[$p]);
+        $weight_buf_fin_0[$s] = $present_weight_0[$p];
 
 	$weig = sprintf("%04x", 0x0000);
 	$weight_buf_fin_1[$s] = $weig;
@@ -727,14 +859,14 @@ sub create_schedule_weight_offset(){
 
 	#preparing the offset array by clearing the array
 	for $b(0..$layer_sch_count){
-		$present_weight_0[$b]=0;
-		$present_weight_1[$b]=0;
-		$present_weight_2[$b]=0;
-		$present_weight_3[$b]=0;
-		$present_weight_4[$b]=0;
-		$present_weight_5[$b]=0;
-		$present_weight_6[$b]=0;
-		$present_weight_7[$b]=0;
+		$present_weight_0[$b]=sprintf("%04x", 0x0000);
+		$present_weight_1[$b]=sprintf("%04x", 0x0000);
+		$present_weight_2[$b]=sprintf("%04x", 0x0000);
+		$present_weight_3[$b]=sprintf("%04x", 0x0000);
+		$present_weight_4[$b]=sprintf("%04x", 0x0000);
+		$present_weight_5[$b]=sprintf("%04x", 0x0000);
+		$present_weight_6[$b]=sprintf("%04x", 0x0000);
+		$present_weight_7[$b]=sprintf("%04x", 0x0000);
 		set_sigmoid_function();
 	}
 
