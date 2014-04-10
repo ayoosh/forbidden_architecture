@@ -1,44 +1,29 @@
-`timescale 1ns / 1ns
+//`timescale 1ns / 10ps
 
-////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer:
-//
-// Create Date:   20:56:14 04/04/2014
-// Design Name:   npu
-// Module Name:   C:/Users/Ayoosh/Documents/GitHub/forbidden_architecture/NPU/testbenches/T_npu.v
-// Project Name:  npu_temp
-// Target Device:  
-// Tool versions:  
-// Description: 
-//
-// Verilog Test Fixture created by ISE for module: npu
-//
-// Dependencies:
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-////////////////////////////////////////////////////////////////////////////////
-
-module T_npu;
-
-	// Inputs
-	reg CLK;
-	reg RST;
+module fpga_test_top_level(
+	input CLK,
+	input RST,
+	output reg [7:0]LEDs_8Bit
+	);
+	
 	reg [31:0] npu_input_data;
 	reg npu_input_fifo_write_enable;
 	wire [31:0] npu_config_data;
 	reg npu_config_fifo_write_enable;
-	wire npu_output_fifo_read_enable;
+	reg npu_output_fifo_read_enable;
 	reg [10:0] addr;
+	reg led_flag;
 	// Outputs
 	wire [31:0] npu_output_data;
 	wire npu_output_fifo_empty;
 	wire npu_input_fifo_full;
 	wire npu_config_fifo_full;
 
+rom64x38400 your_instance_name (
+  .clka(CLK), // input clka
+  .addra(addr), // input [15 : 0] addra
+  .douta() // output [63 : 0] douta
+);
 	// Instantiate the Unit Under Test (UUT)
 	npu uut (
 		.CLK(CLK), 
@@ -60,26 +45,17 @@ testbench_rom testy_rom (
   .douta(npu_config_data) // output [31 : 0] douta
 );
 
-	assign npu_output_fifo_read_enable = ~npu_output_fifo_empty;
-	
-	initial begin
-		// Initialize Inputs
-		CLK = 0;
-		RST = 1;
-		npu_input_data = 0;
-		npu_input_fifo_write_enable = 0;
-		npu_config_fifo_write_enable = 0;
-		#31
-		RST = 0;
-		npu_config_fifo_write_enable = 1;
-		
-	end
-
-	
 always@(posedge CLK)begin
 	if(RST)begin
+		npu_output_fifo_read_enable <= 0;
 		addr <= 0;
 		npu_input_data <= 0;
+		npu_input_data <= 0;
+		npu_input_fifo_write_enable <= 0;
+		npu_config_fifo_write_enable <= 0;
+		npu_output_fifo_read_enable <= 0;
+		LEDs_8Bit <= 8'b00001111;
+		led_flag <= 0;
 	end
 	else begin
 		if (addr == 312) begin
@@ -98,15 +74,6 @@ always@(posedge CLK)begin
 		end else begin
 			addr <= addr + 1;
 		end
-		
 	end
 end
-
-   always
-	#5 CLK = ~CLK;
-	
-	initial
-	#10000 $stop;
-
 endmodule
-

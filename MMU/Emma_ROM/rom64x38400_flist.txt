@@ -1,0 +1,16 @@
+# Output products list for <rom64x38400>
+blk_mem_gen_ds512.pdf
+blk_mem_gen_readme.txt
+rom64x38400.asy
+rom64x38400.gise
+rom64x38400.mif
+rom64x38400.ngc
+rom64x38400.sym
+rom64x38400.v
+rom64x38400.veo
+rom64x38400.vhd
+rom64x38400.vho
+rom64x38400.xco
+rom64x38400.xise
+rom64x38400_flist.txt
+rom64x38400_xmdf.tcl

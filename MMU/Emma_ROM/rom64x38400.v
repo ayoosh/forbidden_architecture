@@ -1,32 +1,33 @@
 /*******************************************************************************
-*     This file is owned and controlled by Xilinx and must be used solely      *
-*     for design, simulation, implementation and creation of design files      *
-*     limited to Xilinx devices or technologies. Use with non-Xilinx           *
-*     devices or technologies is expressly prohibited and immediately          *
-*     terminates your license.                                                 *
+*     This file is owned and controlled by Xilinx and must be used             *
+*     solely for design, simulation, implementation and creation of            *
+*     design files limited to Xilinx devices or technologies. Use              *
+*     with non-Xilinx devices or technologies is expressly prohibited          *
+*     and immediately terminates your license.                                 *
 *                                                                              *
-*     XILINX IS PROVIDING THIS DESIGN, CODE, OR INFORMATION "AS IS" SOLELY     *
-*     FOR USE IN DEVELOPING PROGRAMS AND SOLUTIONS FOR XILINX DEVICES.  BY     *
-*     PROVIDING THIS DESIGN, CODE, OR INFORMATION AS ONE POSSIBLE              *
-*     IMPLEMENTATION OF THIS FEATURE, APPLICATION OR STANDARD, XILINX IS       *
-*     MAKING NO REPRESENTATION THAT THIS IMPLEMENTATION IS FREE FROM ANY       *
-*     CLAIMS OF INFRINGEMENT, AND YOU ARE RESPONSIBLE FOR OBTAINING ANY        *
-*     RIGHTS YOU MAY REQUIRE FOR YOUR IMPLEMENTATION.  XILINX EXPRESSLY        *
-*     DISCLAIMS ANY WARRANTY WHATSOEVER WITH RESPECT TO THE ADEQUACY OF THE    *
+*     XILINX IS PROVIDING THIS DESIGN, CODE, OR INFORMATION "AS IS"            *
+*     SOLELY FOR USE IN DEVELOPING PROGRAMS AND SOLUTIONS FOR                  *
+*     XILINX DEVICES.  BY PROVIDING THIS DESIGN, CODE, OR INFORMATION          *
+*     AS ONE POSSIBLE IMPLEMENTATION OF THIS FEATURE, APPLICATION              *
+*     OR STANDARD, XILINX IS MAKING NO REPRESENTATION THAT THIS                *
+*     IMPLEMENTATION IS FREE FROM ANY CLAIMS OF INFRINGEMENT,                  *
+*     AND YOU ARE RESPONSIBLE FOR OBTAINING ANY RIGHTS YOU MAY REQUIRE         *
+*     FOR YOUR IMPLEMENTATION.  XILINX EXPRESSLY DISCLAIMS ANY                 *
+*     WARRANTY WHATSOEVER WITH RESPECT TO THE ADEQUACY OF THE                  *
 *     IMPLEMENTATION, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OR           *
 *     REPRESENTATIONS THAT THIS IMPLEMENTATION IS FREE FROM CLAIMS OF          *
-*     INFRINGEMENT, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A    *
-*     PARTICULAR PURPOSE.                                                      *
+*     INFRINGEMENT, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS          *
+*     FOR A PARTICULAR PURPOSE.                                                *
 *                                                                              *
-*     Xilinx products are not intended for use in life support appliances,     *
-*     devices, or systems.  Use in such applications are expressly             *
-*     prohibited.                                                              *
+*     Xilinx products are not intended for use in life support                 *
+*     appliances, devices, or systems. Use in such applications are            *
+*     expressly prohibited.                                                    *
 *                                                                              *
 *     (c) Copyright 1995-2014 Xilinx, Inc.                                     *
 *     All rights reserved.                                                     *
 *******************************************************************************/
-// You must compile the wrapper file testbench_rom.v when simulating
-// the core, testbench_rom. When compiling the wrapper file, be sure to
+// You must compile the wrapper file rom64x38400.v when simulating
+// the core, rom64x38400. When compiling the wrapper file, be sure to
 // reference the XilinxCoreLib Verilog simulation library. For detailed
 // instructions, please refer to the "CORE Generator Help".
 
@@ -36,21 +37,21 @@
 
 `timescale 1ns/1ps
 
-module testbench_rom(
+module rom64x38400(
   clka,
   addra,
   douta
 );
 
 input clka;
-input [10 : 0] addra;
-output [31 : 0] douta;
+input [15 : 0] addra;
+output [63 : 0] douta;
 
 // synthesis translate_off
 
   BLK_MEM_GEN_V6_1 #(
-    .C_ADDRA_WIDTH(11),
-    .C_ADDRB_WIDTH(11),
+    .C_ADDRA_WIDTH(16),
+    .C_ADDRB_WIDTH(16),
     .C_ALGORITHM(1),
     .C_AXI_ID_WIDTH(4),
     .C_AXI_SLAVE_TYPE(0),
@@ -75,7 +76,7 @@ output [31 : 0] douta;
     .C_HAS_RSTB(0),
     .C_HAS_SOFTECC_INPUT_REGS_A(0),
     .C_HAS_SOFTECC_OUTPUT_REGS_B(0),
-    .C_INIT_FILE_NAME("testbench_rom.mif"),
+    .C_INIT_FILE_NAME("rom64x38400.mif"),
     .C_INITA_VAL("0"),
     .C_INITB_VAL("0"),
     .C_INTERFACE_TYPE(0),
@@ -83,10 +84,10 @@ output [31 : 0] douta;
     .C_MEM_TYPE(3),
     .C_MUX_PIPELINE_STAGES(0),
     .C_PRIM_TYPE(1),
-    .C_READ_DEPTH_A(2048),
-    .C_READ_DEPTH_B(2048),
-    .C_READ_WIDTH_A(32),
-    .C_READ_WIDTH_B(32),
+    .C_READ_DEPTH_A(38400),
+    .C_READ_DEPTH_B(38400),
+    .C_READ_WIDTH_A(64),
+    .C_READ_WIDTH_B(64),
     .C_RST_PRIORITY_A("CE"),
     .C_RST_PRIORITY_B("CE"),
     .C_RST_TYPE("SYNC"),
@@ -100,12 +101,12 @@ output [31 : 0] douta;
     .C_USE_SOFTECC(0),
     .C_WEA_WIDTH(1),
     .C_WEB_WIDTH(1),
-    .C_WRITE_DEPTH_A(2048),
-    .C_WRITE_DEPTH_B(2048),
+    .C_WRITE_DEPTH_A(38400),
+    .C_WRITE_DEPTH_B(38400),
     .C_WRITE_MODE_A("WRITE_FIRST"),
     .C_WRITE_MODE_B("WRITE_FIRST"),
-    .C_WRITE_WIDTH_A(32),
-    .C_WRITE_WIDTH_B(32),
+    .C_WRITE_WIDTH_A(64),
+    .C_WRITE_WIDTH_B(64),
     .C_XDEVICEFAMILY("virtex5")
   )
   inst (
