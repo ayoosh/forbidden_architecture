@@ -5,10 +5,52 @@
      behavior or data corruption.  It is strongly advised that
      users do not edit the contents of this file. -->
 <messages>
-<msg type="warning" file="sim" num="949" delta="new" >The project IP instance &apos;<arg fmt="%s" index="1">testbench_rom</arg>&apos; for IP &apos;<arg fmt="%s" index="2">Block Memory Generator v6.1</arg>&apos; was generated with a different version of the IP than is currently in the IP Catalog. It was originally generated using IP with the packaged timestamp &apos;<arg fmt="%s" index="3">2012-07-21T06:10:29Z</arg>&apos;; the IP in the current catalog has a different packaged timestamp &apos;<arg fmt="%s" index="4">2011-02-03T22:20:43.000Z</arg>&apos;. This mismatch is due to changes made to the IP in the user repositories. It may affect some functionality of the IP, if there are differences between these two versions of the IP.
+<msg type="warning" file="sim" num="949" delta="old" >The project IP instance &apos;<arg fmt="%s" index="1">testbench_rom</arg>&apos; for IP &apos;<arg fmt="%s" index="2">Block Memory Generator v6.1</arg>&apos; was generated with a different version of the IP than is currently in the IP Catalog. It was originally generated using IP with the packaged timestamp &apos;<arg fmt="%s" index="3">2012-07-21T06:10:29Z</arg>&apos;; the IP in the current catalog has a different packaged timestamp &apos;<arg fmt="%s" index="4">2011-02-03T22:20:43.000Z</arg>&apos;. This mismatch is due to changes made to the IP in the user repositories. It may affect some functionality of the IP, if there are differences between these two versions of the IP.
 </msg>
 
-<msg type="info" file="sim" num="927" delta="new" >Generating component instance &apos;<arg fmt="%s" index="1">testbench_rom</arg>&apos; of &apos;<arg fmt="%s" index="2">xilinx.com:ip:blk_mem_gen:6.1</arg>&apos; from &apos;<arg fmt="%s" index="3">C:\Xilinx\13.1\ISE_DS\ISE\coregen\ip\xilinx\primary\com\xilinx\ip\blk_mem_gen_v6_1\component.xml</arg>&apos;.
+<msg type="info" file="sim" num="927" delta="old" >Generating component instance &apos;<arg fmt="%s" index="1">testbench_rom</arg>&apos; of &apos;<arg fmt="%s" index="2">xilinx.com:ip:blk_mem_gen:6.1</arg>&apos; from &apos;<arg fmt="%s" index="3">C:\Xilinx\13.1\ISE_DS\ISE\coregen\ip\xilinx\primary\com\xilinx\ip\blk_mem_gen_v6_1\component.xml</arg>&apos;.
+</msg>
+
+<msg type="warning" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">A core named &apos;testbench_rom&apos; already exists in the project. Output products for this core may be overwritten.</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Resolving generics for &apos;testbench_rom&apos;...</arg>
+</msg>
+
+<msg type="warning" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">A core named &apos;testbench_rom&apos; already exists in the project. Output products for this core may be overwritten.</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Applying external generics to &apos;testbench_rom&apos;...</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Delivering associated files for &apos;testbench_rom&apos;...</arg>
+</msg>
+
+<msg type="warning" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Can&apos;t find &apos;VHDL_and_Verilog&apos; synthesis view; using general synthesis view</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Delivering EJava files for &apos;testbench_rom&apos;...</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Generating implementation netlist for &apos;testbench_rom&apos;...</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Pre-processing HDL files for &apos;testbench_rom&apos;...</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Writing VHO instantiation template for &apos;testbench_rom&apos;...</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Writing VEO instantiation template for &apos;testbench_rom&apos;...</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Writing VHDL behavioral simulation model for &apos;testbench_rom&apos;...</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Writing Verilog behavioral simulation model for &apos;testbench_rom&apos;...</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Generating SYM schematic symbol for &apos;testbench_rom&apos;...</arg>
 </msg>
 
 </messages>
