@@ -120,7 +120,7 @@ always @(posedge CLK) begin
 		  npu_inputs_done <= 1;
 		end // input_cnt_equals 
 		
-		if (~npu_inputs_done && npu_input_fifo_empty) begin // Input caused stall
+		if (~(npu_inputs_done || npu_input_cnt_equals) && npu_input_fifo_empty) begin // Input caused stall
 		  npu_state_stall <= 1;
 		  npu_state_compute <= 0;
 		  npu_input_stall <= 1;

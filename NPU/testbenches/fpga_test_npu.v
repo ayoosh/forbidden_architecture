@@ -13,18 +13,13 @@ module fpga_test_top_level(
 	reg npu_output_fifo_read_enable;
 	reg [10:0] addr;
 	reg led_flag;
-	// Outputs
+
 	wire [31:0] npu_output_data;
 	wire npu_output_fifo_empty;
 	wire npu_input_fifo_full;
 	wire npu_config_fifo_full;
 
-rom64x38400 your_instance_name (
-  .clka(CLK), // input clka
-  .addra(addr), // input [15 : 0] addra
-  .douta() // output [63 : 0] douta
-);
-	// Instantiate the Unit Under Test (UUT)
+
 	npu uut (
 		.CLK(CLK), 
 		.RST(RST), 
@@ -58,6 +53,7 @@ always@(posedge CLK)begin
 		led_flag <= 0;
 	end
 	else begin
+		// Update this number based on testy block rom's number of values
 		if (addr == 312) begin
 			npu_config_fifo_write_enable <= 0;
 			case (npu_input_data)

@@ -106,7 +106,7 @@ end
 	#5 CLK = ~CLK;
 	
 	initial
-	#10000 $stop;
+	#4000 $stop;
 
 endmodule
 
