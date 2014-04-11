@@ -4,6 +4,7 @@ use Switch;
 open my $output_conf, '>>', 'configuration_bansi.coe' or die "error trying to overwrite: $!";
 open my $out_sak, '>>', 'configuration_sakshi.txt' or die "error rying to overwrite: $!";
 
+# weights / biases input file here
 open(DATA, "weights_4_det.txt") or die "Can't open"; #change the file name for input file
 
 @lines = <DATA>;
@@ -60,15 +61,18 @@ $schedule_buffer_count;
 
 $input_format = "0000000000000000";
 $output_format = "0000000000000000";
-$input_count = "0004";
-$input = 0x0004;
+$input_count = "0009"; #Input count hex
+$input = 0x0009; #input count hex
 $output_count1 = "0001";
 $output_count = 0x0001;
-$sigmoid_function = 1; # check again
-@input_per_layer = (4,4);
+
+@input_per_layer = (9,4);
 @neurons_per_layer = (4,1);
-$layer_count=2;
-$layer_count_for_split = 2;
+$layer_count=2; # Number of hidden layers plus 1
+
+#DO NOT MODIFY BELOW THIS !!! "INI" will KILL you
+$layer_count_for_split = $layer_count;
+$sigmoid_function = 1; # check again
 $pe_pointer =0;
 $cur_layer = 1;
 $cur_layer_for_split = 0;
