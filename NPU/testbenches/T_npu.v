@@ -91,8 +91,8 @@ always@(posedge CLK)begin
 					end
 				1: npu_input_data <= 4;
 				4: npu_input_data <= 2;
-				2: npu_input_data <= 3;
-				3: npu_input_fifo_write_enable <= 0;
+				//3: npu_input_data <= 2;
+				2: npu_input_fifo_write_enable <= 0;
 				default: npu_input_data <= 0;
 			endcase
 		end else begin
