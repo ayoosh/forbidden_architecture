@@ -8,7 +8,8 @@ iocs, //constitutes wr_en
 databus,
 ioaddr,
 tbr,
-txd
+txd,
+piso_out
 );
 
 //Input ports
@@ -25,6 +26,10 @@ input [7:0] databus;
 output tbr;
 output txd;
 
+// This output signal goes outside from tx module to 
+// driver module for debugging with ChipScope.
+output [8:0] piso_out;
+
 reg [8:0] piso; // parallel in serial out shifter
 reg [3:0] count;
 reg buffer_full;
@@ -32,6 +37,8 @@ reg buffer_full;
 assign tbr = ~buffer_full;
 assign txd = piso[0];
 assign cnt_flag = (count == 10);
+
+assign piso_out = piso;
 
 always @ (posedge clk)
 begin
