@@ -82,7 +82,7 @@ always@(posedge CLK)begin
 		npu_input_data <= 0;
 	end
 	else begin
-		if (addr == 312) begin
+		if (addr == 11'd595) begin
 			npu_config_fifo_write_enable <= 0;
 			case (npu_input_data)
 				0: begin

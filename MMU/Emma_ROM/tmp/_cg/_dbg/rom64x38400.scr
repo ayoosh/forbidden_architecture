@@ -1,0 +1,14 @@
+set -xsthdpdir "./_cg/_dbg/rom64x38400_xsd"
+run
+-ifn "./_cg/_dbg/rom64x38400.prj"
+-ifmt VHDL
+-ofmt NGC
+-ofn "./_cg/_dbg/rom64x38400.ngc"
+-p xc5vlx110t-1ff1136
+-iobuf NO
+-work_lib work
+-ent rom64x38400
+-arch virtex5
+-top rom64x38400
+-bus_delimiter <>
+-lso "./_cg/_dbg/_default.lso"
