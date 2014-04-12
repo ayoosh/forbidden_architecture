@@ -5,7 +5,7 @@ open my $output_conf, '>>', 'configuration_bansi.coe' or die "error trying to ov
 open my $out_sak, '>>', 'configuration_sakshi.txt' or die "error rying to overwrite: $!";
 
 # weights / biases input file here
-open(DATA, "weights_4_det.txt") or die "Can't open"; #change the file name for input file
+open(DATA, "weights_sobel.txt") or die "Can't open"; #change the file name for input file
 
 @lines = <DATA>;
 $n = @lines;
@@ -66,9 +66,9 @@ $input = 0x0009; #input count hex
 $output_count1 = "0001";
 $output_count = 0x0001;
 
-@input_per_layer = (9,4);
-@neurons_per_layer = (4,1);
-$layer_count=2; # Number of hidden layers plus 1
+@input_per_layer = (9, 8, 4);
+@neurons_per_layer =  (8, 4, 1);
+$layer_count=3; # Number of hidden layers plus 1
 
 #DO NOT MODIFY BELOW THIS !!! "INI" will KILL you
 $layer_count_for_split = $layer_count;
