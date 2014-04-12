@@ -1,7 +1,7 @@
 ##############################################################
 #
-# Xilinx Core Generator version 13.1
-# Date: Sat Apr 12 01:07:30 2014
+# Xilinx Core Generator version 14.2
+# Date: Sat Apr 12 22:22:46 2014
 #
 ##############################################################
 #
@@ -12,12 +12,16 @@
 #
 ##############################################################
 #
+#  Generated from component: xilinx.com:ip:blk_mem_gen:6.1
+#
+##############################################################
+#
 # BEGIN Project Options
 SET addpads = false
 SET asysymbol = true
 SET busformat = BusFormatAngleBracketNotRipped
 SET createndf = false
-SET designentry = Advanced
+SET designentry = Verilog
 SET device = xc5vlx110t
 SET devicefamily = virtex5
 SET flowvendor = Other
@@ -29,7 +33,7 @@ SET removerpms = false
 SET simulationfiles = Behavioral
 SET speedgrade = -1
 SET verilogsim = true
-SET vhdlsim = true
+SET vhdlsim = false
 # END Project Options
 # BEGIN Select
 SELECT Block_Memory_Generator xilinx.com:ip:blk_mem_gen:6.1
@@ -95,7 +99,7 @@ CSET write_width_a=32
 CSET write_width_b=32
 # END Parameters
 # BEGIN Extra information
-MISC pkg_timestamp=2011-02-03T22:20:43.000Z
+MISC pkg_timestamp=2012-07-21T06:10:29Z
 # END Extra information
 GENERATE
-# CRC: b56bddbb
+# CRC: 86d9f484
