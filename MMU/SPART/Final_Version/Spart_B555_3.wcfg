@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/Temp/SPART_Rohit/tb_top_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_top" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="25" />
+   <wvobject fp_name="/tb_top/U0/driver0/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/br_cfg" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">br_cfg[1:0]</obj_property>
+      <obj_property name="ObjectShortName">br_cfg[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/rda" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rda</obj_property>
+      <obj_property name="ObjectShortName">rda</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/tbr" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">tbr</obj_property>
+      <obj_property name="ObjectShortName">tbr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/databus" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">databus[7:0]</obj_property>
+      <obj_property name="ObjectShortName">databus[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/iocs" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">iocs</obj_property>
+      <obj_property name="ObjectShortName">iocs</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/iorw" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">iorw</obj_property>
+      <obj_property name="ObjectShortName">iorw</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/ioaddr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ioaddr[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ioaddr[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/data_ioaddr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_ioaddr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_ioaddr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/data_wr_rdy" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">data_wr_rdy</obj_property>
+      <obj_property name="ObjectShortName">data_wr_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/state" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">state[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/next_state" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">next_state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">next_state[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/ready_rw" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ready_rw[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ready_rw[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/databus_drive" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">databus_drive[7:0]</obj_property>
+      <obj_property name="ObjectShortName">databus_drive[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/counter" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">counter[1:0]</obj_property>
+      <obj_property name="ObjectShortName">counter[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/counter_wr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">counter_wr[1:0]</obj_property>
+      <obj_property name="ObjectShortName">counter_wr[1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/data_received" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">data_received</obj_property>
+      <obj_property name="ObjectShortName">data_received</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/tbr_changed" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">tbr_changed</obj_property>
+      <obj_property name="ObjectShortName">tbr_changed</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/data_spart_rdy" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">data_spart_rdy</obj_property>
+      <obj_property name="ObjectShortName">data_spart_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/txd" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">txd</obj_property>
+      <obj_property name="ObjectShortName">txd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/spart0/DUT_tx/piso" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">piso[8:0]</obj_property>
+      <obj_property name="ObjectShortName">piso[8:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/spart0/DUT_brg/databus" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">databus[7:0]</obj_property>
+      <obj_property name="ObjectShortName">databus[7:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/driver0/data_written" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">data_written</obj_property>
+      <obj_property name="ObjectShortName">data_written</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top/U0/spart0/brg_full" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">brg_full</obj_property>
+      <obj_property name="ObjectShortName">brg_full</obj_property>
+   </wvobject>
+</wave_config>

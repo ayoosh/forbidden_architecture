@@ -33,6 +33,9 @@ module top_level(
 	wire [1:0] ioaddr;
 	wire [7:0] databus;
 	
+	wire [31:0] data_ioaddr;
+	wire data_wr_rdy;
+	
 	// Instantiate your SPART here
 	spart spart0(	.clk(clk),
 					.rst(rst),
@@ -55,7 +58,9 @@ module top_level(
 					.rda(rda),
 					.tbr(tbr),
 					.ioaddr(ioaddr),
-					.databus(databus)
+					.databus(databus),
+					.data_ioaddr(data_ioaddr),
+					.data_wr_rdy(data_wr_rdy)
 					 );
 					 
 endmodule
