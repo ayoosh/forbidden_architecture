@@ -35,4 +35,20 @@
 <msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Pre-processing HDL files for &apos;rom64x38400&apos;...</arg>
 </msg>
 
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Writing VHO instantiation template for &apos;rom64x38400&apos;...</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Writing VEO instantiation template for &apos;rom64x38400&apos;...</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Writing VHDL behavioral simulation model for &apos;rom64x38400&apos;...</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Writing Verilog behavioral simulation model for &apos;rom64x38400&apos;...</arg>
+</msg>
+
+<msg type="info" file="sim" num="0" delta="new" ><arg fmt="%s" index="1">Generating SYM schematic symbol for &apos;rom64x38400&apos;...</arg>
+</msg>
+
 </messages>
+
