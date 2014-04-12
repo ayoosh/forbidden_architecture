@@ -24,21 +24,27 @@
 
 module T_npu;
 
-	// Inputs
+	
 	reg CLK;
 	reg RST;
-	reg [31:0] npu_input_data;
+	
 	reg npu_input_fifo_write_enable;
-	wire [31:0] npu_config_data;
 	reg npu_config_fifo_write_enable;
+	reg [10:0] config_addr;
+	reg [18:0] input_addr;
+	
+	reg [31:0] input_array [35:0];
+	
+	wire [31:0] npu_config_data;
 	wire npu_output_fifo_read_enable;
-	reg [10:0] addr;
-	// Outputs
+	wire [31:0] npu_input_data;
 	wire [31:0] npu_output_data;
 	wire npu_output_fifo_empty;
 	wire npu_input_fifo_full;
 	wire npu_config_fifo_full;
-
+	
+	assign npu_output_fifo_read_enable = ~npu_output_fifo_empty;
+	assign npu_input_data = input_array [input_addr];
 	// Instantiate the Unit Under Test (UUT)
 	npu uut (
 		.CLK(CLK), 
@@ -54,49 +60,85 @@ module T_npu;
 		.npu_config_fifo_full(npu_config_fifo_full)
 	);
 
-testbench_rom testy_rom (
-  .clka(CLK), // input clka
-  .addra(addr), // input [9 : 0] addra
-  .douta(npu_config_data) // output [31 : 0] douta
-);
+	testbench_rom testy_config_rom (
+		.clka(CLK), // input clka
+		.addra(config_addr), // input [9 : 0] addra
+		.douta(npu_config_data) // output [31 : 0] douta
+	);
 
-	assign npu_output_fifo_read_enable = ~npu_output_fifo_empty;
-	
 	initial begin
 		// Initialize Inputs
 		CLK = 0;
 		RST = 1;
-		npu_input_data = 0;
-		npu_input_fifo_write_enable = 0;
-		npu_config_fifo_write_enable = 0;
 		#31
 		RST = 0;
-		npu_config_fifo_write_enable = 1;
-		
 	end
 
 	
 always@(posedge CLK)begin
 	if(RST)begin
-		addr <= 0;
-		npu_input_data <= 0;
+		config_addr <= -1;
+		npu_input_fifo_write_enable <= 0;
+		npu_config_fifo_write_enable <= 0;
+		input_addr <= -1;
+
+		// Output = 0.0011026
+		input_array [0] <= 162;
+		input_array [1] <= 162;
+		input_array [2] <= 159;
+		input_array [3] <= 161;
+		input_array [4] <= 160;
+		input_array [5] <= 158;
+		input_array [6] <= 162;
+		input_array [7] <= 162;
+		input_array [8] <= 159;
+		
+		// Output = 0.94649
+		input_array [9]  <= 211;
+		input_array [10] <= 212;
+		input_array [11] <= 217;
+		input_array [12] <= 172;
+		input_array [13] <= 175;
+		input_array [14] <= 198;
+		input_array [15] <= 114;
+		input_array [16] <= 115;
+		input_array [17] <= 143;
+		
+		// Output = 0.0011539
+		input_array [18] <= 161;
+		input_array [19] <= 160;
+		input_array [20] <= 158;
+		input_array [21] <= 162;
+		input_array [22] <= 162;
+		input_array [23] <= 159;
+		input_array [24] <= 162;
+		input_array [25] <= 161;
+		input_array [26] <= 160;
+		
+		// Output = 0.95808
+		input_array [27] <= 172;
+		input_array [28] <= 166;
+		input_array [29] <= 092;
+		input_array [30] <= 160;
+		input_array [31] <= 146;
+		input_array [32] <= 064;
+		input_array [33] <= 129;
+		input_array [34] <= 114;
+		input_array [35] <= 052;		
+		
 	end
 	else begin
-		if (addr == 11'd595) begin
-			npu_config_fifo_write_enable <= 0;
-			case (npu_input_data)
-				0: begin
-						npu_input_fifo_write_enable <= 1;
-						npu_input_data <= 1;
-					end
-				1: npu_input_data <= 4;
-				4: npu_input_data <= 2;
-				//3: npu_input_data <= 2;
-				2: npu_input_fifo_write_enable <= 0;
-				default: npu_input_data <= 0;
-			endcase
-		end else begin
-			addr <= addr + 1;
+		if (config_addr == 11'd595) begin // Configuration done .. go to input stage
+			if (input_addr == 35) begin // done sending inputs
+				npu_input_fifo_write_enable <= 0;
+			end else begin // Still sending new input values
+				npu_config_fifo_write_enable <= 0;
+				npu_input_fifo_write_enable <= 1;
+				input_addr <= input_addr + 1;
+			end
+		end else begin // Still sending configuration values
+			config_addr <= config_addr + 1;
+			npu_config_fifo_write_enable = 1;
 		end
 		
 	end
@@ -106,7 +148,7 @@ end
 	#5 CLK = ~CLK;
 	
 	initial
-	#4000 $stop;
+	#10000 $stop;
 
 endmodule
 
