@@ -248,7 +248,7 @@ end
 					2'd3: begin
 							databus_drive <= data_ioaddr[31:24];
 							data_written <= 1'b1;
-							end
+						  end
 					endcase
 					counter_wr <= counter_wr + 1'b1;
 					ioaddr <= 2'b00;
