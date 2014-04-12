@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/Users/Rohit/Documents/Xilinx_Projects/memory_controller_mig/top_module_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="top_module" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="33" />
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/app_wdf_afull" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">app_wdf_afull</obj_property>
+      <obj_property name="ObjectShortName">app_wdf_afull</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/app_af_afull" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">app_af_afull</obj_property>
+      <obj_property name="ObjectShortName">app_af_afull</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/rd_data_valid" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rd_data_valid</obj_property>
+      <obj_property name="ObjectShortName">rd_data_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/app_af_addr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">app_af_addr[30:0]</obj_property>
+      <obj_property name="ObjectShortName">app_af_addr[30:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/rd_data_fifo_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">rd_data_fifo_out[127:0]</obj_property>
+      <obj_property name="ObjectShortName">rd_data_fifo_out[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/app_wdf_mask_data" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">app_wdf_mask_data[15:0]</obj_property>
+      <obj_property name="ObjectShortName">app_wdf_mask_data[15:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/mc_wr_rdy" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mc_wr_rdy</obj_property>
+      <obj_property name="ObjectShortName">mc_wr_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/mc_rd_rdy" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mc_rd_rdy</obj_property>
+      <obj_property name="ObjectShortName">mc_rd_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/data_wren" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">data_wren</obj_property>
+      <obj_property name="ObjectShortName">data_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/data_rden" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">data_rden</obj_property>
+      <obj_property name="ObjectShortName">data_rden</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/data_wr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_wr[255:0]</obj_property>
+      <obj_property name="ObjectShortName">data_wr[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/data_addr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_addr[30:0]</obj_property>
+      <obj_property name="ObjectShortName">data_addr[30:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/mig_data_wr" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mig_data_wr</obj_property>
+      <obj_property name="ObjectShortName">mig_data_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/mig_data_rd" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mig_data_rd</obj_property>
+      <obj_property name="ObjectShortName">mig_data_rd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/app_wdf_wren" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">app_wdf_wren</obj_property>
+      <obj_property name="ObjectShortName">app_wdf_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/app_af_wren" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">app_af_wren</obj_property>
+      <obj_property name="ObjectShortName">app_af_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/app_af_cmd" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">app_af_cmd[2:0]</obj_property>
+      <obj_property name="ObjectShortName">app_af_cmd[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/app_wdf_data" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">app_wdf_data[127:0]</obj_property>
+      <obj_property name="ObjectShortName">app_wdf_data[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/mc_rd_valid" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mc_rd_valid</obj_property>
+      <obj_property name="ObjectShortName">mc_rd_valid</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/data_rd" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_rd[255:0]</obj_property>
+      <obj_property name="ObjectShortName">data_rd[255:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/cache_data_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">cache_data_out[0:1,127:0]</obj_property>
+      <obj_property name="ObjectShortName">cache_data_out[0:1,127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/mig_data_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">mig_data_out[0:1,127:0]</obj_property>
+      <obj_property name="ObjectShortName">mig_data_out[0:1,127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/new_data_wr" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">new_data_wr</obj_property>
+      <obj_property name="ObjectShortName">new_data_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/new_data_rd" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">new_data_rd</obj_property>
+      <obj_property name="ObjectShortName">new_data_rd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/addr_change_wr" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">addr_change_wr</obj_property>
+      <obj_property name="ObjectShortName">addr_change_wr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/addr_change_rd" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">addr_change_rd</obj_property>
+      <obj_property name="ObjectShortName">addr_change_rd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/read_data_end" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">read_data_end</obj_property>
+      <obj_property name="ObjectShortName">read_data_end</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/data_stored" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">data_stored</obj_property>
+      <obj_property name="ObjectShortName">data_stored</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/data_rdy" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">data_rdy</obj_property>
+      <obj_property name="ObjectShortName">data_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/counter_wait" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">counter_wait[4:0]</obj_property>
+      <obj_property name="ObjectShortName">counter_wait[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/top_module/example_interface/data_mig_interface/data_sent" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">data_sent</obj_property>
+      <obj_property name="ObjectShortName">data_sent</obj_property>
+   </wvobject>
+</wave_config>

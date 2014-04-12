@@ -217,7 +217,7 @@ module data_rd_wr  # (
 		end
 		else
 		begin
-			if((mig_data_wr)&&(data_wren)&&(!new_data_wr)&&(!app_wdf_wren)&&(!data_rden))
+			if((mig_data_wr)&&(data_wren)&&(!new_data_wr)&&(!app_wdf_wren)&&(!data_rden)&&(!addr_change_wr))
 			begin
 				app_wdf_data <= data_wr[127:0];
 				new_data_wr	 <= 1'b1;
