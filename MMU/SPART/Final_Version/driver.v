@@ -29,7 +29,9 @@ module driver(
     output reg [1:0] ioaddr,
     inout [7:0] databus,
 	output reg [31:0] data_ioaddr,
-	output reg data_wr_rdy
+	output reg data_wr_rdy,
+	input [8:0] piso_out,
+	input clk_200
     );
 
 	parameter IDLE = 2'b00;
@@ -62,6 +64,11 @@ module driver(
 	reg data_spart_rdy;
 	reg data_spart_rdy_next = 1'b0;
 	reg tbr_changed;
+	
+	wire [35:0] control;
+	wire [7:0] trigger;
+	wire [255:0] dataport;
+	
 // Read case, needs to be changed
 assign databus =  (iorw == 0 & iocs == 1 ) ? databus_drive : 8'hzz;
 
@@ -160,6 +167,10 @@ end
 	
 	always @(state or tbr or rda or ready_rw or data_wr_rdy or data_received or data_spart_rdy or tbr_changed)
 	begin
+//	if(rst)
+//		data_spart_rdy_next = 1'b0;
+//	else
+//	begin
 	case(state)
 	IDLE : begin 
 				if ( (rda == 1) && (ready_rw == 2) && !data_received )
@@ -185,6 +196,7 @@ end
 	READ :  next_state = IDLE;
 	default: next_state = IDLE;
 	endcase
+	//end
 	end
 	
 	// Output logic
@@ -266,6 +278,40 @@ end
 			endcase
 		end
 	end
+	/*
+	icon icon_1(
+		.CONTROL0(control)
+	);
 	
+	ila ila_1(
+		.CLK(clk),
+		.CONTROL(control),
+		.DATA(dataport),
+		.TRIG0(trigger)
+	);
 	
+	assign dataport[8:0] = piso_out;
+	assign dataport[40:9] = data_ioaddr;
+	assign dataport[41] = iocs;
+	assign dataport[42] = iorw;
+	assign dataport[44:43] = counter;
+	assign dataport[46:45] = counter_wr;
+	assign dataport[47] = tbr;
+	assign dataport[48] = rda;
+	//assign dataport[49] = clk;
+	assign dataport[50] = data_received;
+	assign dataport[51] = data_spart_rdy;
+	assign dataport[53:52] = state;
+	assign dataport[55:54] = ioaddr;
+	assign dataport[56] = tbr_changed;
+	
+	assign trigger[0] = clk;
+	assign trigger[1] = iocs;
+	assign trigger[2] = iorw;
+	assign trigger[3] = tbr;
+	assign trigger[4] = rda;
+	assign trigger[5] = data_received;
+	assign trigger[6] = data_spart_rdy;
+	assign trigger[7] = tbr_changed;
+	*/
 endmodule
