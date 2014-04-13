@@ -1,7 +1,8 @@
 # Starting address 0
 # Bootloader
 
-# SPART_STATUS = 
-# SPART_READ_ADDR = 
-# SPART_WRITE_ADDR = 
-
+#define STACK_
+#define SPART_STATUS 123 ;
+#define SPART_READ_ADDR  123 ;
+#define SPART_WRITE_ADDR 3123 ;
+#define 
