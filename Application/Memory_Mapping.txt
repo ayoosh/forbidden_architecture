@@ -1,0 +1,8 @@
+Address [ 28 bits ]
+Description
+0x000 0000 - 0x3FF FFFF DDR2 Memory (256 MB)
+0x400 0000 - 0x400 3FFF Boot ROM (64 KB)
+0x800 0000 - 0x800 0003 SPART I/O Mapping and SPART related registers
+0x800 0004 VGA_Addr Register inside Memory Controller
+
+DDR2 Breakup

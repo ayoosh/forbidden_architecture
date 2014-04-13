@@ -1,0 +1,7 @@
+# Starting address 0
+# Bootloader
+
+# SPART_STATUS = 
+# SPART_READ_ADDR = 
+# SPART_WRITE_ADDR = 
+
