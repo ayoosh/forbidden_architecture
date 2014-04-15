@@ -2,3 +2,15 @@ Github Rules
 1. Keep any code in its respective assigned folder only. Inside the module specific folders Subteams can organise the way they want.
 2. Only keep the main code files here. Create projects outside of this. Xilinx ISE, ModelSim and possibly perl/system c compilers may create lot of temporary files. Temp files pollute GitHub and makes code versioning so much more difficult.
 3. Everyone is free to use the main branch for now. During integration we will change this.
+
+
+
+Rules for asssembler for CPU
+1. Use only upper case
+2. Use format as per ISA with a space in between every operand
+3. Every instruction ends with a semicolon
+4. Use a space between the last operand and semicolon
+5. Start a line with a # and then a space to add comments
+6. Blank lines are accepted
+7. For SLL, SRL, SRA, use the offsets in decimal
+8. 
