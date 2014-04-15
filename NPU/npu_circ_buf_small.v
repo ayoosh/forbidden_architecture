@@ -30,7 +30,8 @@ npu_circ_buf_fifo_small npu_circ_buf_fifo (
   .dout(npu_circ_buf_data_output), // output [15 : 0] dout
   // full and empty signals not connected. The violations of full and empty should never occur for these buffers.
   .full(), // output full     
-  .empty() // output empty
+  .empty(), // output empty
+  .data_count() // output [9 : 0] data_count
 );
 
 assign npu_write_data = (npu_circ_buf_write_en) ? npu_circ_buf_data_input : npu_circ_buf_data_output;

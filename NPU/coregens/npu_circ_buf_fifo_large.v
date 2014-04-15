@@ -1,26 +1,27 @@
 /*******************************************************************************
-*     This file is owned and controlled by Xilinx and must be used solely      *
-*     for design, simulation, implementation and creation of design files      *
-*     limited to Xilinx devices or technologies. Use with non-Xilinx           *
-*     devices or technologies is expressly prohibited and immediately          *
-*     terminates your license.                                                 *
+*     This file is owned and controlled by Xilinx and must be used             *
+*     solely for design, simulation, implementation and creation of            *
+*     design files limited to Xilinx devices or technologies. Use              *
+*     with non-Xilinx devices or technologies is expressly prohibited          *
+*     and immediately terminates your license.                                 *
 *                                                                              *
-*     XILINX IS PROVIDING THIS DESIGN, CODE, OR INFORMATION "AS IS" SOLELY     *
-*     FOR USE IN DEVELOPING PROGRAMS AND SOLUTIONS FOR XILINX DEVICES.  BY     *
-*     PROVIDING THIS DESIGN, CODE, OR INFORMATION AS ONE POSSIBLE              *
-*     IMPLEMENTATION OF THIS FEATURE, APPLICATION OR STANDARD, XILINX IS       *
-*     MAKING NO REPRESENTATION THAT THIS IMPLEMENTATION IS FREE FROM ANY       *
-*     CLAIMS OF INFRINGEMENT, AND YOU ARE RESPONSIBLE FOR OBTAINING ANY        *
-*     RIGHTS YOU MAY REQUIRE FOR YOUR IMPLEMENTATION.  XILINX EXPRESSLY        *
-*     DISCLAIMS ANY WARRANTY WHATSOEVER WITH RESPECT TO THE ADEQUACY OF THE    *
+*     XILINX IS PROVIDING THIS DESIGN, CODE, OR INFORMATION "AS IS"            *
+*     SOLELY FOR USE IN DEVELOPING PROGRAMS AND SOLUTIONS FOR                  *
+*     XILINX DEVICES.  BY PROVIDING THIS DESIGN, CODE, OR INFORMATION          *
+*     AS ONE POSSIBLE IMPLEMENTATION OF THIS FEATURE, APPLICATION              *
+*     OR STANDARD, XILINX IS MAKING NO REPRESENTATION THAT THIS                *
+*     IMPLEMENTATION IS FREE FROM ANY CLAIMS OF INFRINGEMENT,                  *
+*     AND YOU ARE RESPONSIBLE FOR OBTAINING ANY RIGHTS YOU MAY REQUIRE         *
+*     FOR YOUR IMPLEMENTATION.  XILINX EXPRESSLY DISCLAIMS ANY                 *
+*     WARRANTY WHATSOEVER WITH RESPECT TO THE ADEQUACY OF THE                  *
 *     IMPLEMENTATION, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OR           *
 *     REPRESENTATIONS THAT THIS IMPLEMENTATION IS FREE FROM CLAIMS OF          *
-*     INFRINGEMENT, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A    *
-*     PARTICULAR PURPOSE.                                                      *
+*     INFRINGEMENT, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS          *
+*     FOR A PARTICULAR PURPOSE.                                                *
 *                                                                              *
-*     Xilinx products are not intended for use in life support appliances,     *
-*     devices, or systems.  Use in such applications are expressly             *
-*     prohibited.                                                              *
+*     Xilinx products are not intended for use in life support                 *
+*     appliances, devices, or systems. Use in such applications are            *
+*     expressly prohibited.                                                    *
 *                                                                              *
 *     (c) Copyright 1995-2014 Xilinx, Inc.                                     *
 *     All rights reserved.                                                     *
@@ -44,7 +45,8 @@ module npu_circ_buf_fifo_large(
   rd_en,
   dout,
   full,
-  empty
+  empty,
+  data_count
 );
 
 input clk;
@@ -55,6 +57,7 @@ input rd_en;
 output [15 : 0] dout;
 output full;
 output empty;
+output [9 : 0] data_count;
 
 // synthesis translate_off
 
@@ -124,7 +127,7 @@ output empty;
     .C_HAS_AXIS_TSTRB(0),
     .C_HAS_AXIS_TUSER(0),
     .C_HAS_BACKUP(0),
-    .C_HAS_DATA_COUNT(0),
+    .C_HAS_DATA_COUNT(1),
     .C_HAS_DATA_COUNTS_AXIS(0),
     .C_HAS_DATA_COUNTS_RACH(0),
     .C_HAS_DATA_COUNTS_RDCH(0),
@@ -257,6 +260,7 @@ output empty;
     .DOUT(dout),
     .FULL(full),
     .EMPTY(empty),
+    .DATA_COUNT(data_count),
     .BACKUP(),
     .BACKUP_MARKER(),
     .RST(),
@@ -279,7 +283,6 @@ output empty;
     .ALMOST_EMPTY(),
     .VALID(),
     .UNDERFLOW(),
-    .DATA_COUNT(),
     .RD_DATA_COUNT(),
     .WR_DATA_COUNT(),
     .PROG_FULL(),

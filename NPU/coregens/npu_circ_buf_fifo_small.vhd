@@ -49,7 +49,8 @@ ENTITY npu_circ_buf_fifo_small IS
     rd_en : IN STD_LOGIC;
     dout : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
     full : OUT STD_LOGIC;
-    empty : OUT STD_LOGIC
+    empty : OUT STD_LOGIC;
+    data_count : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
   );
 END npu_circ_buf_fifo_small;
 
@@ -64,7 +65,8 @@ COMPONENT wrapped_npu_circ_buf_fifo_small
     rd_en : IN STD_LOGIC;
     dout : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
     full : OUT STD_LOGIC;
-    empty : OUT STD_LOGIC
+    empty : OUT STD_LOGIC;
+    data_count : OUT STD_LOGIC_VECTOR(9 DOWNTO 0)
   );
 END COMPONENT;
 
@@ -96,7 +98,7 @@ END COMPONENT;
       c_axis_type => 0,
       c_common_clock => 1,
       c_count_type => 0,
-      c_data_count_width => 9,
+      c_data_count_width => 10,
       c_default_value => "BlankString",
       c_din_width => 16,
       c_din_width_axis => 1,
@@ -117,7 +119,7 @@ END COMPONENT;
       c_error_injection_type_wdch => 0,
       c_error_injection_type_wrch => 0,
       c_family => "virtex5",
-      c_full_flags_rst_val => 0,
+      c_full_flags_rst_val => 1,
       c_has_almost_empty => 0,
       c_has_almost_full => 0,
       c_has_axi_aruser => 0,
@@ -136,7 +138,7 @@ END COMPONENT;
       c_has_axis_tstrb => 0,
       c_has_axis_tuser => 0,
       c_has_backup => 0,
-      c_has_data_count => 0,
+      c_has_data_count => 1,
       c_has_data_counts_axis => 0,
       c_has_data_counts_rach => 0,
       c_has_data_counts_rdch => 0,
@@ -163,7 +165,7 @@ END COMPONENT;
       c_has_wr_ack => 0,
       c_has_wr_data_count => 0,
       c_has_wr_rst => 0,
-      c_implementation_type => 4,
+      c_implementation_type => 0,
       c_implementation_type_axis => 1,
       c_implementation_type_rach => 1,
       c_implementation_type_rdch => 1,
@@ -172,14 +174,14 @@ END COMPONENT;
       c_implementation_type_wrch => 1,
       c_init_wr_pntr_val => 0,
       c_interface_type => 0,
-      c_memory_type => 4,
+      c_memory_type => 1,
       c_mif_file_name => "BlankString",
       c_msgon_val => 1,
       c_optimization_mode => 0,
       c_overflow_low => 0,
       c_preload_latency => 1,
       c_preload_regs => 0,
-      c_prim_fifo_type => "512x36",
+      c_prim_fifo_type => "1kx18",
       c_prog_empty_thresh_assert_val => 2,
       c_prog_empty_thresh_assert_val_axis => 1022,
       c_prog_empty_thresh_assert_val_rach => 1022,
@@ -195,14 +197,14 @@ END COMPONENT;
       c_prog_empty_type_wach => 5,
       c_prog_empty_type_wdch => 5,
       c_prog_empty_type_wrch => 5,
-      c_prog_full_thresh_assert_val => 511,
+      c_prog_full_thresh_assert_val => 1022,
       c_prog_full_thresh_assert_val_axis => 1023,
       c_prog_full_thresh_assert_val_rach => 1023,
       c_prog_full_thresh_assert_val_rdch => 1023,
       c_prog_full_thresh_assert_val_wach => 1023,
       c_prog_full_thresh_assert_val_wdch => 1023,
       c_prog_full_thresh_assert_val_wrch => 1023,
-      c_prog_full_thresh_negate_val => 510,
+      c_prog_full_thresh_negate_val => 1021,
       c_prog_full_type => 0,
       c_prog_full_type_axis => 5,
       c_prog_full_type_rach => 5,
@@ -211,10 +213,10 @@ END COMPONENT;
       c_prog_full_type_wdch => 5,
       c_prog_full_type_wrch => 5,
       c_rach_type => 0,
-      c_rd_data_count_width => 9,
-      c_rd_depth => 512,
+      c_rd_data_count_width => 10,
+      c_rd_depth => 1024,
       c_rd_freq => 1,
-      c_rd_pntr_width => 9,
+      c_rd_pntr_width => 10,
       c_rdch_type => 0,
       c_reg_slice_mode_axis => 0,
       c_reg_slice_mode_rach => 0,
@@ -226,7 +228,7 @@ END COMPONENT;
       c_use_common_overflow => 0,
       c_use_common_underflow => 0,
       c_use_default_settings => 0,
-      c_use_dout_rst => 0,
+      c_use_dout_rst => 1,
       c_use_ecc => 0,
       c_use_ecc_axis => 0,
       c_use_ecc_rach => 0,
@@ -241,8 +243,8 @@ END COMPONENT;
       c_wach_type => 0,
       c_wdch_type => 0,
       c_wr_ack_low => 0,
-      c_wr_data_count_width => 9,
-      c_wr_depth => 512,
+      c_wr_data_count_width => 10,
+      c_wr_depth => 1024,
       c_wr_depth_axis => 1024,
       c_wr_depth_rach => 16,
       c_wr_depth_rdch => 1024,
@@ -250,7 +252,7 @@ END COMPONENT;
       c_wr_depth_wdch => 1024,
       c_wr_depth_wrch => 16,
       c_wr_freq => 1,
-      c_wr_pntr_width => 9,
+      c_wr_pntr_width => 10,
       c_wr_pntr_width_axis => 10,
       c_wr_pntr_width_rach => 4,
       c_wr_pntr_width_rdch => 10,
@@ -272,7 +274,8 @@ U0 : wrapped_npu_circ_buf_fifo_small
     rd_en => rd_en,
     dout => dout,
     full => full,
-    empty => empty
+    empty => empty,
+    data_count => data_count
   );
 -- synthesis translate_on
 

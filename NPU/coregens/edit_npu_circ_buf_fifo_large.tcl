@@ -22,7 +22,7 @@ proc findRtfPath { relativePath } {
 
 source [ findRtfPath "data/projnav/scripts/dpm_cgUtils.tcl" ]
 
-set result [ run_cg_edit "npu_circ_buf_fifo_large" xc5vlx110t-1ff1136 Verilog ]
+set result [ run_cg_edit "npu_circ_buf_fifo_large" xc5vlx110t-1ff1136 VHDL_and_Verilog ]
 
 if { $result == 0 } {
    puts "Core Generator edit command completed successfully."
