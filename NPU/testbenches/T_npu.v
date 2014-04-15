@@ -128,7 +128,7 @@ always@(posedge CLK)begin
 		
 	end
 	else begin
-		if (config_addr == 11'd595) begin // Configuration done .. go to input stage
+		if (config_addr == 11'd604) begin // Configuration done .. go to input stage
 			if (input_addr == 35) begin // done sending inputs
 				npu_input_fifo_write_enable <= 0;
 			end else begin // Still sending new input values
