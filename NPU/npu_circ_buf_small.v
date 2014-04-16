@@ -20,7 +20,11 @@ module npu_circ_buf_small(
     input [15:0] npu_circ_buf_data_input,  // Input data from the Config FIFO writing interface
     output [15:0] npu_circ_buf_data_output  // Output of this circular buffer
     );
+
+wire npu_cbuf_wre;
 wire [15:0]npu_write_data;
+reg npu_circ_buf_read_en_delayed;
+
 npu_circ_buf_fifo_small npu_circ_buf_fifo (
   .clk(CLK), // input clk
   .rst(npu_rst), // input rst
@@ -35,6 +39,10 @@ npu_circ_buf_fifo_small npu_circ_buf_fifo (
 );
 
 assign npu_write_data = (npu_circ_buf_write_en) ? npu_circ_buf_data_input : npu_circ_buf_data_output;
-assign npu_cbuf_wre = (npu_circ_buf_write_en) ? npu_circ_buf_write_en : npu_circ_buf_read_en;
+assign npu_cbuf_wre = (npu_circ_buf_write_en) ? npu_circ_buf_write_en : npu_circ_buf_read_en_delayed;
+
+always @(posedge CLK) begin
+	npu_circ_buf_read_en_delayed <= npu_circ_buf_read_en;
+end
 
 endmodule
