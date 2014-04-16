@@ -13,6 +13,8 @@ Rules for asssembler for CPU
 5. Start a line with a # and then a space to add comments
 6. Blank lines are accepted
 7. For SLL, SRL, SRA, use the offsets in decimal
+8. For CALL, RET, provide offset in hex preceded by 0x.
+9. For LOAD, STOR, LHW, LLW provide offsets in hex preceded by 0x.
 
 
 To run the script, the format is: 
