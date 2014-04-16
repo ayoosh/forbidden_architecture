@@ -49,6 +49,7 @@ while($line_number<$line_count)
 		$line_number++;
 		goto end; 
 	}
+	
 	else  
         {
                 $current_entry = 1;
@@ -280,6 +281,7 @@ sub append_10{
         $app = sprintf("%016b",$hexi);
         $destination = $destination. $app;
         $parameter = 7;
+	convert();
 }
 
 
