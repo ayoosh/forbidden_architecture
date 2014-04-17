@@ -406,10 +406,11 @@ rom64x38400 rom_image (
 	assign trigger[6] = mc_wr_rdy;
 	assign trigger[7] = memory_read_error;
 	
-	/*
-	npu npu_module(
-		.CLK(clk),
+
+	
+		npu npu_module (
+		.CLK(clk), 
 		.RST(rst)
 	);
-	*/
+	
 endmodule
