@@ -18,11 +18,23 @@
 // Additional Comments: 
 // No Change in this module. Default code.
 //////////////////////////////////////////////////////////////////////////////////
-module top_level(
+module spart_top_level(
     input clk,         // 100mhz clock
     input rst,         // Asynchronous reset, tied to dip switch 0
     output txd,        // RS232 Transmit Data
-    input rxd         // RS232 Receive Data
+    input rxd,         // RS232 Receive Data
+	
+	// Clocks from DDR2 for ChipScope
+	input clk0_tb,    
+	input clk200_out,
+	
+	// Signals from/to SPART Cache interface
+	output [31:0] data_rx,
+	input [31:0] data_tx,
+	output [31:0] status_register,
+	input spart_data_wren,
+	input spart_data_rden,
+	output data_rdy
     );
 	
 	wire iocs;
@@ -32,8 +44,6 @@ module top_level(
 	wire [1:0] ioaddr;
 	wire [7:0] databus;
 	wire [8:0] piso_out;
-	wire data_wr_rdy;
-	wire [31:0] data_ioaddr;
 	
 	// Instantiate your SPART here
 	spart spart0(	.clk(clk),
@@ -58,9 +68,16 @@ module top_level(
 					.tbr(tbr),
 					.ioaddr(ioaddr),
 					.databus(databus),
-					.data_ioaddr(data_ioaddr),
-					.data_wr_rdy(data_wr_rdy),
-					.piso_out(piso_out)
+					.data_rx(data_rx),
+					.data_tx(data_tx),
+					.status_register(status_register),
+					.spart_data_wren(spart_data_wren),
+					.spart_data_rden(spart_data_rden),
+					.data_rdy(data_rdy),
+					.piso_out(piso_out),
+					
+					.clk0_tb(clk0_tb),
+					.clk200_out(clk200_out)
 					 );
 					 
 endmodule
