@@ -1,4 +1,4 @@
-# Inverse Kinematics
+# Inverse Kinematics, we only do forward function .. angles to position
 # Takes angles from memory and stores XY Cordinate of arm
 # R2 - Input location base address
 # R3 - Output Algo location base address
@@ -21,6 +21,7 @@
 # R19 - X
 # R20 - Y
 # R21 - value 2
+# R22 - value 2048 - 2
 
 LLW R2 0x0000 ;
 LHW R2 0x00c0 ;
@@ -32,6 +33,9 @@ LLW R5 0x0006 ;
 LHW R5 0x0800 ;
 LLW R21 0x0002 ;
 LHW R21 0x0000 ;
+LLW R22 0x07FE ;
+LHW R22 0x0000 ;
+
 
 # ### Start tic counter
 
@@ -43,8 +47,8 @@ LHW R18 0x3f80 ;
 
 ADD R8 R0 R0 ; # Loop counter
 
-# Start of loop
-ADD R9 R2 R8 ;
+# Start of Algo loop
+IK_L1 ADD R9 R2 R8 ;
 ADD R10 R3 R8 ;
 
 LOAD R6 R9 0x0 ;
@@ -76,8 +80,34 @@ STORE R19 R10 0x0 ;
 STORE R20 R10 0x1 ;
 
 ADD R8 R8 R21 ;
+SUB R0 R8 R22 ;
+BLT IK_L1 ;
 
+# Read tic counter and do something with the value
 
+# Now do the NPU Stuff
+ADD R8 R0 R0 ; # Loop counter
+
+# Start tic counter
+
+IK_L2 ADD R9 R2 R8 ;
+ADD R11 R4 R8 ;
+
+LOAD R6 R9 0x0 ;
+LOAD R7 R9 0x1 ;
+
+ENQD0 R6 ;
+ENQD0 R7 ;
+
+DEQD0 R19 ;
+DEQD0 R20 ;
+
+STORE R19 R11 0x0 ;
+STORE R20 R11 0x1 ;
+
+ADD R8 R8 R21 ;
+SUB R0 R8 R22 ;
+BLT IK_L2 ;
 
 
 
