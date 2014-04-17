@@ -18,9 +18,16 @@ SPART
 DVI
 0x800 0004 - VGA Addr register used by CPU to indicate start address of stored image, Call FLUSH before updating.
 
-0x800 0005 - Tic Counter
+0x800 0005 - DVI ON register
+				Bit[0:0] -  1 implies DVI on, 0 implies DVI off .. reset value is 0
+				Bit[31:1] - Reserved
+				
 
-0x800 0006 - Tic Counter
+0x800 0006 - Tic Counter - 
+			 Any write to this register resets it to 0
+			 Reading will give the current value
+             If value reaches maximum value (2^32 - 1) then it just keeps it same, doesn't make it zero.
+
 
 DDR2 Breakup
 For every image we need 307200 32bit entries. Choose 512*1024 entries aka 19 bits
