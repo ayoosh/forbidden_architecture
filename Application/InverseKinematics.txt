@@ -1,1 +1,151 @@
-# Sin function, R30 has angle
+# Inverse Kinematics
+# Takes angles from memory and stores XY Cordinate of arm
+# R2 - Input location base address
+# R3 - Output Algo location base address
+# R4 - Output NPU location base address
+# R5 - Tic Counter Address
+
+# R6 - theta 1
+# R7 - theta 2
+# R8 - Address offset / counter
+# R9 - Input Address
+# R10 - Output Algo address
+# R11 - Output NPU address
+# R12 - Cos theta 1
+# R13 - Sin theta 1
+# R14 - theta 1 + theta 2
+# R15 - Cos theta 1 + theta 2
+# R16 - Sin theta 1 + theta 2
+# R17 - L1
+# R18 - L2
+# R19 - X
+# R20 - Y
+# R21 - value 2
+
+LLW R2 0x0000 ;
+LHW R2 0x00c0 ;
+LLW R3 0x1000 ;
+LHW R3 0x00c0 ;
+LLW R4 0x2000 ;
+LHW R4 0x00c0 ;
+LLW R5 0x0006 ;
+LHW R5 0x0800 ;
+LLW R21 0x0002 ;
+LHW R21 0x0000 ;
+
+# ### Start tic counter
+
+# Update properly when you get L1 and L2 for now make it float 1
+LLW R17 0x0000 ;
+LHW R17 0x3f80 ;
+LLW R18 0x0000 ;
+LHW R18 0x3f80 ;
+
+ADD R8 R0 R0 ; # Loop counter
+
+# Start of loop
+ADD R9 R2 R8 ;
+ADD R10 R3 R8 ;
+
+LOAD R6 R9 0x0 ;
+LOAD R7 R9 0x1 ;
+FADD R14 R6 R7 ;
+
+ADD R30 R6 R0 ;
+CALL COS ;
+ADD R12 R0 R29 ;
+FMUL R12 R17 R12 ;
+ADD R30 R6 R0 ;
+CALL SIN ;
+ADD R13 R0 R29 ;
+FMUL R13 R17 R13 ;
+
+ADD R30 R14 R0 ;
+CALL COS ;
+ADD R15 R0 R29 ;
+FMUL R15 R18 R15 ;
+ADD R30 R14 R0 ;
+CALL SIN ;
+ADD R16 R0 R29 ;
+FMUL R16 R18 R16 ;
+
+FADD R19 R12 R15 ;
+FADD R20 R13 R16 ;
+
+STORE R19 R10 0x0 ;
+STORE R20 R10 0x1 ;
+
+ADD R8 R8 R21 ;
+
+
+
+
+
+
+
+# SIN function
+# R30 has angle in float radians, between -pi to +pi
+# R29 is return value
+# regs used R29, R28, R27, R26, R25
+
+SIN ADD R29 R0 R30 ; # Copy angle to R29
+FMUL R28 R30 R30 ; # R28 = angle^2
+
+FMUL R27 R30 R28 ; # R 27 = angle^3
+LLW R26 0x0000 ;
+LHW R26 0x40C0 ; # R26 = FLOAT 6
+FDIV R25 R27 R26 ;
+FSUB R29 R29 R25 ;
+
+FMUL R27 R27 R28 ; # R27 = angle^5
+LLW R26 0x0000 ;
+LHW R26 0x42f0 ; # R26 = FLOAT 120
+FDIV R25 R27 R26 ;
+FADD R29 R29 R25 ;
+
+FMUL R27 R27 R28 ; # R27 = angle^7
+LLW R26 0x8000 ;
+LHW R26 0x459d ; # R26 = FLOAT 5040
+FDIV R25 R27 R26 ;
+FSUB R29 R29 R25 ;
+
+FMUL R27 R27 R28 ; # R27 = angle^9
+LLW R26 0x3000 ;
+LHW R26 0x48b1 ; # R26 = FLOAT 362880
+FDIV R25 R27 R26 ;
+FADD R29 R29 R25 ;
+RET ;
+
+
+# COS function
+# R30 has angle in float radians, between -pi to +pi
+# R29 is return value
+# regs used R29, R28, R27, R26, R25
+
+COS LLW R29 0x0000 ; # R29 = 1
+LHW R29 0x3f80 ;
+FMUL R28 R30 R30 ; # R28 = angle^2
+
+LLW R26 0x0000 ;
+LHW R26 0x4000 ; # R26 = FLOAT 2
+FDIV R25 R28 R26 ;
+FSUB R29 R29 R25 ;
+
+FMUL R27 R28 R28 ; # R27 = angle^4
+LLW R26 0x0000 ;
+LHW R26 0x41c0 ; # R26 = FLOAT 24
+FDIV R25 R27 R26 ;
+FADD R29 R29 R25 ;
+
+FMUL R27 R27 R28 ; # R27 = angle^6
+LLW R26 0x0000 ;
+LHW R26 0x4434 ; # R26 = FLOAT 720
+FDIV R25 R27 R26 ;
+FSUB R29 R29 R25 ;
+
+FMUL R27 R27 R28 ; # R27 = angle^8
+LLW R26 0x8000 ;
+LHW R26 0x471d ; # R26 = FLOAT 40320
+FDIV R25 R27 R26 ;
+FADD R29 R29 R25 ;
+RET ;
