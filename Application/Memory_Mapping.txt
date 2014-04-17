@@ -18,6 +18,9 @@ SPART
 DVI
 0x800 0004 - VGA Addr register used by CPU to indicate start address of stored image, Call FLUSH before updating.
 
+0x800 0005 - Tic Counter
+
+0x800 0006 - Tic Counter
 
 DDR2 Breakup
 For every image we need 307200 32bit entries. Choose 512*1024 entries aka 19 bits
@@ -26,7 +29,7 @@ address space per image instead. We have 2 input images. And 4 corresponding out
 0x020 0000 - 0x03F FFFF - Input Image 2
 0x040 0000 - 0x05F FFFF - Output Image 1 Algo
 0x060 0000 - 0x07F FFFF - Output Image 1 NPU
-0x080 0000 - 0x09F FFFF - Output Image 2 Also
+0x080 0000 - 0x09F FFFF - Output Image 2 Algo
 0x0A0 0000 - 0x0BF FFFF - Output Image 2 NPU
 
 0x0C0 0000 - 0x0C0 0FFF - Inversek2j Inputs, 2048 input sets (every set has 2 values)
