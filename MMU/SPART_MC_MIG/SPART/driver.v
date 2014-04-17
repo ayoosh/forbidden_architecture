@@ -21,16 +21,27 @@
 module driver(
     input clk,
     input rst,
+	
+	// Connections to/from spart module.
     output reg iocs,
     output reg iorw,
     input rda,
     input tbr,
-    output reg [1:0] ioaddr,
+	output reg [1:0] ioaddr,
     inout [7:0] databus,
-	output reg [31:0] data_ioaddr,
-	output reg data_wr_rdy,
-	input [8:0] piso_out
-//	input clk_200
+	input [8:0] piso_out,
+	
+	// Input connections from DDR2 for ChipScope
+//	input clk0_tb,
+//	input clk200_out,
+	
+	// Connections to/from SPART_Cache interfaqce
+	input spart_data_wren,
+	input spart_data_rden,
+    output reg [31:0] data_rx,
+	input [31:0] data_tx,
+	output reg [31:0] status_register,
+	output reg data_rdy
     );
 
 	parameter IDLE = 2'b00;
@@ -42,6 +53,7 @@ module driver(
 	reg [1:0] next_state;
 	reg [1:0] ready_rw;
 	reg [7:0] databus_drive;  // Data which will drive the bus
+	reg [31:0] data_to_be_transmitted;
 
 	wire [7:0] div_low;
 	wire [7:0] div_high;
@@ -52,14 +64,17 @@ module driver(
 	
 	reg data_received;
 	reg data_written;
+	reg start_receiver;
+	reg start_transmitter;
 	
 	reg data_spart_rdy;
 	reg data_spart_rdy_next = 1'b0;
 	reg tbr_changed;
 	
-	wire [35:0] control;
-	wire [7:0] trigger;
-	wire [255:0] dataport;
+	
+//	wire [35:0] control;
+//	wire [7:0] trigger;
+//	wire [255:0] dataport;
 	
 	assign div_low = 8'hA3;
 	assign div_high = 8'h00;
@@ -67,52 +82,119 @@ module driver(
 // Read case, needs to be changed
 assign databus =  (iorw == 0 & iocs == 1 ) ? databus_drive : 8'hzz;
 
-always @ (posedge clk) begin
+always @(posedge clk)
+begin
 	if(rst)
 	begin
-		data_ioaddr <= 32'd0;
-		data_wr_rdy <= 1'b0;
-		counter <= 2'd0;
-		data_received <= 1'b0;
-	end
-	else if (iorw == 1 && iocs == 1 && rda == 1)   // Read command
-	begin
-		data_wr_rdy <= 1'b0;
-		case(counter)
-		3'd0:	data_ioaddr[7:0] <= databus;
-		3'd1:	data_ioaddr[15:8] <= databus;
-		3'd2:	data_ioaddr[23:16] <= databus;
-		3'd3:	begin
-				data_ioaddr[31:24] <= databus;
-				data_received <= 1'b1;
-				data_wr_rdy <= 1'b1;
-				end
-		endcase
-		counter <= counter +1'b1;
+		data_rdy <= 1'b0;
 	end
 	else
 	begin
-		if(data_written)
+		data_rdy <= 1'b0;
+		if(spart_data_rden && !start_transmitter && !start_receiver)
 		begin
-			data_received <= 1'b0;
+			data_rdy <= 1'b1;
+		end
+		else if(spart_data_wren && !start_receiver && !start_transmitter)
+		begin
+			data_rdy <= 1'b1;
 		end
 		else
 		begin
-			data_received <= data_received;
+			data_rdy <= 1'b0;
 		end
-		data_wr_rdy <= 1'b0;
+	end
+end
+
+
+always @(posedge clk)
+begin
+	if(rst)
+	begin
+		status_register <= 32'd0;
+	end
+	else
+	begin
+		if(spart_data_rden && !start_transmitter && !start_receiver)
+		begin
+			status_register[1] <= 1'b0;
+		end
+		else if(data_received && !status_register[1])
+		begin
+			status_register[1] <= 1'b1;
+		end
+		else
+		begin
+			status_register[1] <= status_register[1];
+		end
+		
+		if(spart_data_wren && !start_receiver && !start_transmitter)
+		begin
+			status_register[0] <= 1'b0;
+		end
+		else if(data_written && !status_register[0])
+		begin
+			status_register[0] <= 1'b1;
+		end
+		else
+		begin
+			status_register[0] <= status_register[0];
+		end
+	end
+end
+
+
+always @ (posedge clk) begin
+	if(rst)
+	begin
+		data_rx <= 32'd0;
+		counter <= 2'd0;
+		data_received <= 1'b0;
+		start_receiver <= 1'b0;
+	end
+	else
+	begin
+		data_received <= 1'b0;
+		if(spart_data_rden && !data_received && !start_receiver)
+		begin
+			start_receiver <= 1'b1;
+		end
+		else if(data_received && start_receiver)
+		begin
+			start_receiver <= 1'b0;
+		end
+		else
+		begin
+			start_receiver <= start_receiver;
+		end
+		if (iorw == 1 && iocs == 1 && rda == 1)   // Read command
+		begin
+			case(counter)
+			3'd0:	data_rx[7:0] <= databus;
+			3'd1:	data_rx[15:8] <= databus;
+			3'd2:	data_rx[23:16] <= databus;
+			3'd3:	begin
+					data_rx[31:24] <= databus;
+					data_received <= 1'b1;
+					end
+			endcase
+			counter <= counter +1'b1;
+		end
+		else
+		begin
+			data_received <= 1'b0;
+		end
 	end
 end
 
 		
 	always @ (posedge clk)
 	begin
-	if(rst) begin
-	state <= IDLE;
-	
-  end
+		if(rst) begin
+			state <= IDLE;
+		end
 	else
-	state <= next_state;
+		state <= next_state;
 	end
 	
 	
@@ -124,8 +206,33 @@ end
 		data_spart_rdy <= data_spart_rdy_next;
 	end
 
-	
-	always @(state or tbr or rda or ready_rw or data_received or data_spart_rdy or tbr_changed)
+	always @(posedge clk)
+	begin
+		if(rst)
+		begin
+			start_transmitter <= 1'b0;
+			data_to_be_transmitted <= 32'd0;
+		end
+		else
+		begin			
+			if(spart_data_wren && !start_transmitter && !data_written)
+			begin
+				start_transmitter <= 1'b1;
+				data_to_be_transmitted <= data_tx;
+			end
+			else if(data_written && start_transmitter)
+			begin
+				start_transmitter <= 1'b0;
+			end
+			else
+			begin
+				start_transmitter <= start_transmitter;
+			end
+		end
+	end
+
+//	always @(state or tbr or rda or ready_rw or data_received or data_spart_rdy or tbr_changed)
+	always @(*)
 	begin
 //	if(rst)
 //		data_spart_rdy_next = 1'b0;
@@ -133,9 +240,9 @@ end
 //	begin
 	case(state)
 	IDLE : begin 
-				if ( (rda == 1) && (ready_rw == 2) && !data_received )
+				if ( (rda == 1) && (ready_rw == 2) && start_receiver && !start_transmitter)
 					next_state = READ;
-				else if((tbr == 1) && (ready_rw == 2 ) && data_received && !data_spart_rdy)
+				else if((tbr == 1) && (ready_rw == 2 ) && start_transmitter && !data_spart_rdy)
 				begin
 					next_state = WRITE;
 					data_spart_rdy_next = 1'b1;
@@ -214,11 +321,11 @@ end
 					iocs <= 1;
 					iorw <= 0;
 					case(counter_wr)
-					2'd0: databus_drive <= data_ioaddr[7:0];  // Generate random value may be later
-					2'd1: databus_drive <= data_ioaddr[15:8];
-					2'd2: databus_drive <= data_ioaddr[23:16];
+					2'd0: databus_drive <= data_to_be_transmitted[7:0];  // Generate random value may be later
+					2'd1: databus_drive <= data_to_be_transmitted[15:8];
+					2'd2: databus_drive <= data_to_be_transmitted[23:16];
 					2'd3: begin
-							databus_drive <= data_ioaddr[31:24];
+							databus_drive <= data_to_be_transmitted[31:24];
 							data_written <= 1'b1;
 						  end
 					endcase
@@ -238,34 +345,36 @@ end
 			endcase
 		end
 	end
+	
 	/*
 	icon icon_1(
 		.CONTROL0(control)
 	);
 	
 	ila ila_1(
-		.CLK(clk),
+		.CLK(clk200_out),
 		.CONTROL(control),
 		.DATA(dataport),
 		.TRIG0(trigger)
 	);
 	
 	assign dataport[8:0] = piso_out;
-	assign dataport[40:9] = data_ioaddr;
+	assign dataport[40:9] = data_rx;
 	assign dataport[41] = iocs;
 	assign dataport[42] = iorw;
 	assign dataport[44:43] = counter;
 	assign dataport[46:45] = counter_wr;
 	assign dataport[47] = tbr;
 	assign dataport[48] = rda;
-	//assign dataport[49] = clk;
+	assign dataport[49] = clk0_tb;
 	assign dataport[50] = data_received;
 	assign dataport[51] = data_spart_rdy;
 	assign dataport[53:52] = state;
 	assign dataport[55:54] = ioaddr;
 	assign dataport[56] = tbr_changed;
+	assign dataport[88:57] = data_tx;
 	
-	assign trigger[0] = clk;
+	assign trigger[0] = clk0_tb;
 	assign trigger[1] = iocs;
 	assign trigger[2] = iorw;
 	assign trigger[3] = tbr;
