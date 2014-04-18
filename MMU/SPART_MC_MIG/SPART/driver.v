@@ -30,7 +30,7 @@ module driver(
 	output reg [1:0] ioaddr,
     inout [7:0] databus,
 	input [8:0] piso_out,
-	
+	input clear_status_rd,
 	// Input connections from DDR2 for ChipScope
 //	input clk0_tb,
 //	input clk200_out,
@@ -145,8 +145,13 @@ begin
 	else
 	begin
 		
-		status_register[1] <= read_ready;
-		
+		if(read_ready)
+			status_register[1] <= 1'b1;
+		else if(clear_status_rd)
+			status_register[1] <= 1'b0;
+		else
+			status_register[1] <= status_register[1];
+			
 		status_register[0] <= write_ready;
 	end
 end

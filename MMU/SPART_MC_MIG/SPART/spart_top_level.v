@@ -51,14 +51,14 @@ module spart_top_level(
 	wire [31:0] data_tx;
 	wire [31:0] data_rx;
 	wire [31:0] status_register;
-	
+	wire clear_status_rd;
 	
 	assign spart_data_rden = (~io_rw_data && io_valid_data);
 	assign spart_data_wren = (io_rw_data && io_valid_data);
 	
 	assign io_rd_data = (mem_addr == 28'h800_0000) ? data_rx : ((mem_addr == 28'h800_0001) ? status_register : 28'd0);
 	assign data_tx = io_wr_data;
-	
+	assign clear_status_rd = (mem_addr == 28'h800_0000) ? 1'b1 : 1'b0;
 	assign io_ready_data = (spart_data_rden) ? data_rdy : ( (spart_data_wren) ? data_rdy : 1'b0 );
 	
 	// Instantiate your SPART here
@@ -93,6 +93,7 @@ module spart_top_level(
 					.status_register(status_register),
 					.spart_data_wren(spart_data_wren),
 					.spart_data_rden(spart_data_rden),
+					.clear_status_rd(clear_status_rd),
 					.data_rdy(data_rdy),
 					.piso_out(piso_out)
 					 );

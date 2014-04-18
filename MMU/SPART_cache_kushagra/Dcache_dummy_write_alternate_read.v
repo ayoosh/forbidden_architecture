@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module Dcache_dummy #(
-      parameter NUMBER_OF_ACCESS = 2
+      parameter NUMBER_OF_ACCESS = 1000
 		)
 (
 		input clk,
@@ -44,7 +44,7 @@ module Dcache_dummy #(
 		
     );
 
-	reg [31:0] temp_mem [0:49];
+	reg [31:0] temp_mem [0:NUMBER_OF_ACCESS];
 	reg [31:0] rom_addr_rd;
 	reg [31:0] rom_addr_wr;	
 	reg [31:0] temp_data;

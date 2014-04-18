@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/Users/Rohit/Documents/Xilinx_Projects/SPART_test_Kushagra/TB_spart_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="TB_spart" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="41" />
+   <wvobject fp_name="/TB_spart/txd" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">txd</obj_property>
+      <obj_property name="ObjectShortName">txd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/RX" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">RX</obj_property>
+      <obj_property name="ObjectShortName">RX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/rda" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rda</obj_property>
+      <obj_property name="ObjectShortName">rda</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/tbr" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">tbr</obj_property>
+      <obj_property name="ObjectShortName">tbr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/databus" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">databus[7:0]</obj_property>
+      <obj_property name="ObjectShortName">databus[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/piso_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">piso_out[8:0]</obj_property>
+      <obj_property name="ObjectShortName">piso_out[8:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/spart_data_wren" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">spart_data_wren</obj_property>
+      <obj_property name="ObjectShortName">spart_data_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/spart_data_rden" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">spart_data_rden</obj_property>
+      <obj_property name="ObjectShortName">spart_data_rden</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/data_tx" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_tx[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_tx[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/div_low" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">div_low[7:0]</obj_property>
+      <obj_property name="ObjectShortName">div_low[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/div_high" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">div_high[7:0]</obj_property>
+      <obj_property name="ObjectShortName">div_high[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/iocs" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">iocs</obj_property>
+      <obj_property name="ObjectShortName">iocs</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/iorw" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">iorw</obj_property>
+      <obj_property name="ObjectShortName">iorw</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/ioaddr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ioaddr[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ioaddr[1:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/data_rx" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_rx[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_rx[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/status_register" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">status_register[31:0]</obj_property>
+      <obj_property name="ObjectShortName">status_register[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/data_rdy" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">data_rdy</obj_property>
+      <obj_property name="ObjectShortName">data_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/state" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">state[1:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/next_state" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">next_state[1:0]</obj_property>
+      <obj_property name="ObjectShortName">next_state[1:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/ready_rw" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ready_rw[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ready_rw[1:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/databus_drive" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">databus_drive[7:0]</obj_property>
+      <obj_property name="ObjectShortName">databus_drive[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/data_to_be_transmitted" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_to_be_transmitted[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_to_be_transmitted[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/counter" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">counter[1:0]</obj_property>
+      <obj_property name="ObjectShortName">counter[1:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/counter_wr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">counter_wr[1:0]</obj_property>
+      <obj_property name="ObjectShortName">counter_wr[1:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/data_received" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">data_received</obj_property>
+      <obj_property name="ObjectShortName">data_received</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/data_written" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">data_written</obj_property>
+      <obj_property name="ObjectShortName">data_written</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/start_receiver" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">start_receiver</obj_property>
+      <obj_property name="ObjectShortName">start_receiver</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/start_transmitter" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">start_transmitter</obj_property>
+      <obj_property name="ObjectShortName">start_transmitter</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/data_spart_rdy" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">data_spart_rdy</obj_property>
+      <obj_property name="ObjectShortName">data_spart_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/data_spart_rdy_next" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">data_spart_rdy_next</obj_property>
+      <obj_property name="ObjectShortName">data_spart_rdy_next</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/tbr_changed" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">tbr_changed</obj_property>
+      <obj_property name="ObjectShortName">tbr_changed</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/read_ready" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">read_ready</obj_property>
+      <obj_property name="ObjectShortName">read_ready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/driver0/write_ready" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">write_ready</obj_property>
+      <obj_property name="ObjectShortName">write_ready</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/spart_interface/spart0/piso_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">piso_out[8:0]</obj_property>
+      <obj_property name="ObjectShortName">piso_out[8:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/proc/mem_rw_data1" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_rw_data1</obj_property>
+      <obj_property name="ObjectShortName">mem_rw_data1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/proc/mem_data_wr1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_data_wr1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_data_wr1[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/proc/mem_data_addr1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_data_addr1[27:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_data_addr1[27:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/proc/mem_valid_data1" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_valid_data1</obj_property>
+      <obj_property name="ObjectShortName">mem_valid_data1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/TB_spart/uut/proc/mem_data_rd1" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_data_rd1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_data_rd1[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+</wave_config>
