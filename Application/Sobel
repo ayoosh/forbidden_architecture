@@ -1,0 +1,41 @@
+# Sobel
+# First store copy of image to output image to get edges
+
+# R2 Input image addr
+# R3 Output Image Algo addr
+# R4 Output Image NPU addr
+# R5 Input End address
+# R6 Input value
+# R7 1
+# Start with Image 1
+ADD R2 R0 R0 ;
+ADD R3 R0 R0 ;
+LHW R3 0x0040 ;
+ADD R4 R0 R0 ;
+LHW R4 0x0060 ;
+LLW R5 0xB000 ;
+LHW R5 0x0004 ;
+LLW R7 0x0001 ;
+
+SOBEL_1 LOAD R6 R2 0x0 ;
+ADD R2 R2 R7 ;
+STORE R6 R3 0x0 ;
+ADD R6 R6 R7 ;
+STORE R7 R4 0x0 ;
+ADD R4 R4 R7 ;
+
+SUB R0 R2 R5 ;
+BLT SOBEL_1 ; 
+
+# Now start Algo part
+
+# ### Tic counter start
+
+# R2 Input image addr
+# R3 Output Image Algo addr
+# R4 End address
+
+ADD R2 R0 R0 ;
+ADD R3 R0 R0 ;
+LHW R3 0x0040 ;
+

@@ -43,7 +43,14 @@ address space per image instead. We have 2 input images. And 4 corresponding out
 0x0C0 1000 - 0x0C0 1FFF - Inversek2j Algo Outputs, 2048 Output sets (every set has 2 values)
 0x0C0 2000 - 0x0C0 2FFF - Inversek2j NPU Outputs, 2048 Output sets (every set has 2 values)
 
-0x0C0 3000 - 0x0FF FFFF - Unassigned
+0x0C0 3000 - 1 Sobel ALgo tics
+0x0C0 3001 - 1 Sobel NPU tics
+0x0C0 3002 - 2 Sobel ALgo tics
+0x0C0 3003 - 2 Sobel NPU tics
+0x0C0 3004 - Inversek2j ALgo tics
+0x0C0 3005 - Inversek2j NPU tics
+
+0x0C0 3006 - 0x0FF FFFF - Unassigned
 
 0x100 0000 - 0x1FF FFFF - Code segment, Store code from Spart here
 
