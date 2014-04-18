@@ -3,6 +3,7 @@ This CPU code is not final! Note that some changes may occur.
 Remaining:
 - Comment better the code.
 - Full system test.
+- Reset is active low, take care while connecting
 
 In case of any problem or a bug found, please contact Tiago for support.
 To use the Processor in any code just add the following code:

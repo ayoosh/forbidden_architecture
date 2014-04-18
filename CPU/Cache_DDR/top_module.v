@@ -115,9 +115,20 @@ module top_module #
 		parameter INPUT_ADDR_WIDTH 		 = 31 												
 	)
 	 (
-		input 									  clk_in,
+		input 									  clk,
 		input 									  rst,
 		output memory_read_error,
+		
+		
+	input		[27:0]	cache_addr,
+	input		[31:0]	cache_wr,
+	input				cache_rw,
+	input				cache_valid,
+	input				flush,
+
+
+	output		[31:0]	cache_rd,
+	output				cache_ready,
 		
 		inout  [DQ_WIDTH-1:0]              ddr2_dq,
 		output [ROW_WIDTH-1:0]             ddr2_a,
@@ -135,27 +146,8 @@ module top_module #
 		inout  [DQS_WIDTH-1:0]             ddr2_dqs,
 		inout  [DQS_WIDTH-1:0]             ddr2_dqs_n,
 		output [CLK_WIDTH-1:0]             ddr2_ck,
-		output [CLK_WIDTH-1:0]             ddr2_ck_n,
-		
-		// DVI
-	 output hsync,
-    output vsync,
-	 output blank,
-	 output dvi_rst,
-	 
-	 output [7:0] pixel_r,
-    output [7:0] pixel_g,
-    output [7:0] pixel_b,
-	 
-	 output [11:0] D,
-	 
-	 output clk_dvi,
-	 output clk_dvi_n,
-	 inout scl_tri, sda_tri
+		output [CLK_WIDTH-1:0]             ddr2_ck_n
     );
-	
-	// DVI related to be used by Arbiter register
-	wire last_addr_update;
 	
 	wire [255:0] data_wr;
 	wire [255:0] data_rd;
@@ -169,30 +161,12 @@ module top_module #
 	wire high_tie = 1;
 	wire low_tie = 0;
 	
-	wire clk;
-	
-	// ROM temp
-	wire [15:0] rom_addr;
-	wire [63:0] rom_data;
-	
 	// Error monitor
 	wire memory_read_error1;
-	wire memory_read_error2;
+	//wire memory_read_error2;
 	wire memory_read_error3;
 	
-	assign memory_read_error = (memory_read_error1);
-	
-	// Chipscope wires
-	wire app_wdf_wren;
-	wire app_af_wren;
-	wire clk200_out;
-   wire [35:0] control;
-	wire [999:0] dataport;
-	wire [7:0] trigger;
-	 wire locked_dcm;
-	 wire fifo_empty;
-	 wire rd_fifo;
-	 wire done;
+	assign memory_read_error = (memory_read_error1 | memory_read_error3);
 	
 	// I-cache wires
 		wire [255:0]  mem_data_wr1;
@@ -233,7 +207,7 @@ module top_module #
 		.mem_data_rd1(mem_data_rd1), 
 		.mem_data_addr1(mem_data_addr1), 
 		.mem_rw_data1(mem_rw_data1), 
-		.mem_valid_data1(mem_valid_data1),  // for testing purpose 
+		.mem_valid_data1(mem_valid_data1), 
 		.mem_ready_data1(mem_ready_data1), 
 		.mem_data_wr2(mem_data_wr2), 
 		.mem_data_rd2(mem_data_rd2), 
@@ -245,7 +219,7 @@ module top_module #
 		.mem_data_rd3(mem_data_rd3), 
 		.mem_data_addr3(mem_data_addr3), 
 		.mem_rw_data3(mem_rw_data3), 
-		.mem_valid_data3(mem_valid_data3), 
+		.mem_valid_data3(low_tie),  // Disabling DVI 
 		.mem_ready_data3(mem_ready_data3)
 	);
 	
@@ -279,10 +253,7 @@ module top_module #
 		.ddr2_dqs_n(ddr2_dqs_n),
 		.ddr2_ck(ddr2_ck),
 		.ddr2_ck_n(ddr2_ck_n),
-		.clk0_tb(clk0_tb),
-	   .clk200_out(clk200_out),
-		.app_af_wren(app_af_wren),
-		.app_wdf_wren(app_wdf_wren)
+		.clk0_tb(clk0_tb)
 	);
 	
 
@@ -298,142 +269,43 @@ module top_module #
 		.error(memory_read_error1)
 	);
 	
-	Dcache_dummy Dcache_dummy (
+	
+	cache_controller Dcache_inst (
+		.clk 			(clk),
+		.rst_n 			(~rst),
+		.cache_addr		(cache_addr),
+		.cache_wr		(cache_wr),
+		.cache_rw		(cache_rw),
+		.cache_valid	(cache_valid),
+		.flush			(flush),
+		.mem_rd			(mem_data_rd2),
+		.mem_ready		(mem_ready_data2),
+
+		.cache_rd		(cache_rd),
+		.cache_ready	(cache_ready),
+		.mem_addr		(mem_data_addr2),
+		.mem_wr			(mem_data_wr2),
+		.mem_rw			(mem_rw_data2),
+		.mem_valid_out	(mem_valid_data2)
+	);
+	
+		DVI_dummy DVI_dummy (
 		.clk(clk), 
 		.rst(rst), 
-		.mem_data_wr1(mem_data_wr2), 
-		.mem_data_rd1(mem_data_rd2), 
-		.mem_data_addr1(mem_data_addr2), 
-		.mem_rw_data1(mem_rw_data2), 
-		.mem_valid_data1(mem_valid_data2), 
-		.mem_ready_data1(mem_ready_data2),
-		.rom_addr(rom_addr),
-		.rom_data(rom_data)
+		.mem_data_wr1(mem_data_wr3), 
+		.mem_data_rd1(mem_data_rd3), 
+		.mem_data_addr1(mem_data_addr3), 
+		.mem_rw_data1(mem_rw_data3), 
+		.mem_valid_data1(mem_valid_data3), 
+		.mem_ready_data1(mem_ready_data3),
+		.error(memory_read_error3)
 	);
 	
 
-		vgamult DVI_interface (
-		.clk_100mhz(clk), 
-		.rst(rst), 
-		.pixel_r(pixel_r), 
-		.pixel_g(pixel_g), 
-		.pixel_b(pixel_b), 
-		.hsync(hsync), 
-		.vsync(vsync), 
-		.blank(blank), 
-		.clk(clk_dvi), 
-		.clk_n(clk_dvi_n), 
-		.D(D), 
-		.dvi_rst(dvi_rst), 
-		.scl_tri(scl_tri), 
-		.sda_tri(sda_tri), 
-		.data_rd(mem_data_rd3), 
-		.mem_ready_data(mem_ready_data3), 
-		.data_wr(mem_data_wr3), 
-		.mem_data_addr(mem_data_addr3), 
-		.mem_rw_data(mem_rw_data3), 
-		.mem_valid_data(mem_valid_data3), 
-		.last_addr_update(last_addr_update),
-		.locked_dcm(locked_dcm),
-	   .fifo_empty(fifo_empty),
-	   .rd_fifo(rd_fifo),
-	   .done(done)
-	);
-	
-rom64x38400 rom_image (
-  .clka(clk), // input clka
-  .addra(rom_addr), // input [15 : 0] addra
-  .douta(rom_data) // output [63 : 0] douta
-);
-/*
-		icon icon_1
-	(
-		.CONTROL0(control)
-	);
-	
-	ila ila_1
-	(
-		.CLK(clk200_out),
-		.CONTROL(control),
-		.DATA(dataport),
-		.TRIG0(trigger)
-	);
-	*/
-//	assign dataport[0] = clk0_tb;
-	assign dataport[256:1] = mem_data_wr3;
-	assign dataport[512:257] = mem_data_rd3;
-	assign dataport[540:513] = mem_data_addr3;
-	assign dataport[541] = mem_rw_data3;
-	
-	// Arbiter signals
-	assign dataport[640:613] = mem_data_addr2;
-	assign dataport[696:666] = data_addr;
-	
-	assign dataport[825] = mem_ready_data3;
-	assign dataport[826] = mem_ready_data2;
-	assign dataport[827] = memory_read_error;
-	assign dataport[828] = mem_valid_data1;
-	assign dataport[829] = mem_ready_data1;
-	
-	
-	assign dataport[830] = mc_rd_valid;
-	assign dataport[831] = data_wren;
-	assign dataport[832] = data_rden;
-	assign dataport[833] = mc_wr_rdy;
-	 
-
-	 
-// DVI signals
-//	assign dataport[950] = clk_dvi;
-//	assign dataport[951] = clk_dvi_n;
-	assign dataport[952] = scl_tri;
-	assign dataport[953] = sda_tri;
-	assign dataport[965:954] = D;
-	assign dataport[966] = dvi_rst;
-	assign dataport[967] = hsync;
-	assign dataport[968] = vsync;
-	assign dataport[969] = blank;
-	
-	assign dataport[970] = locked_dcm;
-	assign dataport[971] = fifo_empty;
-	assign dataport[972] = rd_fifo;
-	assign dataport[973] = done;
-	
-	assign trigger[0] = clk0_tb;
-	assign trigger[1] = mc_rd_valid;
-	assign trigger[2] = app_wdf_wren;
-	assign trigger[3] = app_af_wren;
-	assign trigger[4] = data_wren;
-	assign trigger[5] = data_rden;
-	assign trigger[6] = mc_wr_rdy;
-	assign trigger[7] = memory_read_error;
-	
-
-	
-		npu npu_module (
-		.CLK(clk), 
+	/*
+	npu npu_module(
+		.CLK(clk),
 		.RST(rst)
 	);
-	
-	
-		cache_controller cache_module (
-		.clk(clk), 
-		.rst_n(rst)
-	);
-
-		Processor processor_inst (
-		.clk(clk), 
-		.rst_n(rst),
-		.clk_x2(CLK2X_OUT)
-	);
-	
-	Reg_clk_Gen instance_name (
-    .CLKIN_IN(clk_in), 
-    .RST_IN(rst), 
-    .CLKIN_IBUFG_OUT(CLKIN_IBUFG_OUT), 
-    .CLK0_OUT(clk), 
-    .CLK2X_OUT(CLK2X_OUT), 
-    .LOCKED_OUT(LOCKED_OUT)
-    );
-	
+	*/
 endmodule
