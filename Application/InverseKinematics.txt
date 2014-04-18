@@ -81,7 +81,7 @@ STORE R20 R10 0x1 ;
 
 ADD R8 R8 R21 ;
 SUB R0 R8 R22 ;
-BLT IK_L1 ;
+B LT IK_L1 ;
 
 # Read tic counter and do something with the value
 
@@ -107,7 +107,7 @@ STORE R20 R11 0x1 ;
 
 ADD R8 R8 R21 ;
 SUB R0 R8 R22 ;
-BLT IK_L2 ;
+B LT IK_L2 ;
 
 
 
