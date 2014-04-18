@@ -25,7 +25,7 @@ STORE R7 R4 0x0 ;
 ADD R4 R4 R7 ;
 
 SUB R0 R2 R5 ;
-BLT SOBEL_1 ; 
+B LT SOBEL_1 ; 
 
 # Now start Algo part
 
