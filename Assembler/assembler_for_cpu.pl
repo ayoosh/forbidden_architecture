@@ -4,6 +4,9 @@ use Switch;
 open(DATA, $ARGV[0]) or die "Can't open";
 @string = <DATA>;
 
+#start_address is in decimal......................................................
+$start_address = hex($ARGV[1]);
+
 open my $overwrite, '>>', 'machine_code.txt' or die "error trying to overwrite: $!";
 
 my @machine_code;
@@ -14,7 +17,7 @@ my @machine_code;
                 "CALL" => "010001", "RET" => "010010", "LOAD" =>"010100", "STORE" =>"010101",
                 "MULT" => "010110", "DIV" => "010111", "FADD" =>"011000", "FSUB" =>"011001",
                 "FMULT" => "011010", "FDIV" => "011011", "FTOI" =>"011100", "ITOF" =>"011101",
-                "SQRT" => "011110", "HALT" => "011111",
+                "SQRT" => "011110", "HALT" => "011111","FLUSH"=> "001100",
                 "ENQC0" => "100000", "ENQC1" => "101000", "ENQC2" => "110000", "ENQC3" => "111000",
                 "DEQC0" => "100001", "DEQC1" => "101001", "DEQC2" => "110001", "DEQC3" => "111001",
                 "ENQD0" => "100100", "ENQD1" => "101100", "ENQD2" => "110100", "ENQD3" => "111100",
@@ -88,18 +91,17 @@ while($line_number<$line_count)
                 case "SRA"  { append_3(); }
 		#expected offset in decimal-------------------------------------
 
-		case "B"{ 
-			$result = $instruction[$current_entry]." ".$instruction[$current_entry+1]." ".$instruction[$current_entry+2]. " ".";";
-           	}	
+		case "B"{ $result = $instruction[$current_entry]." ".$instruction[$current_entry+1]." ".$instruction[$current_entry+2]. " ".";"; }	
 			
-		case "CALL" { append_5(); }
-		case "RET" { append_5(); }
+		case "CALL" { $result = $instruction[$current_entry]." ".$instruction[$current_entry+1]." ".";"}
 		#expected address in hex---------------------------------------------------
 
 		case "LOAD" { append_6(); }
 		case "STORE" { append_6(); }
 		#offsets in hex--------------------------------------------------------
 
+		case "RET" { append_7(); }
+		case "FLUSH" { append_7(); }		
 		case "HALT" { append_7(); }
 		#no operands needed------------------------------------------------------
 		
@@ -125,6 +127,7 @@ while($line_number<$line_count)
 
 		case "LHW" { append_10(); }
 		case "LLW" { append_10(); }
+
 	#needs 
 	}
 
@@ -147,36 +150,53 @@ while($line_number < $machine_code_line_number){
         @instruction = split(/ /,$machine_code[$line_number]); #instruction holds each component of an instrucion
 
 	#print "$instruction[0] --- $instruction[1] \n";
-	unless($instruction[0] eq "B"){
+	unless(($instruction[0] eq "B") || ($instruction[0] eq "CALL")){
 		$line_number++;	
 	} 
 	else{
-		$destination = $operations{$instruction[0]}.$branch{$instruction[1]}."00";
-		#print "$destination --- before adding offset \n";
-		$off = $labels{$instruction[2]}; 
-		$offset = $off - $line_number-1;
-		$dest = sprintf("%021b",$offset);
-		#print "Line number for label is $off\n";
-		#print "Branch instruction is at $line_number \n";
-		#print "Offset is $offset \n";
-		#print "Offset in binary is $dest\n" ;
-		if($offset>=0){	$destination = $destination.$dest;}
-		else{ $destination = $destination.substr($dest, 43,21); }
-		#print "$destination \n";
-		$parameter = 7;
-		convert();
-		#print "$result\n\n\n";
-		$machine_code[$line_number] = $result;
-		$line_number++
+		if($instruction[0] eq "B"){
+			$destination = $operations{$instruction[0]}.$branch{$instruction[1]}."00";
+			unless(exists $branch{$instruction[1]}){
+				die "Incorrect label $instruction[1]\n";
+			}
+		
+			unless(exists $labels{$instruction[2]}) {
+				die "Invalid label...\n ";
+			}
+			$off = $labels{$instruction[2]}; 
+			$offset = $off - $line_number-1;
+			$dest = sprintf("%021b",$offset);
+			if($offset>=0){	$destination = $destination.$dest;}
+			else{ $destination = $destination.substr($dest, 43,21); }
+			#print "$destination \n";
+			print "$destination \n";
+			$parameter = 7;
+			convert();
+			#print "$result\n\n\n";
+			$machine_code[$line_number] = $result;
+			$line_number++
+		}
+		else{
+			 $destination = $operations{$instruction[0]};
+			unless(exists $labels{$instruction[1]}) {
+                                die "Invalid label... $instruction[1]\n ";
+                        }
+			 $offset = $labels{$instruction[1]} + $start_address ;
+			 $off = sprintf("%026b", $offset);
+			 $destination = $destination.$off;
+			 $parameter = 7;
+	                 convert();
+			 $machine_code[$line_number] = $result;
+		                        $line_number++
+		}	
 	}
 }
-
 
 print "\n\n\n";
 $counti = $#machine_code;
 for $i(0..$counti){
 	print $overwrite "$machine_code[$i]\n";
-}
+}	
 
 
 sub append_1 {
@@ -303,12 +323,12 @@ sub convert{
                 case "0111" {   $result = $result."7"; }
                 case "1000" {   $result = $result."8"; }
                 case "1001" {   $result = $result."9"; }
-                case "1010" {   $result = $result."a"; }
-                case "1011" {   $result = $result."b"; }
-                case "1100" {   $result = $result."c"; }
-                case "1101" {   $result = $result."d"; }
-                case "1110" {   $result = $result."e"; }
-                case "1111" {   $result = $result."f"; }
+                case "1010" {   $result = $result."A"; }
+                case "1011" {   $result = $result."B"; }
+                case "1100" {   $result = $result."C"; }
+                case "1101" {   $result = $result."D"; }
+                case "1110" {   $result = $result."E"; }
+                case "1111" {   $result = $result."F"; }
       		}
 	}
 	if( $parameter == 6) {
