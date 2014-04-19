@@ -1,4 +1,15 @@
-`timescale 1ns / 1ps
+`include "npu_state_machine.v"
+`include "npu_scheduler.v"
+`include "npu_config_interface.v"
+`include "npu_input_interface.v"
+`include "npu_compute_unit.v"
+`include "npu_sigmoid_unit.v"
+`include "npu_output_interface.v"
+
+`include "npu_circ_buf_large.v"
+`include "npu_circ_buf_small.v"
+`include "npu_proc_eng.v"
+
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
