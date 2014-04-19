@@ -57,6 +57,15 @@ module Processor(
 
 	reg		[31:0]	id_if_NextPC;
 	
+	reg				rStall;
+	
+	always @ (posedge clk) begin
+		if(!rst_n)
+			rStall <= 1'b0;
+		else
+			rStall <= stall;
+	end
+	
 	// External modules instantiation
 	InstructionFetchStage InstructionFetchStage_0 (
 		// Ouputs
@@ -78,7 +87,7 @@ module Processor(
 		.iBranchMissCmd		(branchMissPredict),
 		.iJumpCmd			(jumpCmd),
 		.iRetCmd			(retCmd),
-		.iHalt				(haltPC | stall)
+		.iHalt				(haltPC | rStall)
 	);
 	// TODO: Check input signals for Fetch Stage.
 
