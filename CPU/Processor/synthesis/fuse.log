@@ -1,0 +1,88 @@
+Running: C:\Xilinx\14.2\ISE_DS\ISE\bin\nt64\unwrapped\fuse.exe -intstyle ise -incremental -lib unisims_ver -lib unimacro_ver -lib xilinxcorelib_ver -lib secureip -o E:/CPU/synthesis/Processor_t_isim_beh.exe -prj E:/CPU/synthesis/Processor_t_beh.prj work.Processor_t work.glbl 
+ISim P.28xd (signature 0xa0883be4)
+Number of CPUs detected in this system: 2
+Turning on mult-threading, number of parallel sub-compilation jobs: 4 
+Determining compilation order of HDL files
+Analyzing Verilog file "E:/CPU/synthesis/../ipcore_dir/FPU_Adder.v" into library work
+Analyzing Verilog file "E:/CPU/synthesis/../ipcore_dir/FPU_Divider.v" into library work
+WARNING:HDLCompiler:687 - "E:/CPU/synthesis/../ipcore_dir/FPU_Divider.v" Line 15691: Illegal redeclaration of module <glbl>.
+Analyzing Verilog file "E:/CPU/synthesis/../ipcore_dir/FPU_Ftoi.v" into library work
+WARNING:HDLCompiler:687 - "E:/CPU/synthesis/../ipcore_dir/FPU_Ftoi.v" Line 2666: Illegal redeclaration of module <glbl>.
+Analyzing Verilog file "E:/CPU/synthesis/../ipcore_dir/FPU_Itof.v" into library work
+WARNING:HDLCompiler:687 - "E:/CPU/synthesis/../ipcore_dir/FPU_Itof.v" Line 2994: Illegal redeclaration of module <glbl>.
+Analyzing Verilog file "E:/CPU/synthesis/../ipcore_dir/FPU_Multiplier.v" into library work
+WARNING:HDLCompiler:687 - "E:/CPU/synthesis/../ipcore_dir/FPU_Multiplier.v" Line 2190: Illegal redeclaration of module <glbl>.
+Analyzing Verilog file "E:/CPU/synthesis/../ipcore_dir/FPU_Sqrt.v" into library work
+WARNING:HDLCompiler:687 - "E:/CPU/synthesis/../ipcore_dir/FPU_Sqrt.v" Line 9949: Illegal redeclaration of module <glbl>.
+Analyzing Verilog file "E:/CPU/synthesis/../ipcore_dir/MDU_Divider.v" into library work
+WARNING:HDLCompiler:687 - "E:/CPU/synthesis/../ipcore_dir/MDU_Divider.v" Line 54343: Illegal redeclaration of module <glbl>.
+Analyzing Verilog file "E:/CPU/synthesis/../src/testbenches/Processor_t.v" into library work
+Analyzing Verilog file "C:/Xilinx/14.2/ISE_DS/ISE//verilog/src/glbl.v" into library work
+WARNING:HDLCompiler:687 - "C:/Xilinx/14.2/ISE_DS/ISE//verilog/src/glbl.v" Line 5: Illegal redeclaration of module <glbl>.
+Starting static elaboration
+Completed static elaboration
+Compiling module JumpMux
+Compiling module ProgramCounter
+Compiling module InstructionFetchStage
+Compiling module Control
+Compiling module DualPortRAM(DATA_WIDTH=32,ADDR_W...
+Compiling module RegisterFile
+Compiling module SignExtend
+Compiling module BranchAdder
+Compiling module InstructionDecodeStage
+Compiling module AluMux
+Compiling module ForwardMux
+Compiling module Alu
+Compiling module VCC
+Compiling module GND
+Compiling module FDE(INIT=1'b1)
+Compiling module SRLC16E(INIT=16'b01)
+Compiling module SRLC32E
+Compiling module INV
+Compiling module LUT1(INIT=2'b10)
+Compiling module LUT3(INIT=8'b10010110)
+Compiling module LUT2(INIT=4'b0110)
+Compiling module FD
+Compiling module MUXCY
+Compiling module XORCY
+Compiling module MULT_AND
+Compiling module MDU_Divider
+Compiling module MultiplyDivideUnit
+Compiling module DSP48E(ACASCREG=0,ALUMODEREG=0,A...
+Compiling module LUT5(INIT=32'b011111100)
+Compiling module FDRS
+Compiling module DSP48E(ACASCREG=0,ALUMODEREG=0,A...
+Compiling module LUT6(INIT=64'b01)
+Compiling module LUT4(INIT=16'b1000000000000000)
+Compiling module MUXF7
+Compiling module FPU_Adder
+Compiling module DSP48E(ACASCREG=0,ALUMODEREG=0,A...
+Compiling module DSP48E(ACASCREG=0,ALUMODEREG=0,A...
+Compiling module DSP48E(ACASCREG=0,ALUMODEREG=0,A...
+Compiling module FPU_Multiplier
+Compiling module FPU_Divider
+Compiling module MUXF8
+Compiling module FPU_Ftoi
+Compiling module FPU_Itof
+Compiling module FPU_Sqrt
+Compiling module FloatingPointUnit
+Compiling module ExecutionUnit
+Compiling module ExecutionStage
+Compiling module BranchControl
+Compiling module MemoryStage
+Compiling module WriteBackMux
+Compiling module WriteBackStage
+Compiling module ForwardingUnit
+Compiling module HazardDetectionUnit
+Compiling module BranchPredictor
+Compiling module Processor
+Compiling module InstructionMemory
+Compiling module DataMemory
+Compiling module Processor_t
+Compiling module glbl
+Time Resolution for simulation is 1ps.
+Waiting for 1 sub-compilation(s) to finish...
+Compiled 275 Verilog Units
+Built simulation executable E:/CPU/synthesis/Processor_t_isim_beh.exe
+Fuse Memory Usage: 66432 KB
+Fuse CPU Usage: 3093 ms

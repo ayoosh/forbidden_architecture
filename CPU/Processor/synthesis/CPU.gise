@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<generated_project xmlns="http://www.xilinx.com/XMLSchema" xmlns:xil_pn="http://www.xilinx.com/XMLSchema">
+
+  <!--                                                          -->
+
+  <!--             For tool use only. Do not edit.              -->
+
+  <!--                                                          -->
+
+  <!-- ProjectNavigator created generated project file.         -->
+
+  <!-- For use in tracking generated file and other information -->
+
+  <!-- allowing preservation of process status.                 -->
+
+  <!--                                                          -->
+
+  <!-- Copyright (c) 1995-2012 Xilinx, Inc.  All rights reserved. -->
+
+  <version xmlns="http://www.xilinx.com/XMLSchema">11.1</version>
+
+  <sourceproject xmlns="http://www.xilinx.com/XMLSchema" xil_pn:fileType="FILE_XISE" xil_pn:name="CPU.xise"/>
+
+  <files xmlns="http://www.xilinx.com/XMLSchema">
+    <file xil_pn:fileType="FILE_LOG" xil_pn:name="../ipcore_dir/coregen.log"/>
+    <file xil_pn:fileType="FILE_XST_PROJECT" xil_pn:name="Processor_t_beh.prj"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_ISIM_EXE" xil_pn:name="Processor_t_isim_beh.exe"/>
+    <file xil_pn:fileType="FILE_ISIM_MISC" xil_pn:name="Processor_t_isim_beh.wdb"/>
+    <file xil_pn:fileType="FILE_LOG" xil_pn:name="fuse.log"/>
+    <file xil_pn:fileType="FILE_DIRECTORY" xil_pn:name="isim"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_CMD" xil_pn:name="isim.cmd"/>
+    <file xil_pn:branch="BehavioralSim" xil_pn:fileType="FILE_INI" xil_pn:name="xilinxsim.ini"/>
+  </files>
+
+  <transforms xmlns="http://www.xilinx.com/XMLSchema">
+    <transform xil_pn:end_ts="1397932478" xil_pn:name="TRAN_copyInitialToAbstractSimulation" xil_pn:start_ts="1397932478">
+      <status xil_pn:value="SuccessfullyRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1397932478" xil_pn:in_ck="2175770723831354446" xil_pn:name="TRAN_copyAbstractToPostAbstractSimulation" xil_pn:start_ts="1397932478">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="../src/Alu.v"/>
+      <outfile xil_pn:name="../src/AluMux.v"/>
+      <outfile xil_pn:name="../src/BranchAdder.v"/>
+      <outfile xil_pn:name="../src/BranchControl.v"/>
+      <outfile xil_pn:name="../src/BranchPredictor.v"/>
+      <outfile xil_pn:name="../src/Control.v"/>
+      <outfile xil_pn:name="../src/DataMemory.v"/>
+      <outfile xil_pn:name="../src/DualPortRAM.v"/>
+      <outfile xil_pn:name="../src/ExecutionStage.v"/>
+      <outfile xil_pn:name="../src/ExecutionUnit.v"/>
+      <outfile xil_pn:name="../src/FloatingPointUnit.v"/>
+      <outfile xil_pn:name="../src/ForwardMux.v"/>
+      <outfile xil_pn:name="../src/ForwardingUnit.v"/>
+      <outfile xil_pn:name="../src/HazardDetectionUnit.v"/>
+      <outfile xil_pn:name="../src/InstructionDecodeStage.v"/>
+      <outfile xil_pn:name="../src/InstructionFetchStage.v"/>
+      <outfile xil_pn:name="../src/InstructionMemory.v"/>
+      <outfile xil_pn:name="../src/JumpMux.v"/>
+      <outfile xil_pn:name="../src/MemoryStage.v"/>
+      <outfile xil_pn:name="../src/MultiplyDivideUnit.v"/>
+      <outfile xil_pn:name="../src/Processor.v"/>
+      <outfile xil_pn:name="../src/ProgramCounter.v"/>
+      <outfile xil_pn:name="../src/RegisterFile.v"/>
+      <outfile xil_pn:name="../src/SignExtend.v"/>
+      <outfile xil_pn:name="../src/WriteBackMux.v"/>
+      <outfile xil_pn:name="../src/WriteBackStage.v"/>
+      <outfile xil_pn:name="../src/testbenches/Processor_t.v"/>
+    </transform>
+    <transform xil_pn:end_ts="1397932478" xil_pn:name="TRAN_xawsToSimhdl" xil_pn:prop_ck="-8772036523294693846" xil_pn:start_ts="1397932478">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1397932478" xil_pn:name="TRAN_schematicsToHdlSim" xil_pn:prop_ck="5984169103410953048" xil_pn:start_ts="1397932478">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1397932481" xil_pn:in_ck="-8761562518149465982" xil_pn:name="TRAN_regenerateCoresSim" xil_pn:prop_ck="-1238288855445610593" xil_pn:start_ts="1397932478">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+    <transform xil_pn:end_ts="1397932482" xil_pn:in_ck="2175770723831354446" xil_pn:name="TRAN_copyPostAbstractToPreSimulation" xil_pn:start_ts="1397932481">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="../src/Alu.v"/>
+      <outfile xil_pn:name="../src/AluMux.v"/>
+      <outfile xil_pn:name="../src/BranchAdder.v"/>
+      <outfile xil_pn:name="../src/BranchControl.v"/>
+      <outfile xil_pn:name="../src/BranchPredictor.v"/>
+      <outfile xil_pn:name="../src/Control.v"/>
+      <outfile xil_pn:name="../src/DataMemory.v"/>
+      <outfile xil_pn:name="../src/DualPortRAM.v"/>
+      <outfile xil_pn:name="../src/ExecutionStage.v"/>
+      <outfile xil_pn:name="../src/ExecutionUnit.v"/>
+      <outfile xil_pn:name="../src/FloatingPointUnit.v"/>
+      <outfile xil_pn:name="../src/ForwardMux.v"/>
+      <outfile xil_pn:name="../src/ForwardingUnit.v"/>
+      <outfile xil_pn:name="../src/HazardDetectionUnit.v"/>
+      <outfile xil_pn:name="../src/InstructionDecodeStage.v"/>
+      <outfile xil_pn:name="../src/InstructionFetchStage.v"/>
+      <outfile xil_pn:name="../src/InstructionMemory.v"/>
+      <outfile xil_pn:name="../src/JumpMux.v"/>
+      <outfile xil_pn:name="../src/MemoryStage.v"/>
+      <outfile xil_pn:name="../src/MultiplyDivideUnit.v"/>
+      <outfile xil_pn:name="../src/Processor.v"/>
+      <outfile xil_pn:name="../src/ProgramCounter.v"/>
+      <outfile xil_pn:name="../src/RegisterFile.v"/>
+      <outfile xil_pn:name="../src/SignExtend.v"/>
+      <outfile xil_pn:name="../src/WriteBackMux.v"/>
+      <outfile xil_pn:name="../src/WriteBackStage.v"/>
+      <outfile xil_pn:name="../src/testbenches/Processor_t.v"/>
+    </transform>
+    <transform xil_pn:end_ts="1397932512" xil_pn:in_ck="-676978253204332380" xil_pn:name="TRAN_ISimulateBehavioralModelRunFuse" xil_pn:prop_ck="-7752475378151830149" xil_pn:start_ts="1397932482">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="Processor_t_beh.prj"/>
+      <outfile xil_pn:name="Processor_t_isim_beh.exe"/>
+      <outfile xil_pn:name="fuse.log"/>
+      <outfile xil_pn:name="isim"/>
+      <outfile xil_pn:name="xilinxsim.ini"/>
+    </transform>
+    <transform xil_pn:end_ts="1397932512" xil_pn:in_ck="8286341887319961730" xil_pn:name="TRAN_ISimulateBehavioralModel" xil_pn:prop_ck="5014810621307748606" xil_pn:start_ts="1397932512">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+      <outfile xil_pn:name="Processor_t_isim_beh.wdb"/>
+      <outfile xil_pn:name="isim.cmd"/>
+    </transform>
+    <transform xil_pn:name="TRAN_SubProjectAbstractToPreProxy">
+      <status xil_pn:value="SuccessfullyRun"/>
+      <status xil_pn:value="ReadyToRun"/>
+    </transform>
+  </transforms>
+
+</generated_project>

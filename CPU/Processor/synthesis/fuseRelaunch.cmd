@@ -1,0 +1,1 @@
+-intstyle "ise" -incremental -lib "unisims_ver" -lib "unimacro_ver" -lib "xilinxcorelib_ver" -lib "secureip" -o "E:/CPU/synthesis/Processor_t_isim_beh.exe" -prj "E:/CPU/synthesis/Processor_t_beh.prj" "work.Processor_t" "work.glbl" 

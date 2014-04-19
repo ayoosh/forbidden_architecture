@@ -1,0 +1,10 @@
+Command line:
+   Processor_t_isim_beh.exe
+     -simmode  gui
+     -simrunnum  0
+     -socket  49176
+
+Sat Apr 19 13:35:18 2014
+
+
+ Elaboration Time: 1.92188 sec
