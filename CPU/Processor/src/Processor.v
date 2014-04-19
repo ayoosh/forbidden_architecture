@@ -267,6 +267,7 @@ module Processor(
 	wire			ex_mem_RetCmd;
 	wire			ex_mem_BranchPredict;
 	wire	[31:0]	ex_mem_BranchAddr;
+	wire			ex_mem_NpuCfgOp, ex_mem_NpuEnqOp;
 
 	wire	[31:0]	mem_ex_ExuResult;
 	wire	[1:0]	forwardCmd0, forwardCmd1;
@@ -294,6 +295,8 @@ module Processor(
 		.oBranchPredict		(ex_mem_BranchPredict),
 		.oNpuConfigFifo		(npu_config_fifo),
 		.oNpuDataFifo		(npu_input_fifo),
+		.oNpuCfgOp			(ex_mem_NpuCfgOp),
+		.oNpuEnqOp			(ex_mem_NpuEnqOp),
 
 		// Inputs
 		.iInstruction		(ex_id_Instruction),
@@ -350,6 +353,7 @@ module Processor(
 	reg				mem_ex_RetCmd;
 	reg				mem_ex_BranchPredict;
 	reg		[31:0]	mem_ex_BranchAddr;
+	reg				mem_ex_NpuCfgOp, mem_ex_NpuEnqOp;
 
 	always @ (posedge clk) begin
 		if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt) begin
@@ -367,6 +371,8 @@ module Processor(
 			mem_ex_RetCmd			<= 0;
 			mem_ex_BranchPredict	<= 0;
 			mem_ex_BranchAddr		<= 0;
+			mem_ex_NpuCfgOp			<= 0;
+			mem_ex_NpuEnqOp			<= 0;
 		end
 		else begin
 			mem_ex_NextPC			<= ex_mem_NextPC;
@@ -383,6 +389,8 @@ module Processor(
 			mem_ex_RetCmd			<= ex_mem_RetCmd;
 			mem_ex_BranchPredict	<= ex_mem_BranchPredict;
 			mem_ex_BranchAddr		<= ex_mem_BranchAddr;
+			mem_ex_NpuCfgOp			<= ex_mem_NpuCfgOp;
+			mem_ex_NpuEnqOp			<= ex_mem_NpuEnqOp;
 		end
 	end
 	
@@ -397,6 +405,7 @@ module Processor(
 	wire	[31:0]	mem_wb_RetAddr;
 	wire			mem_wb_BranchCmd;
 	wire	[25:0]	mem_wb_Offset;
+	wire			mem_wb_NpuCfgOp, mem_wb_NpuEnqOp;
 
 	MemoryStage MemoryStage_0 (
 		// Outputs
@@ -417,6 +426,8 @@ module Processor(
 		.oOffset			(mem_wb_Offset),
 		.oRetCmd			(mem_wb_RetCmd),
 		.oRetAddr			(mem_wb_RetAddr),
+		.oNpuCfgOp			(mem_wb_NpuCfgOp),
+		.oNpuEnqOp			(mem_wb_NpuEnqOp),
 		.oHalt				(mem_wb_Halt),
 
 		// Inputs
@@ -439,6 +450,8 @@ module Processor(
 		.iOffset			(mem_ex_Offset),
 		.iRetCmd			(mem_ex_RetCmd),
 		.iBranchPredict		(mem_ex_BranchPredict),
+		.iNpuCfgOp			(mem_ex_NpuCfgOp),
+		.iNpuEnqOp			(mem_ex_NpuEnqOp),
 		.iHalt				(mem_ex_Halt)
 	);
 
@@ -451,6 +464,7 @@ module Processor(
 	reg		[25:0]	wb_mem_Offset;
 	
 	reg				wb_mem_MemValid;
+	reg				wb_mem_NpuCfgOp, wb_mem_NpuEnqOp;
 	
 	wire	[31:0]	wb_mem_RetAddr;
 
@@ -464,6 +478,8 @@ module Processor(
 			wb_mem_Halt			<= mem_wb_Halt & rst_n;
 			wb_mem_Offset		<= 0;
 			wb_mem_MemValid		<= 0;
+			wb_mem_NpuCfgOp		<= 0;
+			wb_mem_NpuEnqOp		<= 0;
 		end
 		else begin
 			wb_mem_ExuData		<= mem_wb_ExuData;
@@ -474,6 +490,8 @@ module Processor(
 			wb_mem_Halt			<= mem_wb_Halt;
 			wb_mem_Offset		<= mem_wb_Offset;
 			wb_mem_MemValid		<= mem_ex_MemValid; // Look at this!
+			wb_mem_NpuCfgOp		<= mem_wb_NpuCfgOp;
+			wb_mem_NpuEnqOp		<= mem_wb_NpuEnqOp;
 		end
 	end
 	
@@ -499,6 +517,16 @@ module Processor(
 		.iRetAddr			(wb_mem_RetAddr),
 		.iHalt				(wb_mem_Halt)
 	);
+	
+	wire	[4:0]		exRegRs;
+	wire	[4:0]		exRegRt;
+	wire	[4:0]		memRegRd;
+	wire	[4:0]		wbRegRd;
+	
+	assign	exRegRs		= ex_id_NpuCfgOp ? 5'h0 : (ex_id_NpuEnqOp ? ex_id_Offset[25:21] : ex_id_Offset[20:16]);
+	assign	exRegRt		= (ex_id_NpuCfgOp || ex_id_NpuEnqOp) ? 5'h0 : ex_id_Offset[15:11];
+	assign	memRegRd	= (mem_ex_NpuCfgOp || mem_ex_NpuEnqOp) ? 5'h0 : mem_ex_Offset[25:21];
+	assign	wbRegRd		= (wb_mem_NpuCfgOp || wb_mem_NpuEnqOp) ? 5'h0 : wb_mem_Offset[25:21];
 
 	ForwardingUnit ForwardingUnit_0 (
 		// Outputs
@@ -506,11 +534,11 @@ module Processor(
 		.oForwardCmd1		(forwardCmd1),
 
 		// Inputs
-		.iExRegRs			(ex_id_Offset[20:16]),
-		.iExRegRt			(ex_id_Offset[15:11]),
-		.iMemRegRd			(mem_ex_Offset[25:21]),
+		.iExRegRs			(exRegRs),
+		.iExRegRt			(exRegRt),
+		.iMemRegRd			(memRegRd),
 		.iMemRegWrite		(mem_ex_WriteEn),
-		.iWbRegRd			(wb_mem_Offset[25:21]),
+		.iWbRegRd			(wbRegRd),
 		.iWbRegWrite		(wb_mem_WriteEn)
 	);
 

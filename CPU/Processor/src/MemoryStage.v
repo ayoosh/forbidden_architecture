@@ -24,6 +24,8 @@ module MemoryStage (
 	output	[25:0]	oOffset,
 	output			oRetCmd,
 	output	[31:0]	oRetAddr,
+	output			oNpuCfgOp,
+	output			oNpuEnqOp,
 	output			oHalt,
 
 	// Inputs
@@ -46,6 +48,8 @@ module MemoryStage (
 	input	[25:0]	iOffset,
 	input			iRetCmd,
 	input			iBranchPredict,
+	input			iNpuCfgOp,
+	input			iNpuEnqOp,
 	input			iHalt
 );
 
@@ -77,5 +81,7 @@ module MemoryStage (
 	assign oRetAddr			= iDataMemData;
 	assign oHalt			= iHalt;
 	assign oBranchMissCmd	= oBranchCmd ^ iBranchPredict;
+	assign oNpuCfgOp		= iNpuCfgOp;
+	assign oNpuEnqOp		= iNpuEnqOp;
 	
 endmodule

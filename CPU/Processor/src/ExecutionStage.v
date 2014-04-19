@@ -31,6 +31,8 @@ module ExecutionStage (
 	output			oBranchPredict,
 	output	[31:0]	oNpuConfigFifo,
 	output	[31:0]	oNpuDataFifo,
+	output			oNpuCfgOp,
+	output			oNpuEnqOp,
 
 	// Inputs
 	input	[31:0]	iInstruction,
@@ -168,6 +170,9 @@ module ExecutionStage (
 	assign oBranchAddr		= iBranchAddr;		// Bypass branch address
 
 	assign oNpuConfigFifo	= iNpuCfgOp ? iInstruction : 32'h0;
-	assign oNpuDataFifo		= iNpuEnqOp ? iInstruction : 32'h0;
+	assign oNpuDataFifo		= iNpuEnqOp ? forwardSrc0 : 32'h0;
 	assign oExuResult		= iNpuDeqOp ? iNpuDataFifo : exuResult;
+	
+	assign oNpuEnqOp		= iNpuEnqOp;
+	assign oNpuCfgOp		= iNpuCfgOp;
 endmodule
