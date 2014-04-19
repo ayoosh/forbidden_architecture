@@ -32,6 +32,9 @@ module Control (
 	output	[25:0]	oOffset,
 	output			oCallCmd,
 	output			oRetCmd,
+	output			oNpuCfgOp,
+	output			oNpuEnqOp,
+	output			oNpuDeqOp,	
 
 	//Inputs
 	input	[31:0]	iInstruction,
@@ -221,6 +224,10 @@ module Control (
 	assign	oBranchOp	= branch_op;
 	assign	oMduOp		= decode[0];
 	assign	oOffset		= iInstruction[25:0];
+	
+	assign	oNpuCfgOp	= iRst_n & (decode == ENQC);
+	assign	oNpuEnqOp	= iRst_n & (decode == ENQD);
+	assign	oNpuDeqOp	= iRst_n & (decode == DEQD);
 	
 	assign	oCallCmd	= iRst_n & (decode == CALL);
 	assign	oRetCmd		= iRst_n & (decode == RET);

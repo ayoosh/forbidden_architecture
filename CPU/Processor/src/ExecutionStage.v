@@ -29,8 +29,11 @@ module ExecutionStage (
 	output	[25:0]	oOffset,
 	output			oRetCmd,
 	output			oBranchPredict,
+	output	[31:0]	oNpuConfigFifo,
+	output	[31:0]	oNpuDataFifo,
 
 	// Inputs
+	input	[31:0]	iInstruction,
 	input	[31:0]	iSrc0,
 	input	[31:0]	iSrc1,
 	input	[31:0]	iImmediate,
@@ -65,6 +68,10 @@ module ExecutionStage (
 	input			iCallCmd,
 	input			iBranchPredict,
 	input	[31:0]	iBranchAddr,
+	input			iNpuCfgOp,
+	input			iNpuEnqOp,
+	input			iNpuDeqOp,
+	input	[31:0]	iNpuDataFifo,
 	input			iClk,
 	input			iRst_n
 );
@@ -73,6 +80,7 @@ module ExecutionStage (
 	wire	[31:0]	forwardSrc0;
 	wire	[31:0]	forwardSrc1;
 	wire	[31:0]	aluSrc1;
+	wire	[31:0]	exuResult;
 	
 	wire			zeroFlag, negativeFlag, overflowFlag;
 	reg				zeroEn, negativeEn, overflowEn;
@@ -103,7 +111,7 @@ module ExecutionStage (
 	);
 
 	ExecutionUnit ExecutionUnit_0 (
-		.oExuResult		(oExuResult),
+		.oExuResult		(exuResult),
 		.oZeroFlag		(zeroFlag),
 		.oOverflowFlag	(overflowFlag),
 		.oNegativeFlag	(negativeFlag),
@@ -140,6 +148,8 @@ module ExecutionStage (
 		end
 	end
 	
+	
+	
 	// Outputs assignment
 	assign oNextPC			= iNextPC;			// Bypass next program counter
 	assign oBranchOp		= iBranchOp;		// Bypass branch opcode
@@ -157,4 +167,7 @@ module ExecutionStage (
 	assign oBranchPredict	= iBranchPredict;	// Bypass branch prediction
 	assign oBranchAddr		= iBranchAddr;		// Bypass branch address
 
+	assign oNpuConfigFifo	= iNpuCfgOp ? iInstruction : 32'h0;
+	assign oNpuDataFifo		= iNpuEnqOp ? iInstruction : 32'h0;
+	assign oExuResult		= iNpuDeqOp ? iNpuDataFifo : exuResult;
 endmodule

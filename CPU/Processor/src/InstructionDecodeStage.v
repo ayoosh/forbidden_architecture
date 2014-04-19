@@ -38,6 +38,10 @@ module InstructionDecodeStage (
 	output			oCallCmd,
 	output	[31:0]	oBranchAddr,
 	output			oBranchPredict,
+	output			oNpuCfgOp,
+	output			oNpuEnqOp,
+	output			oNpuDeqOp,
+	output	[31:0]	oInstruction,
 
 	// Inputs
 	input	[31:0]	iInstruction,
@@ -87,6 +91,9 @@ module InstructionDecodeStage (
 		.oOffset		(oOffset),
 		.oCallCmd		(callCmd),
 		.oRetCmd		(oRetCmd),
+		.oNpuCfgOp		(oNpuCfgOp),
+		.oNpuEnqOp		(oNpuEnqOp),
+		.oNpuDeqOp		(oNpuDeqOp),
 		.iInstruction	(iInstruction),
 		.iRst_n			(iRst_n)
 	);
@@ -122,6 +129,7 @@ module InstructionDecodeStage (
 	assign oMemData			= rCallCmd ? rNextPC : oSrc1;	// Output memory data to be written
 	assign oCallCmd			= rCallCmd;
 	assign oBranchPredict	= iBranchPredict;
+	assign oInstruction		= iInstruction;
 
 	always @ (posedge iClk) begin
 		if(!iRst_n) begin

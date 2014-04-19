@@ -57,15 +57,6 @@ module Processor(
 
 	reg		[31:0]	id_if_NextPC;
 	
-	reg				rStall;
-	
-	always @ (posedge clk) begin
-		if(!rst_n)
-			rStall <= 1'b0;
-		else
-			rStall <= stall;
-	end
-	
 	// External modules instantiation
 	InstructionFetchStage InstructionFetchStage_0 (
 		// Ouputs
@@ -87,7 +78,7 @@ module Processor(
 		.iBranchMissCmd		(branchMissPredict),
 		.iJumpCmd			(jumpCmd),
 		.iRetCmd			(retCmd),
-		.iHalt				(haltPC | rStall)
+		.iHalt				(haltPC | stall)
 	);
 	// TODO: Check input signals for Fetch Stage.
 
@@ -120,6 +111,8 @@ module Processor(
 	wire	[25:0]	id_ex_Offset;
 	wire			id_ex_RetCmd, id_ex_CallCmd;
 	wire			id_ex_Halt;
+	wire			id_ex_NpuCfgOp, id_ex_NpuEnqOp, id_ex_NpuDeqOp;
+	wire	[31:0]	id_ex_Instruction;
 
 	wire	[4:0]	writeRegAddr;
 	wire	[31:0]	writeRegData;
@@ -156,6 +149,10 @@ module Processor(
 		.oCallCmd			(id_ex_CallCmd),
 		.oBranchAddr		(branchAddr),
 		.oBranchPredict		(id_ex_BranchPredict),
+		.oNpuCfgOp			(id_ex_NpuCfgOp),
+		.oNpuEnqOp			(id_ex_NpuEnqOp),
+		.oNpuDeqOp			(id_ex_NpuDeqOp),
+		.oInstruction		(id_ex_Instruction),
 
 		// Inputs
 		.iInstruction		(id_if_Instruction),
@@ -187,6 +184,8 @@ module Processor(
 	wire			ex_id_CallCmd;
 	reg				ex_id_BranchPredict;
 	reg		[31:0]	ex_id_BranchAddr;
+	reg				ex_id_NpuCfgOp, ex_id_NpuEnqOp, ex_id_NpuDeqOp;
+	reg		[31:0]	ex_id_Instruction;
 
 	always @ (posedge clk) begin
 		if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt || stall) begin
@@ -215,6 +214,10 @@ module Processor(
 			ex_id_Halt			<= mem_wb_Halt & rst_n;
 			ex_id_BranchPredict	<= 0;
 			ex_id_BranchAddr	<= 0;
+			ex_id_NpuCfgOp		<= 0;
+			ex_id_NpuEnqOp		<= 0;
+			ex_id_NpuDeqOp		<= 0;
+			ex_id_Instruction	<= 0;
 		end
 		else begin
 			ex_id_Immediate		<= id_ex_Immediate;
@@ -241,6 +244,10 @@ module Processor(
 			ex_id_RetCmd		<= id_ex_RetCmd;
 			ex_id_BranchPredict	<= id_ex_BranchPredict;
 			ex_id_BranchAddr	<= branchAddr;
+			ex_id_NpuCfgOp		<= id_ex_NpuCfgOp;
+			ex_id_NpuEnqOp		<= id_ex_NpuEnqOp;
+			ex_id_NpuDeqOp		<= id_ex_NpuDeqOp;
+			ex_id_Instruction	<= id_ex_Instruction;
 		end
 	end
 	
@@ -285,8 +292,11 @@ module Processor(
 		.oOffset			(ex_mem_Offset),
 		.oRetCmd			(ex_mem_RetCmd),
 		.oBranchPredict		(ex_mem_BranchPredict),
+		.oNpuConfigFifo		(npu_config_fifo),
+		.oNpuDataFifo		(npu_input_fifo),
 
 		// Inputs
+		.iInstruction		(ex_id_Instruction),
 		.iSrc0				(ex_id_Src0),
 		.iSrc1				(ex_id_Src1),
 		.iImmediate			(ex_id_Immediate),
@@ -321,6 +331,10 @@ module Processor(
 		.iCallCmd			(ex_id_CallCmd),
 		.iBranchPredict		(ex_id_BranchPredict),
 		.iBranchAddr		(ex_id_BranchAddr),
+		.iNpuCfgOp			(ex_id_NpuCfgOp),
+		.iNpuEnqOp			(ex_id_NpuEnqOp),
+		.iNpuDeqOp			(ex_id_NpuDeqOp),
+		.iNpuDataFifo		(npu_output_fifo),
 		.iClk				(clk),
 		.iRst_n				(rst_n)
 	);
@@ -436,6 +450,8 @@ module Processor(
 	reg				wb_mem_Halt;
 	reg		[25:0]	wb_mem_Offset;
 	
+	reg				wb_mem_MemValid;
+	
 	wire	[31:0]	wb_mem_RetAddr;
 
 	always @ (posedge clk) begin
@@ -447,6 +463,7 @@ module Processor(
 			wb_mem_RetCmd		<= 0;
 			wb_mem_Halt			<= mem_wb_Halt & rst_n;
 			wb_mem_Offset		<= 0;
+			wb_mem_MemValid		<= 0;
 		end
 		else begin
 			wb_mem_ExuData		<= mem_wb_ExuData;
@@ -456,6 +473,7 @@ module Processor(
 			wb_mem_RetCmd		<= mem_wb_RetCmd;
 			wb_mem_Halt			<= mem_wb_Halt;
 			wb_mem_Offset		<= mem_wb_Offset;
+			wb_mem_MemValid		<= mem_ex_MemValid; // Look at this!
 		end
 	end
 	
@@ -511,7 +529,7 @@ module Processor(
 		.iNpuInputFull		(npu_input_fifo_full),
 		.iNpuOutputEmpty	(npu_output_fifo_empty),
 		.iInstrCacheValid	(cache_valid_instr),
-		.iDataCacheValid	(cache_valid_data),
+		.iDataCacheValid	(wb_mem_MemValid),
 		.iInstrCacheReady	(cache_ready_instr),
 		.iDataCacheReady	(cache_ready_data)
 	);
