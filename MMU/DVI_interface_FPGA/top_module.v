@@ -115,7 +115,7 @@ module top_module #
 		parameter INPUT_ADDR_WIDTH 		 = 31 												
 	)
 	 (
-		input 									  clk_in,
+		input 									  clk,
 		input 									  rst,
 		output memory_read_error,
 		
@@ -154,6 +154,9 @@ module top_module #
 	 inout scl_tri, sda_tri
     );
 	
+	wire LOCKED_OUT;
+	wire gl_rst = rst | ~LOCKED_OUT;
+	
 	// DVI related to be used by Arbiter register
 	wire last_addr_update;
 	
@@ -169,7 +172,7 @@ module top_module #
 	wire high_tie = 1;
 	wire low_tie = 0;
 	
-	wire clk;
+	wire clk_in;
 	
 	// ROM temp
 	wire [15:0] rom_addr;
@@ -219,8 +222,8 @@ module top_module #
 		wire mem_ready_data3;
 	
 		Arbiter arbiter_module (
-		.clk(clk), 
-		.reset(rst), 
+		.clk(clk_in), 
+		.reset(gl_rst), 
 		.data_wr(data_wr), 
 		.data_addr(data_addr), 
 		.data_rd(data_rd), 
@@ -251,8 +254,8 @@ module top_module #
 	
 	interface example_interface
 	(
-		.clk(clk),
-		.rst(rst),
+		.clk(clk_in),
+		.rst(gl_rst),
 		.mc_wr_rdy(mc_wr_rdy),
 		.mc_rd_rdy(mc_rd_rdy),
 		.mc_rd_valid(mc_rd_valid),
@@ -287,8 +290,8 @@ module top_module #
 	
 
 	Icache_dummy Icache_dummy (
-		.clk(clk), 
-		.rst(rst), 
+		.clk(clk_in), 
+		.rst(gl_rst), 
 		.mem_data_wr1(mem_data_wr1), 
 		.mem_data_rd1(mem_data_rd1), 
 		.mem_data_addr1(mem_data_addr1), 
@@ -299,8 +302,8 @@ module top_module #
 	);
 	
 	Dcache_dummy Dcache_dummy (
-		.clk(clk), 
-		.rst(rst), 
+		.clk(clk_in), 
+		.rst(gl_rst), 
 		.mem_data_wr1(mem_data_wr2), 
 		.mem_data_rd1(mem_data_rd2), 
 		.mem_data_addr1(mem_data_addr2), 
@@ -313,8 +316,8 @@ module top_module #
 	
 
 		vgamult DVI_interface (
-		.clk_100mhz(clk), 
-		.rst(rst), 
+		.clk_100mhz(clk_in), 
+		.rst(gl_rst), 
 		.pixel_r(pixel_r), 
 		.pixel_g(pixel_g), 
 		.pixel_b(pixel_b), 
@@ -341,7 +344,7 @@ module top_module #
 	);
 	
 rom64x38400 rom_image (
-  .clka(clk), // input clka
+  .clka(clk_in), // input clka
   .addra(rom_addr), // input [15 : 0] addra
   .douta(rom_data) // output [63 : 0] douta
 );
@@ -411,27 +414,27 @@ rom64x38400 rom_image (
 
 	
 		npu npu_module (
-		.CLK(clk), 
-		.RST(rst)
+		.CLK(clk_in), 
+		.RST(gl_rst)
 	);
 	
 	
 		cache_controller cache_module (
-		.clk(clk), 
-		.rst_n(rst)
+		.clk(clk_in), 
+		.rst_n(~gl_rst)
 	);
 
 		Processor processor_inst (
-		.clk(clk), 
-		.rst_n(rst),
+		.clk(clk_in), 
+		.rst_n(~gl_rst),
 		.clk_x2(CLK2X_OUT)
 	);
 	
 	Reg_clk_Gen instance_name (
-    .CLKIN_IN(clk_in), 
+    .CLKIN_IN(clk), 
     .RST_IN(rst), 
     .CLKIN_IBUFG_OUT(CLKIN_IBUFG_OUT), 
-    .CLK0_OUT(clk), 
+    .CLK0_OUT(clk_in), 
     .CLK2X_OUT(CLK2X_OUT), 
     .LOCKED_OUT(LOCKED_OUT)
     );
