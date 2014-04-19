@@ -18,19 +18,22 @@ LLW R5 0xB000 ;
 LHW R5 0x0004 ;
 LLW R7 0x0001 ;
 
-SOBEL_1 LOAD R6 R2 0x0 ;
+SOBEL_IM1_COPY LOAD R6 R2 0x0 ;
 ADD R2 R2 R7 ;
 STORE R6 R3 0x0 ;
-ADD R6 R6 R7 ;
-STORE R7 R4 0x0 ;
+ADD R4 R4 R7 ;
+STORE R6 R4 0x0 ;
 ADD R4 R4 R7 ;
 
 SUB R0 R2 R5 ;
-B LT SOBEL_1 ; 
+B LT SOBEL_IM1_COPY ; 
 
 # Now start Algo part
 
-# ### Tic counter start
+# Tic Counter Reset
+LLW R2 0x0006 ;
+LHW R2 0x0800 ;
+STORE R0 R2 0x00 ; 
 
 # R2 Input image start addr
 # R3 Output Image Algo start addr
@@ -64,7 +67,7 @@ LLW R22 0x0002 ;
 LLW R14 0x0280 ;
 
 # Start by updating addresses
-SOBEL_2 MULT R8 R7 R14 ;
+SOBEL_IM1_ALGO MULT R8 R7 R14 ;
 ADD R8 R8 R6 ;
 ADD R12 R8 R2 ;
 SUB R12 R21 ;
@@ -129,20 +132,112 @@ ADD R9 R9 R10 ;
 ITOF R9 R9 ;
 SQRT R9 R9 ;
 FTOI R9 R9 ;
-STORE R8 R9 ;
+STORE R9 R8 0x00 ;
 
 # Increment iterators and jumps
 ADD R7 R7 R21 ;
 SUB R0 R7 R5 ;
-B LT SOBEL_2 ;
+B LT SOBEL_IM1_ALGO ;
 ADD R7 R0 R21 ;
 ADD R6 R6 R21 ;
 SUB R0 R6 R4 ;
-B LT SOBEL_2
+B LT SOBEL_IM1_ALGO ;
 
-# Tic Counter do something
+# Tic Counter store value
+LLW R2 0x0006 ;
+LHW R2 0x0800 ;
+LOAD R3 R2 0x00 ;
+LLW R2 0x3000 ;
+LHW R2 0x00C0 ;
+STORE R3 R2 0x00 ;
 
 # Sobel Algo ends for Image 1 !!!!!
+
+# Sobel NPU For Image 1
+# Tic Counter Reset
+LLW R2 0x0006 ;
+LHW R2 0x0800 ;
+STORE R0 R2 0x00 ; 
+
+# R2 Input image start addr
+# R3 Output Image Algo start addr
+# R4 Row Limiter
+# R5 Column limiter
+# R6 Row iterator
+# R7 Column Iterator
+# R8 Current Pixel output addr
+# R11 Pixel 0,0 Addr 
+# R12 Pixel 1,0 Addr
+# R13 Pixel 2,0 Addr
+# R14  640
+# R16 Dequed output value
+# R21 1
+# R22 - R30 Inputs
+
+
+ADD R2 R0 R0 ;
+ADD R3 R0 R0 ;
+LHW R3 0x0060 ;
+LLW R4 0x01DF ;
+LLW R5 0x027F ;
+LLW R6 0x0001 ;
+LLW R7 0x0001 ;
+LLW R14 0x0280 ;
+LLW R20 0x0000 ;
+LLW R21 0x0001 ;
+
+
+# Start by updating addresses
+SOBEL_IM1_NPU MULT R8 R7 R14 ;
+ADD R8 R8 R6 ;
+ADD R12 R8 R2 ;
+SUB R12 R21 ;
+ADD R13 R12 R14 ;
+SUB R11 R12 R14 ;
+ADD R8 R8 R3 ; # ALL Addresses updated
+
+# Calculate Gx
+LOAD R22 R11 0x0000 ;
+LOAD R23 R12 0x0000 ;
+LOAD R24 R13 0x0000 ;
+LOAD R25 R11 0x0001 ;
+LOAD R26 R12 0x0001 ;
+LOAD R27 R13 0x0001 ;
+LOAD R28 R11 0x0002 ;
+LOAD R29 R12 0x0002 ;
+LOAD R30 R13 0x0002 ;
+
+ENQD0 R22 ;
+ENQD0 R23 ;
+ENQD0 R24 ;
+ENQD0 R25 ;
+ENQD0 R26 ;
+ENQD0 R27 ;
+ENQD0 R28 ;
+ENQD0 R29 ;
+ENQD0 R30 ;
+
+DEQD0 R16 ;
+STORE R16 R8 0x00 ;
+
+# Increment iterators and jumps
+ADD R7 R7 R21 ;
+SUB R0 R7 R5 ;
+B LT SOBEL_IM1_NPU ;
+ADD R7 R0 R21 ;
+ADD R6 R6 R21 ;
+SUB R0 R6 R4 ;
+B LT SOBEL_IM1_NPU ;
+
+# Tic Counter store value
+LLW R2 0x0006 ;
+LHW R2 0x0800 ;
+LOAD R3 R2 0x00 ;
+LLW R2 0x3001 ;
+LHW R2 0x00C0 ;
+STORE R3 R2 0x00 ;
+
+# ############################################################################
 
 # Image 2
 # First store copy of image to output image to get edges
@@ -163,15 +258,18 @@ LLW R5 0xB000 ;
 LHW R5 0x0024 ;
 LLW R7 0x0001 ;
 
-SOBEL_3 LOAD R6 R2 0x0 ;
+SOBEL_IM2_COPY LOAD R6 R2 0x0 ;
 ADD R2 R2 R7 ;
 STORE R6 R3 0x0 ;
-ADD R6 R6 R7 ;
-STORE R7 R4 0x0 ;
+ADD R3 R3 R7 ;
+STORE R6 R4 0x0 ;
 ADD R4 R4 R7 ;
 
 SUB R0 R2 R5 ;
-B LT SOBEL_3 ; 
+B LT SOBEL_IM2_COPY ; 
+
+
+
 
 # Now start Algo for Image 2
 
@@ -194,7 +292,10 @@ B LT SOBEL_3 ;
 # R21 1
 # R22 2
 
-# Tic counter reset
+# Tic Counter Reset
+LLW R2 0x0006 ;
+LHW R2 0x0800 ;
+STORE R0 R2 0x00 ; 
 
 ADD R2 R0 R0 ;
 LHW R2 0x0020 ;
@@ -210,7 +311,7 @@ LLW R22 0x0002 ;
 LLW R14 0x0280 ;
 
 # Start by updating addresses
-SOBEL_4 MULT R8 R7 R14 ;
+SOBEL_IM2_ALGO MULT R8 R7 R14 ;
 ADD R8 R8 R6 ;
 ADD R12 R8 R2 ;
 SUB R12 R21 ;
@@ -280,13 +381,103 @@ STORE R8 R9 ;
 # Increment iterators and jumps
 ADD R7 R7 R21 ;
 SUB R0 R7 R5 ;
-B LT SOBEL_4 ;
+B LT SOBEL_IM2_ALGO ;
 ADD R7 R0 R21 ;
 ADD R6 R6 R21 ;
 SUB R0 R6 R4 ;
-B LT SOBEL_4
+B LT SOBEL_IM2_ALGO ;
 
-# Tic counter do something
+# Tic Counter store value
+LLW R2 0x0006 ;
+LHW R2 0x0800 ;
+LOAD R3 R2 0x00 ;
+LLW R2 0x3002 ;
+LHW R2 0x00C0 ;
+STORE R3 R2 0x00 ;
 
 # Sobel Algo ends for image 2!!!!!
 
+# Sobel NPU For Image 2
+# Tic Counter Reset
+LLW R2 0x0006 ;
+LHW R2 0x0800 ;
+STORE R0 R2 0x00 ; 
+
+# R2 Input image start addr
+# R3 Output Image Algo start addr
+# R4 Row Limiter
+# R5 Column limiter
+# R6 Row iterator
+# R7 Column Iterator
+# R8 Current Pixel output addr
+# R11 Pixel 0,0 Addr 
+# R12 Pixel 1,0 Addr
+# R13 Pixel 2,0 Addr
+# R14  640
+# R16 Dequed output value
+# R21 1
+# R22 - R30 Inputs
+
+
+ADD R2 R0 R0 ;
+LHW R2 0x0020 ;
+ADD R3 R0 R0 ;
+LHW R3 0x00A0 ;
+LLW R4 0x01DF ;
+LLW R5 0x027F ;
+LLW R6 0x0001 ;
+LLW R7 0x0001 ;
+LLW R14 0x0280 ;
+LLW R20 0x0000 ;
+LLW R21 0x0001 ;
+
+
+# Start by updating addresses
+SOBEL_IM2_NPU MULT R8 R7 R14 ;
+ADD R8 R8 R6 ;
+ADD R12 R8 R2 ;
+SUB R12 R21 ;
+ADD R13 R12 R14 ;
+SUB R11 R12 R14 ;
+ADD R8 R8 R3 ; # ALL Addresses updated
+
+# Calculate Gx
+LOAD R22 R11 0x0000 ;
+LOAD R23 R12 0x0000 ;
+LOAD R24 R13 0x0000 ;
+LOAD R25 R11 0x0001 ;
+LOAD R26 R12 0x0001 ;
+LOAD R27 R13 0x0001 ;
+LOAD R28 R11 0x0002 ;
+LOAD R29 R12 0x0002 ;
+LOAD R30 R13 0x0002 ;
+
+ENQD0 R22 ;
+ENQD0 R23 ;
+ENQD0 R24 ;
+ENQD0 R25 ;
+ENQD0 R26 ;
+ENQD0 R27 ;
+ENQD0 R28 ;
+ENQD0 R29 ;
+ENQD0 R30 ;
+
+DEQD0 R16 ;
+STORE R16 R8 0x00 ;
+
+# Increment iterators and jumps
+ADD R7 R7 R21 ;
+SUB R0 R7 R5 ;
+B LT SOBEL_IM2_NPU ;
+ADD R7 R0 R21 ;
+ADD R6 R6 R21 ;
+SUB R0 R6 R4 ;
+B LT SOBEL_IM2_NPU ;
+
+# Tic Counter store value
+LLW R2 0x0006 ;
+LHW R2 0x0800 ;
+LOAD R3 R2 0x00 ;
+LLW R2 0x3003 ;
+LHW R2 0x00C0 ;
+STORE R3 R2 0x00 ;
