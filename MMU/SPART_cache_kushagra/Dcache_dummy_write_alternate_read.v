@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module Dcache_dummy #(
-      parameter NUMBER_OF_ACCESS = 1000
+      parameter NUMBER_OF_ACCESS = 3000
 		)
 (
 		input clk,

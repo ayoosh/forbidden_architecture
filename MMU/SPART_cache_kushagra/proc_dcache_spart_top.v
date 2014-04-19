@@ -29,24 +29,63 @@ module proc_dcache_spart_top(
 
 	wire [31:0] io_wr_data;
 	wire [31:0] io_rd_data;
-	wire [27:0] mem_addr;
+	wire [27:0] io_addr;
 	wire 		io_rw_data;
 	wire		io_valid_data;
 	wire		io_ready_data;
+	
+	wire [31:0] mem_wr_data;
+	wire [31:0] mem_rd_data;
+	wire [27:0] mem_addr;
+	wire 		mem_rw_data;
+	wire		mem_valid_data;
+	wire		mem_ready_data;
 
 	Dcache_dummy dcache
 	(
 		.clk(clk),
 		.rst(rst),
 		
-		.mem_data_wr1(io_wr_data),								
-		.mem_data_rd1(io_rd_data),		
+		.mem_data_wr1(mem_wr_data),								
+		.mem_data_rd1(mem_rd_data),		
 		.mem_data_addr1(mem_addr),
-		.mem_rw_data1(io_rw_data),
-		.mem_valid_data1(io_valid_data),								
-		.mem_ready_data1(io_ready_data)
+		.mem_rw_data1(mem_rw_data),
+		.mem_valid_data1(mem_valid_data),								
+		.mem_ready_data1(mem_ready_data)
 		
     );
+	
+	cache_controller d_cache_controller
+	(
+		.clk(clk),
+		.rst_n(~rst),
+		.cache_addr(mem_addr),
+		.cache_wr(mem_wr_data),
+		.cache_rw(mem_rw_data),
+		.cache_valid(mem_valid_data),
+		.flush(),
+		.mem_rd(),
+		.mem_ready(),
+
+		.cache_rd(mem_rd_data),
+		.cache_ready(mem_ready_data),
+		.mem_addr(),
+		.mem_wr(),
+		.mem_rw(),
+		.mem_valid_out(),
+		
+		// IO Ports
+		
+		.IO_rd(io_rd_data),
+		.IO_ready(io_ready_data),
+		
+		.IO_addr(io_addr),
+		.IO_wr(io_wr_data),
+		.IO_rw(io_rw_data),
+		.IO_valid(io_valid_data)
+		
+		//
+	);
 	
 	spart_top_level spart_interface
 	(
