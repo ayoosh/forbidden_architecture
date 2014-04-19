@@ -34,7 +34,7 @@ module receiver(
 	reg [3:0] counter, counter_next, sample_count, sample_count_next, sample_accum, sample_accum_next;
 	// A one bit state to keep in track whether we have started receiving
 	// the serial data. 
-	reg [1:0] state;
+	reg state;
 	reg [1:0] next_state;
 	// Store the one bit input data in the register first.
 	reg received_input_bit;
@@ -51,8 +51,7 @@ module receiver(
    // STATES //
    ////////////
    localparam  NOT_RECEIVING_DATA  = 0,    
-               RECEIVE_DATA        = 1,    
-               SET_RDA             = 2; 
+               RECEIVE_DATA        = 1;
                
    //////////////////////
    // INPUT BITS STATE //
@@ -177,65 +176,3 @@ module receiver(
 	end
 	
 endmodule
-
-	/* 
-	always @(posedge clk)
-	begin
-		if(rst)
-		begin
-			ReceivedData <= 8'h0;
-			received_input_bit <= 1'b0;
-			state <= NOT_RECEIVING_DATA;
-			counter <= 4'h0;
-			next_state <= NOT_RECEIVING_DATA;
-			RDA <= 1'b0;
-		end
-		else
-		begin
-			received_input_bit <= RX;
-			state <= next_state;
-			if( (received_input_bit == START_BIT) && (state == NOT_RECEIVING_DATA) && brg_en)
-			begin
-				next_state <= RECEIVE_DATA;
-				counter <= counter+1;
-			end
-			else
-			begin
-				if( (state == RECEIVE_DATA) && (counter != COMPLETED_RECEIVING_DATA) && brg_en )
-				begin
-					
-					/*
-					// Sampled 16 bits
-					if (sample_count == 4'hF) begin
-						ReceivedData <= {ReceivedData[6:0], accumulator[3]};
-						counter <= counter+1;
-					end
-					// Still sampling 16 bits before brg_full
-					else 
-						sample_count <= sample_count+1;
-					
-					
-					ReceivedData <= {ReceivedData[6:0], received_input_bit};
-					counter <= counter+1;
-				end
-				else if((state == RECEIVE_DATA) && (counter == COMPLETED_RECEIVING_DATA))
-				begin
-					next_state <= SET_RDA;
-					counter <= 4'h0;
-     				RDA <= 1'b1;
-				end
-				else if((state == SET_RDA) && (RDA == 1'b1) && (clr_rda == 1'b1))
-				begin
-					next_state <= NOT_RECEIVING_DATA;
-					RDA <= 1'b0;
-			//		DATABUS <= ReceivedData; // Needn't assign receiver here .... since read is asynchronous
-					ReceivedData <= 8'b0;
-				end     
-			end
-			
-		end
-	end
-
-
-endmodule
-*/

@@ -8,7 +8,8 @@ iocs, //constitutes wr_en
 databus,
 ioaddr,
 tbr,
-txd
+txd,
+piso_out
 );
 
 //Input ports
@@ -20,6 +21,7 @@ input iocs;
 input [1:0] ioaddr;
 //input wr_en;  // Active high
 input [7:0] databus;
+output [8:0] piso_out;
 
 // Output ports
 output tbr;
@@ -32,7 +34,7 @@ reg buffer_full;
 assign tbr = ~buffer_full;
 assign txd = piso[0];
 assign cnt_flag = (count == 10);
-
+assign piso_out = piso;
 always @ (posedge clk)
 begin
      if(rst) begin

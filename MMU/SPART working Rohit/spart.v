@@ -28,7 +28,8 @@ module spart(
     input [1:0] ioaddr,
     inout [7:0] databus,
     output txd,
-    input rxd
+    input rxd,
+	output [8:0] piso_out
     );
 
     wire [7:0] rx_databus;
@@ -53,7 +54,8 @@ module spart(
 					.txd(txd),
 					.ioaddr(ioaddr),
 					.iorw(iorw),
-					.iocs(iocs)
+					.iocs(iocs),
+					.piso_out(piso_out)
 					);
 
 
