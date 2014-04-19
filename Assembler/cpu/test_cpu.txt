@@ -1,0 +1,32 @@
+# First give series of enqc instructions. This checks the config fifo.
+
+# Then, give set of inputs to the NPU through ENQD.
+# Initially have some value in registers through LLW and LHW.
+# Then give these series of inputs to the NPU. Work till 
+
+# First set of inputs
+
+LLW R0 0x0002 ;      // Loads for Inputs
+LHW R0 0x0000 ;	     
+
+LLW R1 0x0001 ;
+LHW R1 0x0000 ;
+
+ENQD0 R0 ;       //EnQing data into NPU
+ENQD0 R1 ;	
+
+LLW R9 0x0001 ;		R9-----> 1
+ADD R10 R9 R9 ;                 R10 -----> 2 
+ADD R11 R9 R10 ;		R11 -----> 3
+ADD R12 R9 R11 ;                R12 -----> 4
+SUB R13 R9 R9 ;                 R13 ----> 0
+ADD R9 R13 R12 ;                R12 ----> 4 
+ADD R8 R10 R9 ;                 R8 -----> 
+ADD R10 R11 R8 ;                  
+ADD R9 R8 R9 ;
+ADD R8 R9 R10 ;
+ADD R9 R9 R9 ;
+ADD R9 R9 R9 ;
+ADD R9 R9 R9 ;
+
+DEQD0 R0 ;                      Waiting for first output from NPU
