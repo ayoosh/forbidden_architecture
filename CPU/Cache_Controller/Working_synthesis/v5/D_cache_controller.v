@@ -1,6 +1,6 @@
 `timescale	1ns/1ps
 
-`include	"../src/cache_memory.v"
+//`include	"../src/cache_memory.v"
 
 module cache_controller #(
 	parameter	NUM_WAYS	= 2,
