@@ -14,6 +14,9 @@ module HazardDetectionUnit (
 	input	[4:0]	iExRegRt,
 	input			iExMemRead,
 	input			iExRetCmd,
+	input			iExNpuCfgOp,
+	input			iExNpuEnqOp,
+	input			iExNpuDeqOp,
 	input			iNpuConfigFull,
 	input			iNpuInputFull,
 	input			iNpuOutputEmpty,
@@ -29,7 +32,7 @@ module HazardDetectionUnit (
 	
 	// Internal signals assigment
 	assign dataHazard	= iExMemRead & ~iExRetCmd & ((iExRegRt == iIdRegRs) | (iExRegRt == iIdRegRt));
-	assign npuHazard	= iNpuConfigFull | iNpuInputFull | iNpuOutputEmpty;
+	assign npuHazard	= (iExNpuCfgOp & iExNpuConfigFull) | (iExNpuEnqOp & iNpuInputFull) | (iExNpuDeqOp & iNpuOutputEmpty);
 	assign cacheHazard	= (iInstrCacheValid & ~iInstrCacheReady) | (iDataCacheValid & ~iDataCacheReady);
 
 	// Outputs assignment
