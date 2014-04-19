@@ -1,0 +1,3 @@
+NEWPROJECT "I:/GitHub/forbidden_architecture/CPU/Processor/src/Cpu_testing/coregen.cgp"
+SETPROJECT "I:/GitHub/forbidden_architecture/CPU/Processor/src/Cpu_testing/coregen.cgp"
+LAUNCHXCO "I:/GitHub/forbidden_architecture/CPU/Processor/src/Cpu_testing/I_cache.xco"
