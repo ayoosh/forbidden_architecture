@@ -208,10 +208,13 @@ while($line_number < $machine_code_line_number){
 
 print "\n\n\n";
 $counti = $#machine_code;
-for $i(0..$counti){
-	print $overwrite "$machine_code[$i]\n";
-}	
+print $overwrite "memory_initialization_radix=16;\nmemory_initialization_vector=\n";
 
+for $i(0..$counti){
+	print $overwrite "$machine_code[$i],\n";
+}
+
+print $overwrite "00000000;";
 
 sub append_1 {
 	unless(exists $registers{$instruction[$current_entry+1]} && exists $registers{$instruction[$current_entry+2]} && exists $registers{$instruction[$current_entry+3]}){
