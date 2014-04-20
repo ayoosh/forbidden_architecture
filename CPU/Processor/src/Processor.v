@@ -360,41 +360,43 @@ module Processor(
 	reg				mem_ex_NpuCfgOp, mem_ex_NpuEnqOp;
 
 	always @ (posedge clk) begin
-		if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt) begin
-			mem_ex_NextPC			<= 0;
-			mem_ex_BranchOp			<= 0;
-			mem_ex_BranchCmd		<= 0;
-			mem_ex_MemData			<= 0;
-			mem_ex_MemWrite			<= 0;
-			mem_ex_MemValid			<= 0;
-			mem_ex_MemToReg			<= 0;
-			mem_ex_WriteAddr		<= 0;
-			mem_ex_WriteEn			<= 0;
-			mem_ex_Halt				<= mem_wb_Halt & rst_n;
-			mem_ex_Offset			<= 0;
-			mem_ex_RetCmd			<= 0;
-			mem_ex_BranchPredict	<= 0;
-			mem_ex_BranchAddr		<= 0;
-			mem_ex_NpuCfgOp			<= 0;
-			mem_ex_NpuEnqOp			<= 0;
-		end
-		else begin
-			mem_ex_NextPC			<= ex_mem_NextPC;
-			mem_ex_BranchOp			<= ex_mem_BranchOp;
-			mem_ex_BranchCmd		<= ex_mem_BranchCmd;
-			mem_ex_MemData			<= ex_mem_MemData;
-			mem_ex_MemWrite			<= ex_mem_MemWrite;
-			mem_ex_MemValid			<= ex_mem_MemValid;
-			mem_ex_MemToReg			<= ex_mem_MemToReg;
-			mem_ex_WriteAddr		<= ex_mem_WriteAddr;
-			mem_ex_WriteEn			<= ex_mem_WriteEn;
-			mem_ex_Halt				<= ex_mem_Halt;
-			mem_ex_Offset			<= ex_mem_Offset;
-			mem_ex_RetCmd			<= ex_mem_RetCmd;
-			mem_ex_BranchPredict	<= ex_mem_BranchPredict;
-			mem_ex_BranchAddr		<= ex_mem_BranchAddr;
-			mem_ex_NpuCfgOp			<= ex_mem_NpuCfgOp;
-			mem_ex_NpuEnqOp			<= ex_mem_NpuEnqOp;
+		if (!rst_n || !stall) begin
+			if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt) begin
+				mem_ex_NextPC			<= 0;
+				mem_ex_BranchOp			<= 0;
+				mem_ex_BranchCmd		<= 0;
+				mem_ex_MemData			<= 0;
+				mem_ex_MemWrite			<= 0;
+				mem_ex_MemValid			<= 0;
+				mem_ex_MemToReg			<= 0;
+				mem_ex_WriteAddr		<= 0;
+				mem_ex_WriteEn			<= 0;
+				mem_ex_Halt				<= mem_wb_Halt & rst_n;
+				mem_ex_Offset			<= 0;
+				mem_ex_RetCmd			<= 0;
+				mem_ex_BranchPredict	<= 0;
+				mem_ex_BranchAddr		<= 0;
+				mem_ex_NpuCfgOp			<= 0;
+				mem_ex_NpuEnqOp			<= 0;
+			end
+			else begin
+				mem_ex_NextPC			<= ex_mem_NextPC;
+				mem_ex_BranchOp			<= ex_mem_BranchOp;
+				mem_ex_BranchCmd		<= ex_mem_BranchCmd;
+				mem_ex_MemData			<= ex_mem_MemData;
+				mem_ex_MemWrite			<= ex_mem_MemWrite;
+				mem_ex_MemValid			<= ex_mem_MemValid;
+				mem_ex_MemToReg			<= ex_mem_MemToReg;
+				mem_ex_WriteAddr		<= ex_mem_WriteAddr;
+				mem_ex_WriteEn			<= ex_mem_WriteEn;
+				mem_ex_Halt				<= ex_mem_Halt;
+				mem_ex_Offset			<= ex_mem_Offset;
+				mem_ex_RetCmd			<= ex_mem_RetCmd;
+				mem_ex_BranchPredict	<= ex_mem_BranchPredict;
+				mem_ex_BranchAddr		<= ex_mem_BranchAddr;
+				mem_ex_NpuCfgOp			<= ex_mem_NpuCfgOp;
+				mem_ex_NpuEnqOp			<= ex_mem_NpuEnqOp;
+			end
 		end
 	end
 	
@@ -473,29 +475,31 @@ module Processor(
 	wire	[31:0]	wb_mem_RetAddr;
 
 	always @ (posedge clk) begin
-		if (!rst_n || haltPC) begin
-			wb_mem_ExuData		<= 0;
-			wb_mem_WriteAddr	<= 0;
-			wb_mem_WriteEn		<= 0;
-			wb_mem_MemToReg		<= 0;
-			wb_mem_RetCmd		<= 0;
-			wb_mem_Halt			<= mem_wb_Halt & rst_n;
-			wb_mem_Offset		<= 0;
-			wb_mem_MemValid		<= 0;
-			wb_mem_NpuCfgOp		<= 0;
-			wb_mem_NpuEnqOp		<= 0;
-		end
-		else begin
-			wb_mem_ExuData		<= mem_wb_ExuData;
-			wb_mem_WriteAddr	<= mem_wb_WriteAddr;
-			wb_mem_WriteEn		<= mem_wb_WriteEn;
-			wb_mem_MemToReg		<= mem_wb_MemToReg;
-			wb_mem_RetCmd		<= mem_wb_RetCmd;
-			wb_mem_Halt			<= mem_wb_Halt;
-			wb_mem_Offset		<= mem_wb_Offset;
-			wb_mem_MemValid		<= mem_ex_MemValid; // Look at this!
-			wb_mem_NpuCfgOp		<= mem_wb_NpuCfgOp;
-			wb_mem_NpuEnqOp		<= mem_wb_NpuEnqOp;
+		if (!rst_n || !stall) begin
+			if (!rst_n || haltPC) begin
+				wb_mem_ExuData		<= 0;
+				wb_mem_WriteAddr	<= 0;
+				wb_mem_WriteEn		<= 0;
+				wb_mem_MemToReg		<= 0;
+				wb_mem_RetCmd		<= 0;
+				wb_mem_Halt			<= mem_wb_Halt & rst_n;
+				wb_mem_Offset		<= 0;
+				wb_mem_MemValid		<= 0;
+				wb_mem_NpuCfgOp		<= 0;
+				wb_mem_NpuEnqOp		<= 0;
+			end
+			else begin
+				wb_mem_ExuData		<= mem_wb_ExuData;
+				wb_mem_WriteAddr	<= mem_wb_WriteAddr;
+				wb_mem_WriteEn		<= mem_wb_WriteEn;
+				wb_mem_MemToReg		<= mem_wb_MemToReg;
+				wb_mem_RetCmd		<= mem_wb_RetCmd;
+				wb_mem_Halt			<= mem_wb_Halt;
+				wb_mem_Offset		<= mem_wb_Offset;
+				wb_mem_MemValid		<= mem_ex_MemValid; // Look at this!
+				wb_mem_NpuCfgOp		<= mem_wb_NpuCfgOp;
+				wb_mem_NpuEnqOp		<= mem_wb_NpuEnqOp;
+			end
 		end
 	end
 	
