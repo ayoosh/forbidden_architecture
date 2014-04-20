@@ -6,7 +6,8 @@
 // Hazard Detection Unit module ports declaration
 module HazardDetectionUnit (
 	// Outputs
-	output			oStall,
+	output			oFullStall,
+	output			oSemiStall,
 
 	// Inputs
 	input	[4:0]	iIdRegRs,
@@ -36,6 +37,7 @@ module HazardDetectionUnit (
 	assign cacheHazard	= (iInstrCacheValid & ~iInstrCacheReady) | (iDataCacheValid & ~iDataCacheReady);
 
 	// Outputs assignment
-	assign oStall = dataHazard | npuHazard | cacheHazard;
+	assign oSemiStall = dataHazard;
+	assign oFullStall = npuHazard | cacheHazard;
 
 endmodule
