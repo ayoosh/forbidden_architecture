@@ -81,9 +81,9 @@ module IOport_dummy #(
 			temp_mem[3] <= 32'h00000000;
 			temp_mem[4] <= 32'h00000001;  // Display on
 			
-			temp_mem[5] <= 32'h80002000;
-			temp_mem[6] <= 32'h00000000;
-			temp_mem[7] <= 32'h80002000;
+			temp_mem[5] <= 32'h00000000;  // Writing wrong address
+			temp_mem[6] <= 32'h00000001;   // Display on
+			temp_mem[7] <= 32'h01000000;
 			temp_mem[8] <= 32'h00000001;  // Display on
 			
 			temp_mem_addr[0] <= 28'h800_0004;
@@ -91,9 +91,9 @@ module IOport_dummy #(
 			temp_mem_addr[2] <= 28'h800_0005;
 			temp_mem_addr[3] <= 28'h800_0005;
 			temp_mem_addr[4] <= 28'h800_0005;
-			temp_mem_addr[5] <= 28'h800_0009;
+			temp_mem_addr[5] <= 28'h800_0004;  // Address
 			temp_mem_addr[6] <= 28'h800_0005;
-			temp_mem_addr[7] <= 28'h800_0007;
+			temp_mem_addr[7] <= 28'h800_0004;  // Address
 			temp_mem_addr[8] <= 28'h800_0005;
 			mem_rw_data1 <= 1;
 			mem_valid_data1 <= 1;   // Starting with write command
