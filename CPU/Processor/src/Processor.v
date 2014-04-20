@@ -109,7 +109,7 @@ module Processor(
 	wire	[4:0]	id_ex_WriteAddr;
 	wire			id_ex_WriteEn;
 	wire	[25:0]	id_ex_Offset;
-	wire			id_ex_RetCmd, id_ex_CallCmd;
+	wire			id_ex_CallCmd, id_ex_RetCmd, id_ex_LoadCmd;
 	wire			id_ex_Halt;
 	wire			id_ex_NpuCfgOp, id_ex_NpuEnqOp, id_ex_NpuDeqOp;
 	wire	[31:0]	id_ex_Instruction;
@@ -145,8 +145,9 @@ module Processor(
 		.oOverflowEn		(id_ex_OverflowEn),
 		.oWriteAddr			(id_ex_WriteAddr),
 		.oWriteEn			(id_ex_WriteEn),
-		.oRetCmd			(id_ex_RetCmd),
 		.oCallCmd			(id_ex_CallCmd),
+		.oRetCmd			(id_ex_RetCmd),
+		.oLoadCmd			(id_ex_LoadCmd),
 		.oBranchAddr		(branchAddr),
 		.oBranchPredict		(id_ex_BranchPredict),
 		.oNpuCfgOp			(id_ex_NpuCfgOp),
@@ -180,8 +181,9 @@ module Processor(
 	reg		[4:0]	ex_id_WriteAddr;
 	reg				ex_id_WriteEn;
 	reg		[25:0]	ex_id_Offset;
-	reg				ex_id_RetCmd;
 	wire			ex_id_CallCmd;
+	reg				ex_id_RetCmd;
+	reg				ex_if_LoadCmd;
 	reg				ex_id_BranchPredict;
 	reg		[31:0]	ex_id_BranchAddr;
 	reg				ex_id_NpuCfgOp, ex_id_NpuEnqOp, ex_id_NpuDeqOp;
@@ -218,6 +220,7 @@ module Processor(
 			ex_id_NpuEnqOp		<= 0;
 			ex_id_NpuDeqOp		<= 0;
 			ex_id_Instruction	<= 0;
+			ex_if_LoadCmd		<= 0;
 		end
 		else begin
 			ex_id_Immediate		<= id_ex_Immediate;
@@ -242,6 +245,7 @@ module Processor(
 			ex_id_WriteEn		<= id_ex_WriteEn;
 			ex_id_Offset		<= offset;
 			ex_id_RetCmd		<= id_ex_RetCmd;
+			ex_if_LoadCmd		<= id_ex_LoadCmd;
 			ex_id_BranchPredict	<= id_ex_BranchPredict;
 			ex_id_BranchAddr	<= branchAddr;
 			ex_id_NpuCfgOp		<= id_ex_NpuCfgOp;
@@ -523,7 +527,7 @@ module Processor(
 	wire	[4:0]		memRegRd;
 	wire	[4:0]		wbRegRd;
 	
-	assign	exRegRs		= ex_id_NpuCfgOp ? 5'h0 : (ex_id_NpuEnqOp ? ex_id_Offset[25:21] : ex_id_Offset[20:16]);
+	assign	exRegRs		= ex_id_NpuCfgOp ? 5'h0 : ((ex_id_NpuEnqOp || ex_if_LoadCmd) ? ex_id_Offset[25:21] : ex_id_Offset[20:16]);
 	assign	exRegRt		= (ex_id_NpuCfgOp || ex_id_NpuEnqOp) ? 5'h0 : ex_id_Offset[15:11];
 	assign	memRegRd	= (mem_ex_NpuCfgOp || mem_ex_NpuEnqOp) ? 5'h0 : mem_ex_Offset[25:21];
 	assign	wbRegRd		= (wb_mem_NpuCfgOp || wb_mem_NpuEnqOp) ? 5'h0 : wb_mem_Offset[25:21];

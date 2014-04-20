@@ -32,9 +32,10 @@ module Control (
 	output	[25:0]	oOffset,
 	output			oCallCmd,
 	output			oRetCmd,
+	output			oLoadCmd,
 	output			oNpuCfgOp,
 	output			oNpuEnqOp,
-	output			oNpuDeqOp,	
+	output			oNpuDeqOp,
 
 	//Inputs
 	input	[31:0]	iInstruction,
@@ -213,6 +214,8 @@ module Control (
 	assign	oExuShift	= (iRst_n & ((decode == SLL) | (decode == SRL) | (decode == SRA))) ? shift_amount : 5'h00;
 	
 	assign	oAluCmd		= iRst_n & ((decode == LHW) | (decode == LLW) | (decode == LOAD) | (decode == STORE) | (decode == ENQC));
+	
+	assign	oLoadCmd	= iRst_n & (decode == LHW);
 
 	assign	oBranchCmd	= iRst_n & (decode == BRANCH);
 
