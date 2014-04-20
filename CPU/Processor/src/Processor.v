@@ -571,7 +571,7 @@ module Processor(
 		.iNpuInputFull		(npu_input_fifo_full),
 		.iNpuOutputEmpty	(npu_output_fifo_empty),
 		.iInstrCacheValid	(cache_valid_instr),
-		.iDataCacheValid	(wb_mem_MemValid),
+		.iDataCacheValid	(mem_ex_MemValid),
 		.iInstrCacheReady	(cache_ready_instr),
 		.iDataCacheReady	(cache_ready_data)
 	);
