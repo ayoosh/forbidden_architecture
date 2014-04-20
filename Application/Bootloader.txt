@@ -9,7 +9,7 @@ LHW R1 0X03FF ;
 # R4 - SPART Read Mask
 # R5 - SPART Write Mask
 # R6 - Value read from spart
-ADD R2 R0 R0 ;
+LLW R2 0x0000 ;
 LHW R2 0x0800 ;
 LLW R3 0x0001 ;
 LHW R3 0x0800 ;
