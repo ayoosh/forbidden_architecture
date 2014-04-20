@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="C:/Temp/top_level/Module_Test_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="Module_Test" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="44" />
+   <wvobject fp_name="/Module_Test/txd" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">txd</obj_property>
+      <obj_property name="ObjectShortName">txd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/gl_rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">gl_rst</obj_property>
+      <obj_property name="ObjectShortName">gl_rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/piso_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">piso_out[8:0]</obj_property>
+      <obj_property name="ObjectShortName">piso_out[8:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/data_tx" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_tx[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_tx[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/Processor/cache_addr_instr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">cache_addr_instr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cache_addr_instr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/Processor/cache_valid_instr" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">cache_valid_instr</obj_property>
+      <obj_property name="ObjectShortName">cache_valid_instr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/Processor/cache_rd_instr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">cache_rd_instr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cache_rd_instr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/Processor/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/Processor/clk_x2" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk_x2</obj_property>
+      <obj_property name="ObjectShortName">clk_x2</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/IO_map_block/io_mem_data_wr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">io_mem_data_wr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">io_mem_data_wr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/IO_map_block/io_mem_rw_data" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">io_mem_rw_data</obj_property>
+      <obj_property name="ObjectShortName">io_mem_rw_data</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/IO_map_block/io_mem_valid_data" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">io_mem_valid_data</obj_property>
+      <obj_property name="ObjectShortName">io_mem_valid_data</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/IO_map_block/io_mem_ready_data" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">io_mem_ready_data</obj_property>
+      <obj_property name="ObjectShortName">io_mem_ready_data</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/Processor/rst_n" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst_n</obj_property>
+      <obj_property name="ObjectShortName">rst_n</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/ioaddr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">ioaddr[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ioaddr[1:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/databus" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">databus[7:0]</obj_property>
+      <obj_property name="ObjectShortName">databus[7:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/piso_out" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">piso_out[8:0]</obj_property>
+      <obj_property name="ObjectShortName">piso_out[8:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/spart_data_rden" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">spart_data_rden</obj_property>
+      <obj_property name="ObjectShortName">spart_data_rden</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/spart_data_wren" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">spart_data_wren</obj_property>
+      <obj_property name="ObjectShortName">spart_data_wren</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/data_rdy" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">data_rdy</obj_property>
+      <obj_property name="ObjectShortName">data_rdy</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/data_tx" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">data_tx[31:0]</obj_property>
+      <obj_property name="ObjectShortName">data_tx[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/status_register" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">status_register[31:0]</obj_property>
+      <obj_property name="ObjectShortName">status_register[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/clear_status_rd" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clear_status_rd</obj_property>
+      <obj_property name="ObjectShortName">clear_status_rd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/rst" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/txd" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">txd</obj_property>
+      <obj_property name="ObjectShortName">txd</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/io_rw_data" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">io_rw_data</obj_property>
+      <obj_property name="ObjectShortName">io_rw_data</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/io_valid_data" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">io_valid_data</obj_property>
+      <obj_property name="ObjectShortName">io_valid_data</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/io_ready_data" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">io_ready_data</obj_property>
+      <obj_property name="ObjectShortName">io_ready_data</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/mem_addr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">mem_addr[27:0]</obj_property>
+      <obj_property name="ObjectShortName">mem_addr[27:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/io_wr_data" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">io_wr_data[31:0]</obj_property>
+      <obj_property name="ObjectShortName">io_wr_data[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/iorw" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">iorw</obj_property>
+      <obj_property name="ObjectShortName">iorw</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/rda" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">rda</obj_property>
+      <obj_property name="ObjectShortName">rda</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/tbr" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">tbr</obj_property>
+      <obj_property name="ObjectShortName">tbr</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/spart_interface/iocs" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">iocs</obj_property>
+      <obj_property name="ObjectShortName">iocs</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/IO_map_block/io_mem_data_wr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">io_mem_data_wr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">io_mem_data_wr[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/IO_map_block/io_mem_data_rd" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">io_mem_data_rd[31:0]</obj_property>
+      <obj_property name="ObjectShortName">io_mem_data_rd[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/IO_map_block/io_mem_data_addr" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">io_mem_data_addr[27:0]</obj_property>
+      <obj_property name="ObjectShortName">io_mem_data_addr[27:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/IO_map_block/io_mem_rw_data" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">io_mem_rw_data</obj_property>
+      <obj_property name="ObjectShortName">io_mem_rw_data</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/IO_map_block/io_mem_valid_data" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">io_mem_valid_data</obj_property>
+      <obj_property name="ObjectShortName">io_mem_valid_data</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/IO_map_block/io_mem_ready_data" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">io_mem_ready_data</obj_property>
+      <obj_property name="ObjectShortName">io_mem_ready_data</obj_property>
+   </wvobject>
+   <wvobject fp_name="/Module_Test/uut/Processor/InstructionDecodeStage_0/RegisterFile_0/mem/ram[0]" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">[0,31:0]</obj_property>
+      <obj_property name="ObjectShortName">ram[0,31:0]</obj_property>
+   </wvobject>
+</wave_config>
