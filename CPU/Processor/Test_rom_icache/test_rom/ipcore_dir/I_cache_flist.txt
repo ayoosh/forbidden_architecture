@@ -3,6 +3,7 @@ I_cache.asy
 I_cache.gise
 I_cache.mif
 I_cache.ngc
+I_cache.sym
 I_cache.v
 I_cache.veo
 I_cache.vhd

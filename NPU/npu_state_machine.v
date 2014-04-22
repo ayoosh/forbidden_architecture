@@ -51,8 +51,8 @@ wire npu_outputs_done;
 assign npu_input_cnt_equals = (npu_input_cnt == npu_input_cnt_cur) ? 1 : 0;
 assign npu_outputs_done = (npu_inputs_done && (npu_output_cnt == npu_output_cnt_cur)) ? 1 : 0;
 
-assign npu_input_fifo_read_en = (npu_sched_input_fifo_read_en && (~npu_inputs_done) && npu_state_compute) ? 1 : 0;
-assign npu_output_fifo_write_en = (~npu_outputs_done && npu_inputs_done && npu_sched_output_fifo_write_en && npu_state_compute) ? 1 : 0;
+assign npu_input_fifo_read_en = (npu_sched_input_fifo_read_en && (~npu_inputs_done) && npu_state_compute && (~npu_input_fifo_empty)) ? 1 : 0;
+assign npu_output_fifo_write_en = (~npu_outputs_done && npu_inputs_done && npu_sched_output_fifo_write_en && npu_state_compute && (~npu_output_fifo_full)) ? 1 : 0;
 
 always @(posedge CLK) begin
   if (RST) begin

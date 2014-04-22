@@ -69,7 +69,7 @@ Processor P1(
 npu npu1(
      //inputs
     .CLK(CLK0_OUT),
-    .RST(rst),
+    .RST(~rst),
     .npu_input_data(npu_input_fifo),
     .npu_input_fifo_write_enable(npu_input_fifo_we),
     .npu_config_data(npu_config_fifo[25:0]),

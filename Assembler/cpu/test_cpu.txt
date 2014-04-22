@@ -6,8 +6,8 @@
 
 # First set of inputs
 
-LLW R0 0x0002 ;      // Loads for Inputs
-LHW R0 0x0000 ;	     
+LLW R2 0x0002 ;      // Loads for Inputs
+LHW R2 0x0000 ;	     
 
 LLW R1 0x0001 ;
 LHW R1 0x0000 ;
@@ -15,7 +15,8 @@ LHW R1 0x0000 ;
 LLW R1 0x0002 ;
 LHW R1 0x0001 ;
 
-ENQD0 R0 ;       //EnQing data into NPU
+ENQD0 R2 ;       //EnQing data into NPU
 ADD R3 R2 R2 ;
 ADD R3 R3 R3 ;
+ADD R4 R4 R4 ;
 ENQD0 R1 ;	

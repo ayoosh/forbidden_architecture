@@ -1,0 +1,2 @@
+SETPROJECT "I:/GitHub/forbidden_architecture/CPU/Processor/Test_rom_icache/test_rom/ipcore_dir/coregen.cgp"
+LAUNCHXCO "I:/GitHub/forbidden_architecture/CPU/Processor/Test_rom_icache/test_rom/ipcore_dir/I_cache.xco"
