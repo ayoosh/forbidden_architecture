@@ -165,7 +165,7 @@ module Control (
 									(decode == ENQC) |
 									(decode == ENQD) |
 									(decode == DEQD));
-	assign	oAddrRead1	= ((decode == LOAD) | (decode == STORE)) ? register_d : ((decode == RET) ? 5'h00 : register_n2);
+	assign	oAddrRead1	= (decode == STORE) ? register_d : ((decode == LOAD) ? register_n1 :((decode == RET) ? 5'h00 : register_n2));
 	
 	assign	oZeroEn		= ~((decode == LHW) |
 							(decode == LLW) |

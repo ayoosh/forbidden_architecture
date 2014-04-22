@@ -21,11 +21,11 @@ module DataMemory (
 	// Model read, data is latched on clock low
 	always @(negedge clk) begin
 		if (valid && !rw) begin
-			rrd_data		<= data_mem[addr];
+			rrd_data	<= data_mem[addr];
 			rrd_ready	<= 1'b1;
 		end
 		else begin
-			rrd_data		<= rd_data;
+			rrd_data	<= rd_data;
 			rrd_ready	<= 1'b0;
 		end
 	end

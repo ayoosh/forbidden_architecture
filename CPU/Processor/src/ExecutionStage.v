@@ -30,7 +30,10 @@ module ExecutionStage (
 	output			oRetCmd,
 	output			oBranchPredict,
 	output	[31:0]	oNpuConfigFifo,
+	output			oNpuConfigWe,
 	output	[31:0]	oNpuDataFifo,
+	output			oNpuDataWe,
+	output			oNpuDataRe,
 	output			oNpuCfgOp,
 	output			oNpuEnqOp,
 
@@ -175,4 +178,8 @@ module ExecutionStage (
 	
 	assign oNpuEnqOp		= iNpuEnqOp;
 	assign oNpuCfgOp		= iNpuCfgOp;
+	
+	assign oNpuConfigWe		= iNpuCfgOp;
+	assign oNpuDataWe		= iNpuEnqOp;
+	assign oNpuDataRe		= iNpuDeqOp;
 endmodule

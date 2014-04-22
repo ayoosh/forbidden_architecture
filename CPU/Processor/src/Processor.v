@@ -54,6 +54,8 @@ module Processor(
 	wire			mem_wb_RetCmd;
 	
 	wire			fullStall, semiStall, branchPredict, branchMissPredict;
+	
+	reg				rFullStall;
 
 	reg		[31:0]	id_if_NextPC;
 	
@@ -78,21 +80,23 @@ module Processor(
 		.iBranchMissCmd		(branchMissPredict),
 		.iJumpCmd			(jumpCmd),
 		.iRetCmd			(retCmd),
-		.iHalt				(haltPC | fullStall | semiStall)
+		.iHalt				(haltPC | semiStall)
 	);
 	// TODO: Check input signals for Fetch Stage.
 
 	reg		[31:0]	id_if_Instruction;
 
 	always @ (posedge clk) begin
-		if (!rst_n || !fullStall || !semiStall) begin
-			if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt) begin
-				id_if_NextPC		<= 32'h0;
-				id_if_Instruction	<= 32'h0;
-			end
-			else begin
-				id_if_Instruction	<= if_id_Instruction;
-				id_if_NextPC		<= if_id_NextPC;
+		if (!rst_n || !fullStall) begin
+			if (!rst_n || !semiStall) begin
+				if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt) begin
+					id_if_NextPC		<= 32'h0;
+					id_if_Instruction	<= 32'h0;
+				end
+				else begin
+					id_if_Instruction	<= if_id_Instruction;
+					id_if_NextPC		<= if_id_NextPC;
+				end
 			end
 		end
 	end
@@ -188,6 +192,11 @@ module Processor(
 	reg		[31:0]	ex_id_BranchAddr;
 	reg				ex_id_NpuCfgOp, ex_id_NpuEnqOp, ex_id_NpuDeqOp;
 	reg		[31:0]	ex_id_Instruction;
+	reg		[31:0]	ex_id_Src0_Stall;
+	reg		[31:0]	ex_id_Src1_Stall;
+	reg		[31:0]	ex_id_MemData_Stall;
+	reg				ex_id_CallCmd_Stall;
+	
 
 	always @ (posedge clk) begin
 		if (!rst_n || !fullStall) begin
@@ -257,10 +266,25 @@ module Processor(
 		end
 	end
 	
-	assign ex_id_Src0		= id_ex_Src0;
-	assign ex_id_Src1		= id_ex_Src1;
-	assign ex_id_MemData	= id_ex_MemData;
-	assign ex_id_CallCmd	= id_ex_CallCmd;
+	always @ (posedge clk) begin
+		if (!rst_n) begin
+			ex_id_Src0_Stall	<= 0;
+			ex_id_Src1_Stall	<= 0;
+			ex_id_MemData_Stall	<= 0;
+			ex_id_CallCmd_Stall	<= 0;
+		end
+		else if (fullStall & ~rFullStall) begin
+			ex_id_Src0_Stall	<= id_ex_Src0;
+			ex_id_Src1_Stall	<= id_ex_Src1;
+			ex_id_MemData_Stall	<= id_ex_MemData;
+			ex_id_CallCmd_Stall	<= id_ex_CallCmd;
+		end
+	end
+	
+	assign ex_id_Src0		= rFullStall ? ex_id_Src0_Stall : id_ex_Src0;
+	assign ex_id_Src1		= rFullStall ? ex_id_Src1_Stall : id_ex_Src1;
+	assign ex_id_MemData	= rFullStall ? ex_id_MemData_Stall : id_ex_MemData;
+	assign ex_id_CallCmd	= rFullStall ? ex_id_CallCmd_Stall : id_ex_CallCmd;
 
 	wire	[31:0]	ex_mem_ExuResult, ex_mem_NextPC;
 	wire			ex_mem_ZeroFlag, ex_mem_NegativeFlag, ex_mem_OverflowFlag;
@@ -300,7 +324,10 @@ module Processor(
 		.oRetCmd			(ex_mem_RetCmd),
 		.oBranchPredict		(ex_mem_BranchPredict),
 		.oNpuConfigFifo		(npu_config_fifo),
+		.oNpuConfigWe		(npu_config_fifo_we),
 		.oNpuDataFifo		(npu_input_fifo),
+		.oNpuDataWe			(npu_input_fifo_we),
+		.oNpuDataRe			(npu_output_fifo_re),
 		.oNpuCfgOp			(ex_mem_NpuCfgOp),
 		.oNpuEnqOp			(ex_mem_NpuEnqOp),
 
@@ -360,6 +387,10 @@ module Processor(
 	reg				mem_ex_BranchPredict;
 	reg		[31:0]	mem_ex_BranchAddr;
 	reg				mem_ex_NpuCfgOp, mem_ex_NpuEnqOp;
+	reg		[31:0]	mem_ex_ExuResult_Stall;
+	reg				mem_ex_ZeroFlag_Stall;
+	reg				mem_ex_NegativeFlag_Stall;
+	reg				mem_ex_OverflowFlag_Stall;
 
 	always @ (posedge clk) begin
 		if (!rst_n || !fullStall) begin
@@ -402,10 +433,25 @@ module Processor(
 		end
 	end
 	
-	assign mem_ex_ExuResult		= ex_mem_ExuResult;
-	assign mem_ex_ZeroFlag		= ex_mem_ZeroFlag;
-	assign mem_ex_NegativeFlag	= ex_mem_NegativeFlag;
-	assign mem_ex_OverflowFlag	= ex_mem_OverflowFlag;
+	always @ (posedge clk) begin
+		if (!rst_n) begin
+			mem_ex_ExuResult_Stall		<= 0;
+			mem_ex_ZeroFlag_Stall		<= 0;
+			mem_ex_NegativeFlag_Stall	<= 0;
+			mem_ex_OverflowFlag_Stall	<= 0;
+		end
+		else if (fullStall & ~rFullStall) begin
+			mem_ex_ExuResult_Stall		<= ex_mem_ExuResult;
+			mem_ex_ZeroFlag_Stall		<= ex_mem_ZeroFlag;
+			mem_ex_NegativeFlag_Stall	<= ex_mem_NegativeFlag;
+			mem_ex_OverflowFlag_Stall	<= ex_mem_OverflowFlag;
+		end
+	end
+	
+	assign mem_ex_ExuResult		= rFullStall ? mem_ex_ExuResult_Stall : ex_mem_ExuResult;
+	assign mem_ex_ZeroFlag		= rFullStall ? mem_ex_ZeroFlag_Stall : ex_mem_ZeroFlag;
+	assign mem_ex_NegativeFlag	= rFullStall ? mem_ex_NegativeFlag_Stall : ex_mem_NegativeFlag;
+	assign mem_ex_OverflowFlag	= rFullStall ? mem_ex_OverflowFlag_Stall : ex_mem_OverflowFlag;
 
 	wire	[31:0]	mem_wb_MemData, mem_wb_ExuData, mem_wb_NextPC;
 	wire	[4:0]	mem_wb_WriteAddr;
@@ -589,5 +635,9 @@ module Processor(
 	
 	assign branchPredict = branchCmd & id_ex_BranchCmd;
 	assign halt = haltPC;
+	
+	always @ (posedge clk) begin
+		rFullStall <= fullStall;
+	end
 	
 endmodule
