@@ -227,6 +227,13 @@ module TB_Cache_DDR_test;
 	cache_addr = 28'h200_1018;
 	cache_wr = 32'hCD12_12CD;
 	
+	//3rd entry on the same index
+	@ (posedge cache_ready) 
+	@ (posedge clk)
+	cache_addr = 28'h100_1018;
+	cache_wr = 32'hAB00_00BA;
+	
+	
 	// READ BACk
 	@ (posedge cache_ready) 
 	@ (posedge clk) begin
@@ -238,7 +245,7 @@ module TB_Cache_DDR_test;
 	// 1st entry
 	@ (posedge cache_ready) 	
 	@ (posedge clk) begin
-	cache_addr = 28'h000_1018;
+	cache_addr = 28'h100_1018;
 	end
 	
 	
