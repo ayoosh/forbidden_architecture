@@ -234,16 +234,6 @@ module TB_Cache_DDR_test;
 	cache_wr = 32'hAB00_00BA;
 	
 	
-	
-	
-	// PAUSE
-	@ (posedge cache_ready) 
-	@ (posedge clk) begin
-	cache_valid = 1'b0;
-	cache_rw = 1'b0;
-	
-	#100
-	
 	// READ BACk
 	@ (posedge cache_ready) 
 	@ (posedge clk) begin
