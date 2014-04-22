@@ -20,6 +20,7 @@ module cache_controller #(
 	input		[255:0]	mem_rd,
 	input				mem_ready,
 
+	
 	output		[31:0]	cache_rd,
 	output				cache_ready,
 	output		[27:0]	mem_addr,
@@ -155,7 +156,7 @@ module cache_controller #(
 	always @ (State, cache_valid, flush, hit, dirty, mem_ready, flush_flag, count) begin
 		case (State)
 			IDLE: begin
-					NextState = cache_valid ? (flush ? WRITE_BACK : COMPARE_TAG) : IDLE;
+					NextState = flush ? WRITE_BACK : COMPARE_TAG;
 			end
 			COMPARE_TAG: begin
 				if (hit)											// HIT - if match and valid
@@ -211,22 +212,22 @@ module cache_controller #(
 	
 	assign counter = flush_flag ? count : addr_index;
 	
-	always @ (posedge clk, negedge rst_n) begin
+	always @ (rst_n, IO_rd, IO_ready, tag_matched, cache_rw, data, cache_flushed, cache_addr) begin
 		if (!rst_n) begin
-			cache_rd_reg	<= 32'h0000_0000;
-			cache_ready_reg	<= 1'b0;
+			cache_rd_reg	= 32'h0000_0000;
+			cache_ready_reg	= 1'b0;
 		end
 		else begin
 			if (cache_addr[27]) begin
-				cache_rd_reg 	<= IO_rd;
-				cache_ready_reg <= IO_ready;
+				cache_rd_reg 	= IO_rd;
+				cache_ready_reg = IO_ready;
 			end
 			else begin
 				if (tag_matched && !cache_rw)
-					cache_rd_reg <= data;
+					cache_rd_reg = data;
 				else
-					cache_rd_reg	<= 32'h0000_0000;
-				cache_ready_reg		<= (tag_matched | cache_flushed);
+					cache_rd_reg	= 32'h0000_0000;
+					cache_ready_reg	= (tag_matched | cache_flushed);
 			end
 		end
 	end
@@ -239,7 +240,7 @@ module cache_controller #(
 	assign tag_matched = (State == COMPARE_TAG) & hit;
 	assign cache_flushed = (State == WRITE_BACK) & mem_ready & flush_flag & (count == 1023);
 
-	assign read_block_data = hit ? data_read[convert(lru)] : 256'h0;
+	assign read_block_data = hit ? data_read[convert(way)] : 256'h0;
 
 	assign cache_rd 	= cache_addr[27] ? IO_rd		: cache_rd_reg;
 	assign cache_ready	= cache_addr[27] ? IO_ready		: cache_ready_reg;
