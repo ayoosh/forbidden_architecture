@@ -1,0 +1,76 @@
+# Infinitely send STACK POINTER value via SPART
+# R2 - SPART Address
+# R3 -  SPART Status address
+# R4 - SPART Read Mask
+# R5 - SPART Write Mask
+# R6 - Number of pixels in the image.
+# R7 - Message sent to SPART to receive the data.
+# R8 - Value read from SPART status register.
+# R9 - Value received through SPART.
+# R10 - Base address of the set of locations where image will be stored.
+# R11 - Offset from the base address.
+# R12 - Stores the received pixel values. Has 4 8-bit gray scale values.
+# R13 - Temporary storage for storing the masking operation results that have to be later stored in DDR2.
+# R14 - Mask for transferring the gray scale image values from R12 to DDR2.
+# R15 - Counter to keep track of number of pixel values (or bytes) sent from R12 to DDR2. Its value is fixed at 4.
+
+# Set the base address and offset to store image ;
+LLW R11 0X0000 ;
+LLW R10 0X0000 ;
+
+LLW R2 0x0000 ;
+LHW R2 0x0800 ;
+LLW R3 0x0001 ;
+LHW R3 0x0800 ;
+LLW R4 0x0002 ;
+LLW R5 0x0001 ;
+LLW R14 0x00FF;
+
+# Send the ASCII of character 'i'. When MATLAB
+# detects this, it will start sending the image.
+LLW R7 0x0069 ;
+
+# Number of pixels that will be received from MATLAB.
+# Hex value of 640*480 = 307200 is 0x0004B000
+LLW R6 0xB000 ;
+LHW R6 0x0004 ;
+
+SPART_TX_NOT_READY_1 LOAD R8 R3 0x00 ;
+AND R0 R8 R5 ;
+B EQ SPART_TX_NOT_READY_1 ;
+
+STORE R7 R2 ;
+
+# Start receiving image pixel values.
+GET_PIXEL LOAD R9 R3 0x00 ;
+AND R0 R9 R4 ;
+B EQ GET_PIXEL ;
+
+# Received a pixel from matlab and stored in Register R12
+STORE R12 R2 0x00 ;
+SEND_PIXELS_TO_DDR2 LLW R15 0x0004 ;
+AND R13 R12 R14 ;
+STORE R13 R11 R10 ;
+
+# After the pixel value has been stored in DDR2
+# do logical right shift on R12 by 8-bits to get the next pixel value.
+SRL R12 R12 0x08 ;
+
+# Increment address offset
+ADD R10 R10 R5 ;
+
+# Decrement image pixel counter
+SUB R6 R6 R5 ;
+
+# If the value of R15 is not zero then keep doing the mask and shift
+# operations to send 8-bit gray image pixel values to DDR2.
+SUB R15 R15 R5 ;
+OR R0 R0 R15 ;
+B NEQ SEND_PIXELS_TO_DDR2 ;
+
+# If value of image pixel counter is not zero then
+# keep checking spart status register for more image
+# pixels from MATLAB.
+
+OR R0 R6 R0 ;
+B NEQ GET_PIXEL ;
