@@ -55,7 +55,7 @@ module Processor(
 	
 	wire			fullStall, semiStall, branchPredict, branchMissPredict;
 	
-	reg				rFullStall;
+	reg				rFullStall, rSemiStall;
 
 	reg		[31:0]	id_if_NextPC;
 	
@@ -80,7 +80,8 @@ module Processor(
 		.iBranchMissCmd		(branchMissPredict),
 		.iJumpCmd			(jumpCmd),
 		.iRetCmd			(retCmd),
-		.iHalt				(haltPC | semiStall)
+		.iStall				(rSemiStall),
+		.iHalt				(haltPC)
 	);
 	// TODO: Check input signals for Fetch Stage.
 
@@ -152,6 +153,7 @@ module Processor(
 		.oCallCmd			(id_ex_CallCmd),
 		.oRetCmd			(id_ex_RetCmd),
 		.oLoadCmd			(id_ex_LoadCmd),
+		.oStoreCmd			(id_ex_StoreCmd),
 		.oBranchAddr		(branchAddr),
 		.oBranchPredict		(id_ex_BranchPredict),
 		.oNpuCfgOp			(id_ex_NpuCfgOp),
@@ -188,6 +190,7 @@ module Processor(
 	wire			ex_id_CallCmd;
 	reg				ex_id_RetCmd;
 	reg				ex_if_LoadCmd;
+	reg				ex_id_StoreCmd;
 	reg				ex_id_BranchPredict;
 	reg		[31:0]	ex_id_BranchAddr;
 	reg				ex_id_NpuCfgOp, ex_id_NpuEnqOp, ex_id_NpuDeqOp;
@@ -200,7 +203,7 @@ module Processor(
 
 	always @ (posedge clk) begin
 		if (!rst_n || !fullStall) begin
-			if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt || semiStall) begin
+			if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt || semiStall || rSemiStall) begin
 				ex_id_Immediate		<= 0;
 				ex_id_NextPC		<= 0;
 				ex_id_ExuShift		<= 0;
@@ -231,6 +234,7 @@ module Processor(
 				ex_id_NpuDeqOp		<= 0;
 				ex_id_Instruction	<= 0;
 				ex_if_LoadCmd		<= 0;
+				ex_id_StoreCmd		<= 0;
 			end
 			else begin
 				ex_id_Immediate		<= id_ex_Immediate;
@@ -262,6 +266,7 @@ module Processor(
 				ex_id_NpuEnqOp		<= id_ex_NpuEnqOp;
 				ex_id_NpuDeqOp		<= id_ex_NpuDeqOp;
 				ex_id_Instruction	<= id_ex_Instruction;
+				ex_id_StoreCmd		<= id_ex_StoreCmd;
 			end
 		end
 	end
@@ -580,7 +585,7 @@ module Processor(
 	wire	[4:0]		wbRegRd;
 	
 	assign	exRegRs		= ex_id_NpuCfgOp ? 5'h0 : ((ex_id_NpuEnqOp || ex_if_LoadCmd) ? ex_id_Offset[25:21] : ex_id_Offset[20:16]);
-	assign	exRegRt		= (ex_id_NpuCfgOp || ex_id_NpuEnqOp) ? 5'h0 : ex_id_Offset[15:11];
+	assign	exRegRt		= (ex_id_NpuCfgOp || ex_id_NpuEnqOp) ? 5'h0 : (ex_id_StoreCmd ? ex_id_Offset[20:16] : ex_id_Offset[15:11]);
 	assign	memRegRd	= (mem_ex_NpuCfgOp || mem_ex_NpuEnqOp) ? 5'h0 : mem_ex_Offset[25:21];
 	assign	wbRegRd		= (wb_mem_NpuCfgOp || wb_mem_NpuEnqOp) ? 5'h0 : wb_mem_Offset[25:21];
 
@@ -637,7 +642,8 @@ module Processor(
 	assign halt = haltPC;
 	
 	always @ (posedge clk) begin
-		rFullStall <= fullStall;
+		rFullStall	<= fullStall;
+		rSemiStall	<= semiStall;
 	end
 	
 endmodule

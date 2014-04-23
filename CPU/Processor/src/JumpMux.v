@@ -17,20 +17,27 @@ module JumpMux (
 	input			iRetCmd,
 	input			iBranchCmd,
 	input			iBranchMissCmd,
-	input			iJumpCmd
+	input			iJumpCmd,
+	input			iStall
 );
 
 	// Internal signal declaration
-	wire	[31:0]	RetAddr;
-	wire	[31:0]	BranchAddr;
-	wire	[31:0]	BranchMissAddr;
+	reg		[31:0]	newPC;
+	reg		[31:0]	RetAddr;
+	reg		[31:0]	BranchAddr;
+	reg		[31:0]	BranchMissAddr;
 
 	// Internal signal assignment
-	assign BranchAddr		= iBranchCmd ? iBranchAddr : iNextPC;
-	assign RetAddr			= iRetCmd ? iRetAddr : BranchAddr;
-	assign BranchMissAddr	= iBranchMissCmd ? iBranchMissAddr : RetAddr;
-
+	always @ (*) begin
+		if (!iStall) begin
+			BranchAddr		<= iBranchCmd ? iBranchAddr : iNextPC;
+			RetAddr			<= iRetCmd ? iRetAddr : BranchAddr;
+			BranchMissAddr	<= iBranchMissCmd ? iBranchMissAddr : RetAddr;
+			newPC			<= iJumpCmd ? {iNextPC[31:26], iOffset} : BranchMissAddr;
+		end
+	end
+	
 	// Output assignment
-	assign oNewPC		= iJumpCmd ? {iNextPC[31:26], iOffset} : BranchMissAddr;
+	assign oNewPC = newPC;
 
 endmodule

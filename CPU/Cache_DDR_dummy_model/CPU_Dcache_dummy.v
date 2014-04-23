@@ -18,17 +18,17 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Icache_dummy #(
-      parameter CYCLE_DELAY = 1
+module CPU_Dcache_dummy #(
+      parameter CYCLE_DELAY = 3
 		)
 (
 		input clk,
 		input rst,
 		
-	output  	   [255:0] mem_data_wr1,
+	output  	   [31:0] mem_data_wr1,
 								// Input data from cache
 								
-	input   [255:0] mem_data_rd1,
+	input   [31:0] mem_data_rd1,
 								// Output the data to cache
 								
    output        [27:0]  mem_data_addr1,
@@ -48,7 +48,7 @@ module Icache_dummy #(
 
 	reg [255:0] temp_mem [0:8];
 	reg [255:0] temp_mem_addr [0:8];
-	reg [5:0] cycle_count;
+	reg [31:0] cycle_count;
    reg  enable_cycle;	
 	reg [3:0] rom_addr;
 	reg [5:0] mem_ready_count;
@@ -75,27 +75,29 @@ module Icache_dummy #(
 		if(rst)
 		begin
 			rom_addr <= 4'd0;
-			temp_mem[0] <= 256'h0A0A_0B0B__ABCD_EF12__6666_5555__BDC1_4444__1234_5678__ADAD_BABA__5885_0990__3FBA_BAF1;
-			temp_mem[1] <= 256'h1111_1111__2222_2222__3333_3333__4444_4444__5555_5555__6666_6666__7777_7777__8888_8888;
-			temp_mem[2] <= 256'h100040C0100040C8900040D0900040D8440030E0900030E8100030F0100030F8;
-			temp_mem[3] <= 256'h660040C0100040C8900040D0900040D8980030E0900030E8100030F0100030F8;
-			temp_mem[4] <= 256'hA00060C0200060C8200060D0A00060D8660050E0A00050E8A00050F0200050F8;
-			temp_mem[5] <= 256'h110060C0200060C8200060D0A00060D8200050E0A00050E8A00050F0200050F8;
-			temp_mem[6] <= 256'h300080C0B00080C8B00080D0300080D8DD0070E0300070E8300070F0B00070F8;
-			temp_mem[7] <= 256'h330080C0B00080C8B00080D0300080D8B00070E0300070E8300070F0B00070F8;
-			temp_mem[8] <= 256'h11111111000000001111111100000000FF111111000000001111111100000000;
-			temp_mem_addr[0] <= 31'h000_0000;
-			temp_mem_addr[1] <= 31'h200_0000;
-			temp_mem_addr[2] <= 31'h110_0000;
-			temp_mem_addr[3] <= 31'h120_0000;
-			temp_mem_addr[4] <= 31'h000_1018;
-			temp_mem_addr[5] <= 31'h200_1018;
-			temp_mem_addr[6] <= 31'h000_1030;
-			temp_mem_addr[7] <= 31'h120_1018;
-			temp_mem_addr[8] <= 31'h130_1018;
+			temp_mem[0] <= 32'h010000FF;   // Start Address, that's where its written
+			temp_mem[1] <= 32'h000AAAAA;
+			temp_mem[2] <= 32'h010BBBBB;  // Display on
+			temp_mem[3] <= 32'h12345678;
+			temp_mem[4] <= 32'h88887777;  // Display on
+			
+			temp_mem[5] <= 32'h01112222;  // Writing wrong address
+			temp_mem[6] <= 32'h22223333;   // Display on
+			temp_mem[7] <= 32'h55556666;
+			temp_mem[8] <= 32'h77778888;  // Display on
+			
+			temp_mem_addr[0] <= 28'h000_0008;
+			temp_mem_addr[1] <= 28'h100_0008; // Same index, different tag write then read
+			temp_mem_addr[2] <= 28'h100_0009;
+			temp_mem_addr[3] <= 28'h100_000B;
+			temp_mem_addr[4] <= 28'h100_000F;
+			temp_mem_addr[5] <= 28'h000_000C; 
+			temp_mem_addr[6] <= 28'h000_000D;
+			temp_mem_addr[7] <= 28'h200_0030;  // Same index, different tag write then read
+			temp_mem_addr[8] <= 28'h230_0030;
 			mem_rw_data1 <= 1;
 			mem_valid_data1 <= 1;   // Starting with write command
-			cycle_count <= 0;
+			cycle_count <= 32'd0;
 			enable_cycle <= 0;
 		end
 		else
@@ -106,7 +108,7 @@ module Icache_dummy #(
 				if(cycle_count == CYCLE_DELAY)
 					begin
 					mem_valid_data1 <= 1;
-					cycle_count <= 0;
+					cycle_count <= 32'd0;
 					enable_cycle <= 0;
 					if(mem_ready_count == 1)  // Last Command was read, so now write
 						begin
@@ -136,9 +138,9 @@ module Icache_dummy #(
 				if(cycle_count == CYCLE_DELAY)
 					begin
 					mem_valid_data1 <= 1;
-					cycle_count <= 0;
+					cycle_count <= 32'd0;
 					enable_cycle <= 0;
-					if(mem_ready_count == 2)  // Last Command was write, so now write
+					if(mem_ready_count == 2)  // Write and then read
 						begin
 						mem_rw_data1 <= 1;
 						rom_addr <= rom_addr+1;

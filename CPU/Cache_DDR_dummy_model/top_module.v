@@ -120,15 +120,7 @@ module top_module #
 		output memory_read_error,
 		
 		
-	input		[27:0]	cache_addr,
-	input		[31:0]	cache_wr,
-	input				cache_rw,
-	input				cache_valid,
-	input				flush,
 
-
-	output		[31:0]	cache_rd,
-	output				cache_ready,
 		
 		inout  [DQ_WIDTH-1:0]              ddr2_dq,
 		output [ROW_WIDTH-1:0]             ddr2_a,
@@ -160,6 +152,19 @@ module top_module #
 	
 	wire high_tie = 1;
 	wire low_tie = 0;
+	
+	// Cache wires
+	wire	[27:0]	cache_addr;
+	wire		[31:0]	cache_wr;
+	wire				cache_rw;
+	wire				cache_valid;
+	wire				flush;
+
+
+	wire		[31:0]	cache_rd;
+	wire				cache_ready;
+	
+	assign flush = 0;
 	
 	// Error monitor
 	wire memory_read_error1;
@@ -287,6 +292,17 @@ module top_module #
 		.mem_wr			(mem_data_wr2),
 		.mem_rw			(mem_rw_data2),
 		.mem_valid_out	(mem_valid_data2)
+	);
+	
+		CPU_Dcache_dummy CPU_Dcache_dummy (
+		.clk(clk), 
+		.rst(rst), 
+		.mem_data_wr1(cache_wr), 
+		.mem_data_rd1(cache_rd), 
+		.mem_data_addr1(cache_addr), 
+		.mem_rw_data1(cache_rw), 
+		.mem_valid_data1(cache_valid), 
+		.mem_ready_data1(cache_ready)
 	);
 	
 		DVI_dummy DVI_dummy (
