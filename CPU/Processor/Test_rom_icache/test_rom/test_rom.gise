@@ -21,7 +21,12 @@
 
   <sourceproject xmlns="http://www.xilinx.com/XMLSchema" xil_pn:fileType="FILE_XISE" xil_pn:name="test_rom.xise"/>
 
-  <files xmlns="http://www.xilinx.com/XMLSchema"/>
+  <files xmlns="http://www.xilinx.com/XMLSchema">
+    <file xil_pn:fileType="FILE_SYMBOL" xil_pn:name="ipcore_dir/I_cache.sym" xil_pn:origination="imported"/>
+    <file xil_pn:fileType="FILE_COREGEN_PROJECT" xil_pn:name="ipcore_dir/coregen.cgp"/>
+    <file xil_pn:fileType="FILE_LOG" xil_pn:name="ipcore_dir/coregen.log"/>
+    <file xil_pn:fileType="FILE_RESPONSE" xil_pn:name="ipcore_dir/coregen.rsp"/>
+  </files>
 
   <transforms xmlns="http://www.xilinx.com/XMLSchema">
     <transform xil_pn:name="TRAN_SubProjectAbstractToPreProxy">

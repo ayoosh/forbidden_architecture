@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ns / 1ns
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -96,5 +96,8 @@ clock instance_name (
     .CLK2X_OUT(CLK2X_OUT), 
     .LOCKED_OUT(rst)
     );
+
+initial
+#20000 $stop;
 
 endmodule

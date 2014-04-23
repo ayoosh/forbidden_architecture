@@ -4,7 +4,7 @@ open my $output_conf, '>', 'configuration_bansi.coe' or die "error trying to ove
 open my $out_sak, '>', 'configuration_sakshi.txt' or die "error rying to overwrite: $!";
 
 # weights / biases input file here
-open(DATA, "weights_sobel.txt") or die "Can't open"; #change the file name for input file
+open(DATA, "test_cpu_weights.txt") or die "Can't open"; #change the file name for input file
 
 @lines = <DATA>;
 $n = @lines;
@@ -13,12 +13,12 @@ close(DATA);
 #Inputs to be entered here........................
 $input_format = "0000000000000000"; #THIS IS THE FORMAT FOR THE INPUT
 $output_format = "0000000000001000"; #THIS IS THE FORMAT FOR THE OUTPUT
-$input = 9; #INPUT COUNT IN DECIMAL
-$output_count = 1; #OUTPUT COUNT IN DECIMAL
-@sigmoid = (0,0,0); #sIGMOID FUNCTION IN EACH LAYER
-@input_per_layer = (9,8,4); # INPUTS TO EVERY LAYER
-@neurons_per_layer =  (8,4,1);#NUMBER OF NEURONS IN EVERY LAYER
-$layer_count=3; # Number of hidden layers plus 1
+$input = 2; #INPUT COUNT IN DECIMAL
+$output_count = 2; #OUTPUT COUNT IN DECIMAL
+@sigmoid = (1); #sIGMOID FUNCTION IN EACH LAYER
+@input_per_layer = (2); # INPUTS TO EVERY LAYER
+@neurons_per_layer =  (2);#NUMBER OF NEURONS IN EVERY LAYER
+$layer_count=1; # Number of hidden layers plus 1
 
 #DON'T TOUCH ANYTHING AFTER THIS-----------------------------------------------------------------------------------------
 
@@ -279,7 +279,7 @@ for $pu($layer_start_address..($layer_start_address + $layer_sch_count)){
 		$weight_buf_fin_6[$pu] =$wei;
 		$weight_buf_fin_7[$pu] =$wei;
 
-		print "$pu-$scheduling_buffer[$pu]-$weight_buf_fin_0[$pu]-$weight_buf_fin_1[$pu]-$weight_buf_fin_2[$pu]-$weight_buf_fin_3[$pu]-$weight_buf_fin_4[$pu]-$weight_buf_fin_5[$pu]-$weight_buf_fin_6[$pu]-$weight_buf_fin_7[$pu] \n"; 
+#		print "$pu-$scheduling_buffer[$pu]-$weight_buf_fin_0[$pu]-$weight_buf_fin_1[$pu]-$weight_buf_fin_2[$pu]-$weight_buf_fin_3[$pu]-$weight_buf_fin_4[$pu]-$weight_buf_fin_5[$pu]-$weight_buf_fin_6[$pu]-$weight_buf_fin_7[$pu] \n"; 
 
 		$p++;
 }
@@ -318,11 +318,11 @@ while($layer_count > 0)
 		
                 $weight_buf_fin_7[$s] = $present_weight_7[$p];
 		
-	        print "$s - $scheduling_buffer[$s] -  $weight_buf_fin_0[$s] - $weight_buf_fin_1[$s-$values] -$weight_buf_fin_2[$s-$values] -  $weight_buf_fin_3[$s-$values] - $weight_buf_fin_4[$s-$values] - $weight_buf_fin_5[$s-$values] - $weight_buf_fin_6[$s-$values] - $weight_buf_fin_7[$s-$values] \n";  
+#	        print "$s - $scheduling_buffer[$s] -  $weight_buf_fin_0[$s] - $weight_buf_fin_1[$s-$values] -$weight_buf_fin_2[$s-$values] -  $weight_buf_fin_3[$s-$values] - $weight_buf_fin_4[$s-$values] - $weight_buf_fin_5[$s-$values] - $weight_buf_fin_6[$s-$values] - $weight_buf_fin_7[$s-$values] \n";  
 		$p = $p + 1;
 	} 
 
-	print "End of layer $cur_layer--------------------------------------------- \n\n";
+#	print "End of layer $cur_layer--------------------------------------------- \n\n";
 	$layer_start_address = $layer_start_address + $layer_sch_count + 1; #This becomes start address for the next layer
 	$layer_count = $layer_count - 1;
 	$cur_layer = $cur_layer + 1 ; 
@@ -346,9 +346,17 @@ $cur_input = $output_count;
 for $p(0..($cur_input-1)){
         $present_schedule[$layer_sch_count] = $present_schedule[$layer_sch_count] | $buf{"set_sigmoid_fifo_read_enable"};
         $present_schedule[$layer_sch_count+1] = $present_schedule[$layer_sch_count+1] | $buf{"set_pe_write_enable"};
-        $present_schedule[$layer_sch_count+4] = $present_schedule[$layer_sch_count+4] | $buf{"set_output_fifo_write_enable"};
+        $present_schedule[$layer_sch_count+4] = $present_schedule[$layer_sch_count+3] | $buf{"set_output_fifo_write_enable"};
         $layer_sch_count = $layer_sch_count + 1;
 }
+
+#print "This is the area of interest: \n";
+#for $rut(0..$layer_sch_count){
+ #       $tio = sprintf("%04x", $present_schedule[$rut]);
+ #       print "$tio\n";
+#}
+
+print "\nThis is where value is changing \n";
 
 $present_schedule[$layer_sch_count] = $present_schedule[$layer_sch_count] & $buf{"clear_sigmoid_fifo_read_enable"};
 $present_schedule[$layer_sch_count+1] = $present_schedule[$layer_sch_count+1] & $buf{"clear_pe_write_enable"} & $buf{"clear_sigmoid_fifo_read_enable"} ;
@@ -357,6 +365,11 @@ $present_schedule[$layer_sch_count+3] = $present_schedule[$layer_sch_count+3] & 
 
 $layer_sch_count = $layer_sch_count + 3;
 
+#for $rut(0..$layer_sch_count){
+#	$tio = sprintf("%04x", $present_schedule[$rut]);
+#	print "$tio\n";
+
+#}
 #generating offset buffer and weight 0 buffer-------------------------------
 for $doni(0..$layer_sch_count){
         $present_weight_0[$doni] = sprintf("%04x", 0x0000);
@@ -410,7 +423,7 @@ for $yt(0..($layer_start_address-1)){
 
 	$schedule[$yt] = $scheduling_buffer[$yt];
 
-	print "$yt - $schedule[$yt]-$weight_buf_final_0[$yt]-$weight_buf_final_1[$yt]-$weight_buf_final_2[$yt]-$weight_buf_final_3[$yt]-$weight_buf_final_4[$yt]-$weight_buf_final_5[$yt]-$weight_buf_final_6[$yt]-$weight_buf_final_7[$yt]\n";
+#	print "$yt - $schedule[$yt]-$weight_buf_final_0[$yt]-$weight_buf_final_1[$yt]-$weight_buf_final_2[$yt]-$weight_buf_final_3[$yt]-$weight_buf_final_4[$yt]-$weight_buf_final_5[$yt]-$weight_buf_final_6[$yt]-$weight_buf_final_7[$yt]\n";
 }
 
 $ui =sprintf("%04x", 0x0000);
@@ -653,8 +666,8 @@ for $sch_count(0..$scheduling_buffer_count)
         $inter= $common."1101".$common1.$schedule[$sch_count];
         $parameter = 3;
         convert();
-        #print $destination[$line_number];
-        #print "\n";
+        print $destination[$line_number];
+        print "\n";
         print $output_conf "$destination[$line_number], \n";
 	print $out_sak "$destination[$line_number]\n";
 
