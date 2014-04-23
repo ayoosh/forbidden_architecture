@@ -26,6 +26,7 @@ module InstructionFetchStage (
 	input			iBranchMissCmd,
 	input			iJumpCmd,
 	input			iRetCmd,
+	input			iStall,
 	input			iHalt
 );
 
@@ -45,7 +46,8 @@ module InstructionFetchStage (
 		.iRetCmd			(iRetCmd),
 		.iBranchCmd			(iBranchCmd),
 		.iBranchMissCmd		(iBranchMissCmd),
-		.iJumpCmd			(iJumpCmd)
+		.iJumpCmd			(iJumpCmd),
+		.iStall				(iStall)
 	);
 
 	ProgramCounter ProgramCounter_0(			// Generates program counter based on a address input

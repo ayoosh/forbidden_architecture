@@ -1,4 +1,6 @@
-`timescale 1ns/1ps
+`timescale	1ns/1ps
+
+//`include	"../src/cache_memory.v"
 
 module cache_controller #(
 	parameter	NUM_WAYS	= 2,
@@ -18,12 +20,23 @@ module cache_controller #(
 	input		[255:0]	mem_rd,
 	input				mem_ready,
 
-	output	reg	[31:0]	cache_rd,
-	output	reg			cache_ready,
+	
+	output		[31:0]	cache_rd,
+	output				cache_ready,
 	output		[27:0]	mem_addr,
 	output		[255:0]	mem_wr,
 	output				mem_rw,
-	output				mem_valid_out
+	output				mem_valid_out,
+	
+	// IO Ports
+	
+	input		[31:0]	IO_rd,
+	input 				IO_ready,
+	
+	output		[27:0]	IO_addr,
+	output		[31:0]	IO_wr,
+	output				IO_rw,
+	output				IO_valid
 );
 
 	function integer log2(input integer value);
@@ -59,11 +72,14 @@ module cache_controller #(
 	localparam	NUM_BLOCKS	= (CACHE_SIZE * 8) / (BLOCK_SIZE * NUM_WAYS);
 
 	//---------------------------------------------------------------------------------
+	reg		[31:0]				cache_rd_reg;
+	reg							cache_ready_reg;
+	
 	reg							flush_flag; 
 	reg		[9:0]				count;
 	wire						tag_matched, cache_flushed;
-	reg		[31:0]				data;
-	reg		[255:0]				write_block_data[NUM_WAYS-1:0];
+	wire	[DATA_WIDTH-1:0]	data;
+	wire	[BLOCK_SIZE-1:0]	write_block_data[NUM_WAYS-1:0];
 	//---------------------------------------------------------------------------------
 	reg		[1:0]				State, NextState;
 	//---------------------------------------------------------------------------------
@@ -79,11 +95,13 @@ module cache_controller #(
 	wire	[NUM_WAYS-1:0]		write_en;
 	reg		[NUM_WAYS-1:0]		lru;
 	
-	wire	[255:0]				read_block_data;
+	wire	[BLOCK_SIZE-1:0]	read_block_data;
+	wire	[DATA_WIDTH-1:0]	mux_read_block_data [DATA_BLOCKS-1:0];
 	wire	[9:0]				counter;
 	wire	[14:0]				addr_tag;
 	wire	[9:0]				addr_index;
 	wire	[2:0]				addr_offset;
+	wire	[14:0]				replace_tag [NUM_WAYS-1:0];
 	//---------------------------------------------------------------------------------
 
 	// FORMAT cache_addr = [Tag[27:13] | Index[12:3] | Block Offset[2:0]]
@@ -107,6 +125,7 @@ module cache_controller #(
 				.data_read(data_read[i]),
 				.dirty_read(dirty_read[i]),
 				.hit(way[i]),
+				.replace_tag(replace_tag[i]),
 				
 				// Inputs
 				.addr(cache_addr),
@@ -117,42 +136,26 @@ module cache_controller #(
 				.rst_n(rst_n)
 			);
 
-			always @ (data_read[i], cache_wr, addr_offset) begin
-				case (addr_offset)
-					3'b000: write_block_data[i] <= {data_read[i][255:32], cache_wr};
-					3'b001: write_block_data[i] <= {data_read[i][255:64], cache_wr, data_read[i][31:0]};
-					3'b010: write_block_data[i] <= {data_read[i][255:96], cache_wr, data_read[i][63:0]};
-					3'b011: write_block_data[i] <= {data_read[i][255:128], cache_wr, data_read[i][95:0]};
-					3'b100: write_block_data[i] <= {data_read[i][255:160], cache_wr, data_read[i][127:0]};
-					3'b101: write_block_data[i] <= {data_read[i][255:192], cache_wr, data_read[i][159:0]};
-					3'b110: write_block_data[i] <= {data_read[i][255:224], cache_wr, data_read[i][191:0]};
-					3'b111: write_block_data[i] <= {cache_wr, data_read[i][223:0]};
-				endcase
+			for (j = 0; j < DATA_BLOCKS; j = j + 1) begin : gen_demux_data
+				assign write_block_data[i][(j*DATA_WIDTH)+:DATA_WIDTH] = (addr_offset == j) ? cache_wr : data_read[i][(j*DATA_WIDTH)+:DATA_WIDTH];
 			end
 			
 			assign write_en[i] = (tag_matched & cache_rw & way[i]) | ((State == ALLOCATE) & mem_ready & lru[i]);
 			assign data_write[i] = (State == ALLOCATE) ? mem_rd : write_block_data[i];
 			assign dirty_write[i] = tag_matched & cache_rw;
 		end
+		
+		for (i = 0; i < DATA_BLOCKS; i = i + 1) begin : gen_mux_data
+			assign mux_read_block_data[i] = read_block_data[(i*DATA_WIDTH)+:DATA_WIDTH];
+		end
 	endgenerate
 
-	assign dirty	= &dirty_read;		//GLOBAL
-	assign hit		= |way;				//GLOBAL
+	assign data		= mux_read_block_data[addr_offset];		//GLOBAL
+	assign dirty	= &dirty_read;							//GLOBAL
+	assign hit		= |way;									//GLOBAL	
+
 	
-	always @ (read_block_data, addr_offset) begin
-		case (addr_offset)
-			3'b000: data = read_block_data[31:0];
-			3'b001: data = read_block_data[63:32];
-			3'b010: data = read_block_data[95:64];
-			3'b011: data = read_block_data[127:96];
-			3'b100: data = read_block_data[159:128];
-			3'b101: data = read_block_data[191:160];
-			3'b110: data = read_block_data[223:192];
-			3'b111: data = read_block_data[255:224];
-		endcase
-	end
-	
-	always @ (State, cache_valid, flush, hit, dirty, mem_ready, flush_flag, count) begin
+	always @ (State, cache_valid, flush, hit, dirty_read, lru, mem_ready, flush_flag, count) begin
 		case (State)
 			IDLE: begin
 					NextState = flush ? WRITE_BACK : COMPARE_TAG;
@@ -160,7 +163,7 @@ module cache_controller #(
 			COMPARE_TAG: begin
 				if (hit)											// HIT - if match and valid
 					NextState = IDLE;
-				else if (!hit & dirty)
+				else if (!hit & dirty_read[convert(lru)])
 					NextState = WRITE_BACK;
 				else
 					NextState = ALLOCATE;
@@ -211,27 +214,42 @@ module cache_controller #(
 	
 	assign counter = flush_flag ? count : addr_index;
 	
-	always @ (posedge clk, negedge rst_n) begin
+	always @ (rst_n, IO_rd, IO_ready, tag_matched, cache_rw, data, cache_flushed, cache_addr) begin
 		if (!rst_n) begin
-			cache_rd	<= 32'h0000_0000;
-			cache_ready	<= 1'b0;
+			cache_rd_reg	= 32'h0000_0000;
+			cache_ready_reg	= 1'b0;
 		end
 		else begin
-			if (tag_matched && !cache_rw)
-				cache_rd <= data;
-			else
-				cache_rd <= 32'h0000_0000;
-			cache_ready <= (tag_matched | cache_flushed);
+			if (cache_addr[27]) begin
+				cache_rd_reg 	= IO_rd;
+				cache_ready_reg = IO_ready;
+			end
+			else begin
+				if (tag_matched && !cache_rw)
+					cache_rd_reg = data;
+				else
+					cache_rd_reg	= 32'h0000_0000;
+					cache_ready_reg	= (tag_matched | cache_flushed);
+			end
 		end
 	end
 	
 	assign mem_wr = (State == WRITE_BACK) ? data_read[convert(lru)] : 256'h0;
-	assign mem_addr = (State == WRITE_BACK) ? {addr_tag, counter, 3'b0} : (State == ALLOCATE) ? {addr_tag, addr_index, 3'b0} : 28'h0;
+	assign mem_addr = (State == WRITE_BACK) ? {replace_tag[convert(lru)], counter, 3'b0} : (State == ALLOCATE) ? {addr_tag, addr_index, 3'b0} : 28'h0;
 	assign mem_rw = (State == WRITE_BACK);
 	assign mem_valid_out = (State == ALLOCATE) | (State == WRITE_BACK);
 	
 	assign tag_matched = (State == COMPARE_TAG) & hit;
 	assign cache_flushed = (State == WRITE_BACK) & mem_ready & flush_flag & (count == 1023);
 
-	assign read_block_data = hit ? data_read[convert(lru)] : 256'h0;
+	assign read_block_data = hit ? data_read[convert(way)] : 256'h0;
+
+	assign cache_rd 	= cache_addr[27] ? IO_rd		: cache_rd_reg;
+	assign cache_ready	= cache_addr[27] ? IO_ready		: cache_ready_reg;
+
+	assign IO_addr 		= cache_addr[27] ? cache_addr	: 0;
+	assign IO_wr 		= cache_addr[27] ? cache_wr		: 0;
+	assign IO_rw 		= cache_addr[27] ? cache_rw		: 0;
+	assign IO_valid		= cache_addr[27] ? cache_valid 	: 0;
+	
 endmodule

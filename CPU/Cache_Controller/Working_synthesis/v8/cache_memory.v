@@ -11,7 +11,6 @@ module cache_memory #(
 	output		[BLOCK_SIZE-1:0]	data_read,
 	output							dirty_read,
 	output							hit,
-	output		[14:0]				replace_tag,
 	
 	// Inputs
 	input		[ADDR_WIDTH-1:0]	addr,
@@ -52,8 +51,7 @@ module cache_memory #(
 	integer						i;
 	
 	assign addr_tag		= addr[ADDR_WIDTH-1:ADDR_WIDTH-TAG_WIDTH];
-	assign replace_tag	= tag;
-	assign addr_index	= addr[ADDR_WIDTH-TAG_WIDTH-1:ADDR_WIDTH-TAG_WIDTH-INDEX_WIDTH];
+	assign addr_index		= addr[ADDR_WIDTH-TAG_WIDTH-1:ADDR_WIDTH-TAG_WIDTH-INDEX_WIDTH];
 	assign addr_offset	= addr[OFFSET_WIDTH-1:0];
 	
 	assign data_read	= data;

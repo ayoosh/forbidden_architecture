@@ -84,11 +84,11 @@ module Icache_dummy #(
 			temp_mem[6] <= 256'h300080C0B00080C8B00080D0300080D8DD0070E0300070E8300070F0B00070F8;
 			temp_mem[7] <= 256'h330080C0B00080C8B00080D0300080D8B00070E0300070E8300070F0B00070F8;
 			temp_mem[8] <= 256'h11111111000000001111111100000000FF111111000000001111111100000000;
-			temp_mem_addr[0] <= 31'h000_0000;
-			temp_mem_addr[1] <= 31'h200_0000;
-			temp_mem_addr[2] <= 31'h110_0000;
-			temp_mem_addr[3] <= 31'h120_0000;
-			temp_mem_addr[4] <= 31'h000_1018;
+			temp_mem_addr[0] <= 31'h000_0008;
+			temp_mem_addr[1] <= 31'h100_0008;
+			temp_mem_addr[2] <= 31'h200_0030;
+			temp_mem_addr[3] <= 31'h230_0030;
+			temp_mem_addr[4] <= 31'h100_1018;
 			temp_mem_addr[5] <= 31'h200_1018;
 			temp_mem_addr[6] <= 31'h000_1030;
 			temp_mem_addr[7] <= 31'h120_1018;

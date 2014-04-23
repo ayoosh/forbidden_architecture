@@ -14,6 +14,6 @@ module BranchAdder (
 );
 
 	// Internal signals assignment
-	assign oBranchAddr		= iNextPC + {11'h0, iOffset};
+	assign oBranchAddr		= iNextPC + {{11{iOffset[20]}}, iOffset};
 
 endmodule

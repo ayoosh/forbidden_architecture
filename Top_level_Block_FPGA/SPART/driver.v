@@ -168,7 +168,7 @@ always @ (posedge clk) begin
 	else
 	begin
 		data_received <= 1'b0;
-		if(spart_data_rden && !data_received && !start_receiver)
+		if(rda && !data_received && !start_receiver)
 		begin
 			start_receiver <= 1'b1;
 		end

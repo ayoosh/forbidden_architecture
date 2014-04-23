@@ -109,11 +109,11 @@ module TB_Cache_DDR_test;
 		rst = 0;
       #100;	
 		
-	/*		for (i = 0; i < 1024; i = i + 1) begin
+			for (i = 0; i < 1024; i = i + 1) begin
 			uut.Dcache_inst.gen_way[0].memory.memory[i] = 273'h0;
 			uut.Dcache_inst.gen_way[1].memory.memory[i] = 273'h0;
 		   end
-        */
+        
 		// Add stimulus here
 
    # 1000; // Start after some delay, need for DDR functioning
@@ -162,16 +162,6 @@ module TB_Cache_DDR_test;
 	@ (posedge cache_ready) 
 	@ (posedge clk)
 	cache_addr = 28'h000_0007;
-
-
-// Evict block but not dirty
-	@ (posedge cache_ready) 
-	@ (posedge clk)
-	cache_addr = 28'h110_0000;
-	
-		@ (posedge cache_ready) 
-	@ (posedge clk)
-	cache_addr = 28'h120_0000;
 
 /*
 //---------------------------------------------------------------
@@ -237,8 +227,25 @@ module TB_Cache_DDR_test;
 	cache_addr = 28'h200_1018;
 	cache_wr = 32'hCD12_12CD;
 	
-	// READ BACk
+	//3rd entry on the same index
 	@ (posedge cache_ready) 
+	@ (posedge clk)
+	cache_addr = 28'h100_1018;
+	cache_wr = 32'hAB00_00BA;
+	
+	
+	// PAUSE
+	@ (posedge cache_ready) 
+	@ (posedge clk) begin
+	cache_valid = 1'b0;
+	cache_rw = 1'b0;
+	
+	end
+	
+	#100
+	
+	// READ BACk
+	
 	@ (posedge clk) begin
 	cache_valid = 1'b1;
 	cache_rw = 1'b0;
@@ -248,7 +255,7 @@ module TB_Cache_DDR_test;
 	// 1st entry
 	@ (posedge cache_ready) 	
 	@ (posedge clk) begin
-	cache_addr = 28'h000_1018;
+	cache_addr = 28'h100_1018;
 	end
 	
 	
@@ -257,20 +264,9 @@ module TB_Cache_DDR_test;
 	@ (posedge cache_ready) 
 	@ (posedge clk)
 	cache_addr = 28'h200_1018;
-
-
-	// Invalidation
-	@ (posedge cache_ready) 	
-	@ (posedge clk) begin
-	cache_addr = 28'h120_1018;
-	end	
-
-	// Invalidation
-	@ (posedge cache_ready) 	
-	@ (posedge clk) begin
-	cache_addr = 28'h130_1018;
-	end
 	
+
+
 	
 	end
 	
