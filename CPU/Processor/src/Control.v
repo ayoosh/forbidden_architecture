@@ -33,6 +33,7 @@ module Control (
 	output			oCallCmd,
 	output			oRetCmd,
 	output			oLoadCmd,
+	output			oStoreCmd,
 	output			oNpuCfgOp,
 	output			oNpuEnqOp,
 	output			oNpuDeqOp,
@@ -234,5 +235,7 @@ module Control (
 	
 	assign	oCallCmd	= iRst_n & (decode == CALL);
 	assign	oRetCmd		= iRst_n & (decode == RET);
+	
+	assign	oStoreCmd	= iRst_n & (decode == STORE);
 	
 endmodule

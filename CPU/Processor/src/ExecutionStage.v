@@ -166,7 +166,7 @@ module ExecutionStage (
 	assign oWriteEn			= iWriteEn;			// Bypass write enable signal
 	assign oHalt			= iHalt;			// Bypass halt signal
 	assign oMemToReg		= iMemToReg;		// Bypass memory to register file signal
-	assign oMemData			= iMemData;			// Bypass write data
+	assign oMemData			= iCallCmd ? iNextPC : forwardSrc1;			// Bypass write data
 	assign oOffset			= iOffset;			// Bypass offset value for jump
 	assign oRetCmd			= iRetCmd;			// Bypass return command signal
 	assign oBranchPredict	= iBranchPredict;	// Bypass branch prediction
