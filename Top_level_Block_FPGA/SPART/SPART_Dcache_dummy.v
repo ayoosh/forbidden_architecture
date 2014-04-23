@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module SPART_Dcache_dummy #(
-      parameter NUMBER_OF_ACCESS = 2
+      parameter NUMBER_OF_ACCESS = 1000
 		)
 (
 		input clk,
