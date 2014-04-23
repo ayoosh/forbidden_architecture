@@ -18,8 +18,8 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module Icache_dummy #(
-      parameter CYCLE_DELAY = 1
+module DVI_dummy #(
+      parameter CYCLE_DELAY = 2
 		)
 (
 		input clk,
@@ -55,8 +55,6 @@ module Icache_dummy #(
 	assign mem_data_wr1 = temp_mem[rom_addr];
    assign mem_data_addr1 = temp_mem_addr[rom_addr];
 	
-	
-	
 	//assign error = (mem_ready_data1 & mem_valid_data1 & ~mem_rw_data1) ? ( (mem_data_rd1 == temp_mem[rom_addr]) ? 0 : 1) : 1'b0;
 	
 	always @(posedge clk)
@@ -75,24 +73,24 @@ module Icache_dummy #(
 		if(rst)
 		begin
 			rom_addr <= 4'd0;
-			temp_mem[0] <= 256'h0A0A_0B0B__ABCD_EF12__6666_5555__BDC1_4444__1234_5678__ADAD_BABA__5885_0990__3FBA_BAF1;
-			temp_mem[1] <= 256'h1111_1111__2222_2222__3333_3333__4444_4444__5555_5555__6666_6666__7777_7777__8888_8888;
-			temp_mem[2] <= 256'h100040C0100040C8900040D0900040D8440030E0900030E8100030F0100030F8;
-			temp_mem[3] <= 256'h660040C0100040C8900040D0900040D8980030E0900030E8100030F0100030F8;
-			temp_mem[4] <= 256'hA00060C0200060C8200060D0A00060D8660050E0A00050E8A00050F0200050F8;
-			temp_mem[5] <= 256'h110060C0200060C8200060D0A00060D8200050E0A00050E8A00050F0200050F8;
-			temp_mem[6] <= 256'h300080C0B00080C8B00080D0300080D8DD0070E0300070E8300070F0B00070F8;
-			temp_mem[7] <= 256'h330080C0B00080C8B00080D0300080D8B00070E0300070E8300070F0B00070F8;
-			temp_mem[8] <= 256'h11111111000000001111111100000000FF111111000000001111111100000000;
-			temp_mem_addr[0] <= 31'h000_0000;
-			temp_mem_addr[1] <= 31'h200_0000;
-			temp_mem_addr[2] <= 31'h110_0000;
-			temp_mem_addr[3] <= 31'h120_0000;
-			temp_mem_addr[4] <= 31'h000_1018;
-			temp_mem_addr[5] <= 31'h200_1018;
-			temp_mem_addr[6] <= 31'h000_1030;
-			temp_mem_addr[7] <= 31'h120_1018;
-			temp_mem_addr[8] <= 31'h130_1018;
+			temp_mem[0] <= 256'h800020C0800020C8000020D0000020D8990010E0000010E8800010F0800010F0;
+			temp_mem[1] <= 256'hFF0020C0800020C8000020D0000020DDD00010E0000010E8800010F0800010F0;
+			temp_mem[2] <= 256'h100040C0100040C8900040D0900040D8440030E0900030E8100030F0100030F0;
+			temp_mem[3] <= 256'h660040C0100040C8900040D0900040D8980030E0900030E8100030F0100030F0;
+			temp_mem[4] <= 256'hA00060C0200060C8200060D0A00060D8660050E0A00050E8A00050F0200050F0;
+			temp_mem[5] <= 256'h110060C0200060C8200060D0A00060D8200050E0A00050E8A00050F0200050F0;
+			temp_mem[6] <= 256'h300080C0B00080C8B00080D0300080D8DD0070E0300070E8300070F0B00070F0;
+			temp_mem[7] <= 256'h330080C0B00080C8B00080D0300080D8B00070E0300070E8300070F0B0007000;
+			temp_mem[8] <= 256'h11111111000000001111111100000000FF1111110000000011111111000000F8;
+			temp_mem_addr[0] <= 31'h0FF_1000;
+			temp_mem_addr[1] <= 31'h0FF_1008;
+			temp_mem_addr[2] <= 31'h0FF_1010;
+			temp_mem_addr[3] <= 31'h0FF_1018;
+			temp_mem_addr[4] <= 31'h0FF_1020;
+			temp_mem_addr[5] <= 31'h0FF_1028;
+			temp_mem_addr[6] <= 31'h0FF_1030;
+			temp_mem_addr[7] <= 31'h3FF_1038;
+			temp_mem_addr[8] <= 31'h3FF_1040;
 			mem_rw_data1 <= 1;
 			mem_valid_data1 <= 1;   // Starting with write command
 			cycle_count <= 0;
