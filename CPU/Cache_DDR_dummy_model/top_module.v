@@ -196,6 +196,28 @@ module top_module #
 		wire mem_rw_data3; 
 		wire mem_valid_data3;
 		wire mem_ready_data3;
+		
+		
+		
+		reg [31:0] cycle_count;
+		wire icache_done;
+		
+		assign icache_done = (cycle_count == 32'd100) ? 1 : 0;
+		
+	
+		always @(posedge clk)
+		begin
+		
+		if(rst)
+		cycle_count <= 32'd0;
+		else if(cycle_count == 32'd100)
+		cycle_count <= cycle_count;
+		else if(mem_ready_data1)
+		cycle_count <= cycle_count + 1;
+		
+		end
+		
+		
 	
 		Arbiter arbiter_module (
 		.clk(clk), 
@@ -212,7 +234,7 @@ module top_module #
 		.mem_data_rd1(mem_data_rd1), 
 		.mem_data_addr1(mem_data_addr1), 
 		.mem_rw_data1(mem_rw_data1), 
-		.mem_valid_data1(mem_valid_data1), 
+		.mem_valid_data1(mem_valid_data1 & ~icache_done), 
 		.mem_ready_data1(mem_ready_data1), 
 		.mem_data_wr2(mem_data_wr2), 
 		.mem_data_rd2(mem_data_rd2), 

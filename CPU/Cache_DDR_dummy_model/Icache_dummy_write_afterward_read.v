@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module Icache_dummy #(
-      parameter CYCLE_DELAY = 1
+      parameter CYCLE_DELAY = 0
 		)
 (
 		input clk,
@@ -88,11 +88,11 @@ module Icache_dummy #(
 			temp_mem_addr[1] <= 31'h100_0008;
 			temp_mem_addr[2] <= 31'h200_0030;
 			temp_mem_addr[3] <= 31'h230_0030;
-			temp_mem_addr[4] <= 31'h100_1018;
-			temp_mem_addr[5] <= 31'h200_1018;
-			temp_mem_addr[6] <= 31'h000_1030;
-			temp_mem_addr[7] <= 31'h120_1018;
-			temp_mem_addr[8] <= 31'h130_1018;
+			temp_mem_addr[4] <= 31'h120_0008;
+			temp_mem_addr[5] <= 31'h130_0000;
+			temp_mem_addr[6] <= 31'h300_1030;
+			temp_mem_addr[7] <= 31'h210_0030;
+			temp_mem_addr[8] <= 31'h240_0030;
 			mem_rw_data1 <= 1;
 			mem_valid_data1 <= 1;   // Starting with write command
 			cycle_count <= 0;

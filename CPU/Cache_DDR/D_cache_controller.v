@@ -155,7 +155,7 @@ module cache_controller #(
 	assign hit		= |way;									//GLOBAL	
 
 	
-	always @ (State, cache_valid, flush, hit, dirty, mem_ready, flush_flag, count) begin
+	always @ (State, cache_valid, flush, hit, dirty_read, lru, mem_ready, flush_flag, count) begin
 		case (State)
 			IDLE: begin
 					NextState = flush ? WRITE_BACK : COMPARE_TAG;
@@ -163,7 +163,7 @@ module cache_controller #(
 			COMPARE_TAG: begin
 				if (hit)											// HIT - if match and valid
 					NextState = IDLE;
-				else if (!hit & dirty)
+				else if (!hit & dirty_read[convert(lru)])
 					NextState = WRITE_BACK;
 				else
 					NextState = ALLOCATE;
