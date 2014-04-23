@@ -1,0 +1,87 @@
+Wrote file for project 'coregen'.
+Project, 'coregen', initialised from file
+'I:\GitHub\forbidden_architecture\Npu_640_480\coregen.cgp'.
+Customizing IP...
+Release 12.2 - Xilinx CORE Generator IP GUI Launcher M.63c (nt64)
+Copyright (c) 1995-2010 Xilinx, Inc.  All rights reserved.
+Initializing IP model...
+Finished initialising IP model.
+WARNING:coreutil - WARNING:UtilitiesC:159 - Message file "usenglish/ip.msg"
+   wasn't found.
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+ERROR:coreutil - ERROR:ip - min_area_algorithm: For the configured RAM size, the
+   number of block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+ERROR:coreutil - ERROR:ip - min_area_algorithm: For the configured RAM size, the
+   number of block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+   ERROR:ip - min_area_algorithm: For the configured RAM size, the number of
+   block
+      RAMs used exceeds the maximum number of 18KB block RAMs in the chosen
+      architecture
+Cancelled Customization.
