@@ -158,6 +158,7 @@ module Control (
 									(decode == SRA) |
 									(decode == FLUSH) |
 									(decode == BRANCH) |
+									(decode == LOAD) |
 									(decode == CALL) |
 									(decode == FTOI) |
 									(decode == ITOF) |

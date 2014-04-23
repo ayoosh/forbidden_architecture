@@ -27,7 +27,8 @@ module InstructionFetchStage (
 	input			iJumpCmd,
 	input			iRetCmd,
 	input			iStall,
-	input			iHalt
+	input			iHalt,
+	input			iRst_n
 );
 
 	// Internal signals declaration
@@ -61,7 +62,7 @@ module InstructionFetchStage (
 
 	// Outputs assignment
 	assign oInstrMemAddress	= currentPC;		// Request from memory a instruction
-	assign oInstruction		= iInstrMemData;	// Read from memory a instruction
+	assign oInstruction		= !iRst_n ? 32'h0 : iInstrMemData;	// Read from memory a instruction
 	assign oNextPC			= nextPC;			// Output next program counter
 	assign oInstrMemValid	= 1'b1;				// Always reading instruction memory
 	assign oMemReady		= iInstrMemReady;	// Output ready signal from memory
