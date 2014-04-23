@@ -46,11 +46,11 @@ module CPU_Dcache_dummy #(
                         // To indicate to cache that response is ready	
     );
 
-	reg [255:0] temp_mem [0:8];
-	reg [255:0] temp_mem_addr [0:8];
+	reg [255:0] temp_mem [0:15];
+	reg [255:0] temp_mem_addr [0:15];
 	reg [31:0] cycle_count;
    reg  enable_cycle;	
-	reg [3:0] rom_addr;
+	reg [5:0] rom_addr;
 	reg [5:0] mem_ready_count;
 	assign mem_data_wr1 = temp_mem[rom_addr];
    assign mem_data_addr1 = temp_mem_addr[rom_addr];
@@ -74,17 +74,24 @@ module CPU_Dcache_dummy #(
 	begin
 		if(rst)
 		begin
-			rom_addr <= 4'd0;
+			rom_addr <= 6'd0;
 			temp_mem[0] <= 32'h010000FF;   // Start Address, that's where its written
 			temp_mem[1] <= 32'h000AAAAA;
 			temp_mem[2] <= 32'h010BBBBB;  // Display on
 			temp_mem[3] <= 32'h12345678;
 			temp_mem[4] <= 32'h88887777;  // Display on
-			
 			temp_mem[5] <= 32'h01112222;  // Writing wrong address
 			temp_mem[6] <= 32'h22223333;   // Display on
 			temp_mem[7] <= 32'h55556666;
 			temp_mem[8] <= 32'h77778888;  // Display on
+			temp_mem[9] <= 32'h010AB0FF;   // Start Address, that's where its written
+			temp_mem[10] <= 32'h111AAAAA;
+			temp_mem[11] <= 32'h010CCCCC;  // Display on
+			temp_mem[12] <= 32'h1DEDEDED;
+			temp_mem[13] <= 32'h00001234;  // Display on
+			temp_mem[14] <= 32'h34563456;  // Writing wrong address
+			temp_mem[15] <= 32'h34569876;   // Display on			
+			
 			
 			temp_mem_addr[0] <= 28'h000_0008;
 			temp_mem_addr[1] <= 28'h100_0008; // Same index, different tag write then read
@@ -95,6 +102,14 @@ module CPU_Dcache_dummy #(
 			temp_mem_addr[6] <= 28'h000_000D;
 			temp_mem_addr[7] <= 28'h200_0030;  // Same index, different tag write then read
 			temp_mem_addr[8] <= 28'h230_0030;
+			temp_mem_addr[9] <= 28'h000_0009;  // Eviction
+			temp_mem_addr[10] <= 28'h120_0008; // Same index, different tag write then read
+			temp_mem_addr[11] <= 28'h120_0009;
+			temp_mem_addr[12] <= 28'h130_000B;
+			temp_mem_addr[13] <= 28'h130_000F;
+			temp_mem_addr[14] <= 28'h210_0031; 
+			temp_mem_addr[15] <= 28'h240_0032;
+			
 			mem_rw_data1 <= 1;
 			mem_valid_data1 <= 1;   // Starting with write command
 			cycle_count <= 32'd0;
@@ -102,7 +117,7 @@ module CPU_Dcache_dummy #(
 		end
 		else
 		begin
-			if(rom_addr == 4'd8 && (mem_ready_data1 | enable_cycle) )
+			if(rom_addr == 6'd15 && (mem_ready_data1 | enable_cycle) )
 				begin
 				
 				if(cycle_count == CYCLE_DELAY)
@@ -113,12 +128,12 @@ module CPU_Dcache_dummy #(
 					if(mem_ready_count == 1)  // Last Command was read, so now write
 						begin
 						mem_rw_data1 <= 1;
-						rom_addr <= 4'd0;
+						rom_addr <= 6'd0;
 						end
 					else if(mem_ready_count == 2)
 						begin
 						mem_rw_data1 <= 0;
-						rom_addr <= 4'd0;
+						rom_addr <= 6'd0;
 						end
 					end
 					
