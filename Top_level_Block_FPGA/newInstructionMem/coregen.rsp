@@ -1,0 +1,3 @@
+NEWPROJECT "C:/Temp/COE_new/ipcore_dir/coregen.cgp"
+SETPROJECT "C:/Temp/COE_new/ipcore_dir/coregen.cgp"
+LAUNCHXCO "C:/Temp/COE_new/ipcore_dir/newInstructionMem.xco"

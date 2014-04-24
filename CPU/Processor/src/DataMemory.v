@@ -13,26 +13,26 @@ module DataMemory (
 	input				clk
 );
 
-	reg		[31:0]	data_mem[4111:4096];
+	reg		[31:0]	data_mem[15:0];
 	reg				rd_ready, wr_ready;
-	reg		[31:0]	rrd_data;
-	reg				rrd_ready;
+	
+	initial			data_mem[1] = 32'h1;
 
 	// Model read, data is latched on clock low
-	always @(negedge clk) begin
-		if (valid && !rw) begin
-			rrd_data	<= data_mem[addr];
-			rrd_ready	<= 1'b1;
+	always @(posedge clk) begin
+		if (valid && !rw && !rd_ready) begin
+			rd_data		<= data_mem[addr];
+			rd_ready	<= 1'b1;
 		end
 		else begin
-			rrd_data	<= rd_data;
-			rrd_ready	<= 1'b0;
+			rd_data		<= rd_data;
+			rd_ready	<= 1'b0;
 		end
 	end
 		
 	// Model write, data is written on clock high
 	always @(posedge clk) begin
-		if (valid && rw) begin
+		if (valid && rw && !wr_ready) begin
 			data_mem[addr]	<= wr_data;
 			wr_ready		<= 1'b1;
 		end
@@ -40,8 +40,6 @@ module DataMemory (
 			data_mem[addr]	<= data_mem[addr];
 			wr_ready		<= 1'b0;
 		end
-		rd_data			<= rrd_data;
-		rd_ready		<= rrd_ready;
 	end
 
 	// Outputs assignment

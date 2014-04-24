@@ -26,6 +26,7 @@ module InstructionFetchStage (
 	input			iBranchMissCmd,
 	input			iJumpCmd,
 	input			iRetCmd,
+	input			iFullStall,
 	input			iStall,
 	input			iHalt
 );

@@ -66,7 +66,7 @@ module InstructionDecodeStage (
 
 	// External modules instantiation
 	Control Control_0 (
-		// Outpu
+		// Output
 		.oAddrRead0		(src0Addr),
 		.oEnRead0		(src0En),
 		.oAddrRead1		(src1Addr),

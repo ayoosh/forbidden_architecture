@@ -646,7 +646,7 @@ npu npu(
     .npu_config_fifo_full(npu_config_fifo_full)
     );	
 	 
-InstructionROM InstructionROM (
+newInstructionMem InstructionROM (
   .clka(clk_in), // input clka
   .addra(cache_addr_instr), // input [8 : 0] addra
   .douta(cache_rd_instr) // output [31 : 0] douta

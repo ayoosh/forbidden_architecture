@@ -53,7 +53,7 @@ module Processor(
 
 	wire			mem_wb_RetCmd;
 	
-	wire			fullStall, semiStall, branchPredict, branchMissPredict;
+	wire			fullStall, semiStall, semiStallH, branchPredict, branchMissPredict;
 	
 	reg				rFullStall, rSemiStall;
 
@@ -80,27 +80,26 @@ module Processor(
 		.iBranchMissCmd		(branchMissPredict),
 		.iJumpCmd			(jumpCmd),
 		.iRetCmd			(retCmd),
-		.iStall				(rSemiStall),
+		.iFullStall			(fullStall),
+		.iStall				(rSemiStall | rFullStall),
 		.iHalt				(haltPC)
 	);
 	// TODO: Check input signals for Fetch Stage.
 
-	reg		[31:0]	id_if_Instruction;
+	wire		[31:0]	id_if_Instruction;
 
 	always @ (posedge clk) begin
 		if (!rst_n || !fullStall) begin
-			if (!rst_n || !semiStall) begin
-				if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt) begin
-					id_if_NextPC		<= 32'h0;
-					id_if_Instruction	<= 32'h0;
-				end
-				else begin
-					id_if_Instruction	<= if_id_Instruction;
-					id_if_NextPC		<= if_id_NextPC;
-				end
+			if (!rst_n || mem_wb_RetCmd || mem_wb_Halt) begin
+				id_if_NextPC		<= 32'h0;
 			end
-		end
+			else begin
+				id_if_NextPC		<= if_id_NextPC;
+			end
+		end	
 	end
+	
+	assign id_if_Instruction = rSemiStall | rFullStall ? 32'h0 : if_id_Instruction;
 
 	wire	[31:0]	id_ex_Src0, id_ex_Src1, id_ex_Immediate, id_ex_NextPC;
 	wire	[4:0]	id_ex_ExuShift;
@@ -203,7 +202,7 @@ module Processor(
 
 	always @ (posedge clk) begin
 		if (!rst_n || !fullStall) begin
-			if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt || semiStall || rSemiStall) begin
+			if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt) begin
 				ex_id_Immediate		<= 0;
 				ex_id_NextPC		<= 0;
 				ex_id_ExuShift		<= 0;
@@ -607,7 +606,7 @@ module Processor(
 	HazardDetectionUnit HazardDetectionUnit_0 (
 		// Outputs
 		.oFullStall			(fullStall),
-		.oSemiStall			(semiStall),
+		.oSemiStall			(semiStallH),
 
 		// Inputs
 		.iIdRegRs			(id_if_Instruction[20:16]),
@@ -638,6 +637,7 @@ module Processor(
 		.iRst_n				(rst_n)
 	);
 	
+	assign semiStall = semiStallH & ~branchMissPredict;
 	assign branchPredict = branchCmd & id_ex_BranchCmd;
 	assign halt = haltPC;
 	
