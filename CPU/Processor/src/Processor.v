@@ -57,7 +57,8 @@ module Processor(
 	
 	reg				rFullStall, rSemiStall;
 
-	reg		[31:0]	id_if_NextPC;
+	reg		[31:0]	id_if_NextPC_Stall, if_id_NextPC_Stall;
+	wire	[31:0]	id_if_NextPC;
 	
 	// External modules instantiation
 	InstructionFetchStage InstructionFetchStage_0 (
@@ -81,8 +82,9 @@ module Processor(
 		.iJumpCmd			(jumpCmd),
 		.iRetCmd			(retCmd),
 		.iFullStall			(fullStall),
-		.iStall				(rSemiStall | rFullStall),
-		.iHalt				(haltPC)
+		.iStall				(rSemiStall),
+		.iHalt				(haltPC),
+		.iClk				(clk)
 	);
 	// TODO: Check input signals for Fetch Stage.
 
@@ -90,16 +92,25 @@ module Processor(
 
 	always @ (posedge clk) begin
 		if (!rst_n || !fullStall) begin
-			if (!rst_n || mem_wb_RetCmd || mem_wb_Halt) begin
-				id_if_NextPC		<= 32'h0;
-			end
-			else begin
-				id_if_NextPC		<= if_id_NextPC;
+			if (!rst_n || !semiStall) begin
+				if (!rst_n || mem_wb_RetCmd || mem_wb_Halt) begin
+					id_if_NextPC_Stall		<= 32'h0;
+				end
+				else begin
+					id_if_NextPC_Stall		<= if_id_NextPC;
+				end
 			end
 		end	
 	end
 	
-	assign id_if_Instruction = rSemiStall | rFullStall ? 32'h0 : if_id_Instruction;
+	always @ (posedge clk) begin
+		if (!rst_n || !fullStall) begin
+			if_id_NextPC_Stall <= id_if_NextPC_Stall;
+		end
+	end
+	
+	assign id_if_NextPC = (semiStall & ~rSemiStall) ? if_id_NextPC_Stall : id_if_NextPC_Stall;
+	assign id_if_Instruction = if_id_Instruction;
 
 	wire	[31:0]	id_ex_Src0, id_ex_Src1, id_ex_Immediate, id_ex_NextPC;
 	wire	[4:0]	id_ex_ExuShift;
@@ -202,7 +213,7 @@ module Processor(
 
 	always @ (posedge clk) begin
 		if (!rst_n || !fullStall) begin
-			if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt) begin
+			if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt || semiStall) begin
 				ex_id_Immediate		<= 0;
 				ex_id_NextPC		<= 0;
 				ex_id_ExuShift		<= 0;
@@ -251,9 +262,9 @@ module Processor(
 				ex_id_MemValid		<= id_ex_MemValid;
 				ex_id_MemToReg		<= id_ex_MemToReg;
 				ex_id_CacheFlush	<= id_ex_CacheFlush;
-				ex_id_ZeroEn		<= id_ex_ZeroEn;
-				ex_id_NegativeEn	<= id_ex_NegativeEn;
-				ex_id_OverflowEn	<= id_ex_OverflowEn;
+				ex_id_ZeroEn		<= rSemiStall ? 1'b0 : id_ex_ZeroEn;
+				ex_id_NegativeEn	<= rSemiStall ? 1'b0 : id_ex_NegativeEn;
+				ex_id_OverflowEn	<= rSemiStall ? 1'b0 : id_ex_OverflowEn;
 				ex_id_WriteAddr		<= id_ex_WriteAddr;
 				ex_id_WriteEn		<= id_ex_WriteEn;
 				ex_id_Offset		<= offset;
