@@ -80,6 +80,7 @@ module Processor(
 		.iBranchMissCmd		(branchMissPredict),
 		.iJumpCmd			(jumpCmd),
 		.iRetCmd			(retCmd),
+		.iFullStall			(fullStall),
 		.iStall				(rSemiStall),
 		.iHalt				(haltPC)
 	);
@@ -97,7 +98,7 @@ module Processor(
 					id_if_NextPC		<= if_id_NextPC;
 				end
 			//end
-		end
+		end	
 	end
 	
 	assign id_if_Instruction = if_id_Instruction;

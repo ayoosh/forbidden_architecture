@@ -15,14 +15,13 @@ module DataMemory (
 
 	reg		[31:0]	data_mem[15:0];
 	reg				rd_ready, wr_ready;
+	
+	initial			data_mem[1] = 32'h1;
 
 	// Model read, data is latched on clock low
 	always @(posedge clk) begin
 		if (valid && !rw && !rd_ready) begin
-			if (addr == 32'h1)
-				rd_data		<= 32'h1;
-			else
-				rd_data		<= data_mem[addr];
+			rd_data		<= data_mem[addr];
 			rd_ready	<= 1'b1;
 		end
 		else begin
