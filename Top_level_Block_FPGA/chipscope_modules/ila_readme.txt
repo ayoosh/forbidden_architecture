@@ -20,6 +20,11 @@ Creates an implementation netlist:
    * ila.xdc
    * ila_xmdf.tcl
 
+Creates an HDL instantiation template:
+   Creates an HDL instantiation template for the IP.
+
+   * ila.veo
+
 IP Symbol Generator:
    Generate an IP symbol based on the current project options'.
 

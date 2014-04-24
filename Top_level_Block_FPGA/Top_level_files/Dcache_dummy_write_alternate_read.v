@@ -88,7 +88,7 @@ module Dcache_dummy #(
 	begin
 		if(rst)
 			begin
-			mem_data_addr1 <= 28'h1000000;
+			mem_data_addr1 <= 28'h3000000;
 			write_done <= 1; 
          mem_valid_data1 <= 0;	
 			mem_data_wr1 <= 256'd0;

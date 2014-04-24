@@ -65,11 +65,11 @@ module cache_memory #(
 	assign	dirty		= memory[addr_index][1]; 
 	assign	valid		= memory[addr_index][0];
 	
-	always @ (negedge clk) begin
+	always @ (posedge clk) begin
 	//always @ (posedge clk) begin // Changed to posedge from negedge - Problem write_en is high for just 1 cycle - NOT fixed
 		if(!rst_n) begin
 			for (i = 0; i < NUM_BLOCKS; i = i + 1)
-				memory[i][0] <= 1'b0;		
+			memory[i][0] <= 1'b0;		
 		end
 		else
 			if (write_en)

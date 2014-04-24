@@ -202,7 +202,7 @@ module top_module #
 		reg [31:0] cycle_count;
 		wire icache_done;
 		
-		assign icache_done = (cycle_count == 32'd100) ? 1 : 0;
+		assign icache_done = (cycle_count == 32'd1000) ? 1 : 0;
 		
 	
 		always @(posedge clk)
@@ -210,7 +210,7 @@ module top_module #
 		
 		if(rst)
 		cycle_count <= 32'd0;
-		else if(cycle_count == 32'd100)
+		else if(cycle_count == 32'd1000)
 		cycle_count <= cycle_count;
 		else if(mem_ready_data1)
 		cycle_count <= cycle_count + 1;
