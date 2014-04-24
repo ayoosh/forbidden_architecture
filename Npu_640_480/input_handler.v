@@ -20,7 +20,9 @@ wire [31:0]input_fifo;
 
 assign next_column = ( column_index == 638) ? (1'b1) : (column_index + 1);
 assign next_row = ( row_index == 479 && column_index == 638) ? (1'b0) : (column_address == 638) ?(row_index + 1): row_index;
-
+assign input_fifo_write_enable = ~input_fifo_full && input_state;
+assign config_fifo_write_enable = ~reset && config_state;
+assign next_config_addr = config_addr + 1;
 assign present_address = (row_index * 640) + column_index ;
 assign input_rom_address = (count == 0) ? (present_address - 641 ) :
 									(count == 1) ? (present_address - 1 ) :
@@ -32,7 +34,7 @@ assign input_rom_address = (count == 0) ? (present_address - 641 ) :
 									(count == 7) ? (present_address + 1 ) :
 									(present_address + 641);
 
-assign input_fifo = ((addr[2:0] == 0) ? {{24{1'b0}},image_data[7:0]}:
+assign input_fifo_data = ((addr[2:0] == 0) ? {{24{1'b0}},image_data[7:0]}:
 						((addr[2:0] == 1) ? {{24{1'b0}},image_data[15:8]}:
 						((addr[2:0] == 2) ? {{24{1'b0}},image_data[23:16]}:
 						((addr[2:0] == 3) ? {{24{1'b0}},image_data[31:24]}:
@@ -51,35 +53,36 @@ always@(posedge clk)begin
 	if(reset)begin
 		row_index <= 1 ;
 		column_index <= 1 ;
-		count <= 0;
+		count <= 0 ;
+		addr <= 0 ;
+		config_addr <= 0 ;
+		config_state <= 1 ;
 	end
-	else if(~input_fifo_full) begin
-		addr <= input_rom_address;
-		if(count == 8) begin
-			count <= 0;
-			coulmn_index <= next_column;
-			row_index <= next_row;
+	else if(config_state) begin
+		if(config_addr == ) begin
+			input_state <= 1;
+			config_state <= 0;
 		end
 		else begin
-			count <= count + 1 ;
+			config_addr <= next_config_addr ;
+	
 		end
-	end
-	else begin
-	 // Nothing happens here
 	end	
+	else if(input_state) begin
+		if(~input_fifo_full ) begin
+			addr <= input_rom_address;
+			if(count == 8) begin
+				count <= 0;
+				coulmn_index <= next_column;
+				row_index <= next_row;
+			end
+			else begin
+				count <= count + 1 ;
+			end
+		end
+		else begin
+	 // Nothing happens here
+		end	
+	end
 end
 	
-always@(posedge clk) begin
-	if(reset) begin
-	 input_fifo_data <= 0;
-	 input_fifo_write_enable <= 1'b1;
-	end
-	else if(~input_fifo_full) begin
-		input_fifo_data <= input_fifo;
-		input_fifo_write_enable <= 1'b1;
-	end
-	else begin
-		input_fifo_write_enable <= 1'b0;
-	end
-end
-endmodule	

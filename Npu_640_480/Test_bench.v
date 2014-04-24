@@ -1,9 +1,9 @@
 module top_level();
 
-wire [31:0]input_data, config_data, output_data, output_ready;
+wire [31:0]input_data, config_data, output_data;
 
 wire input_fifo_write_enable, config_fifo_write_enable, output_fifo_read_enable;
-wire output_fifo_empty, input_fifo_full, config_fifo_full;
+wire output_fifo_empty, input_fifo_full, config_fifo_full, output_ready;
 wire [15:0]ram_address;
 wire [63:0]ram_data; 
  
