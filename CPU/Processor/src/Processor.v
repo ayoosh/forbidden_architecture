@@ -81,8 +81,7 @@ module Processor(
 		.iJumpCmd			(jumpCmd),
 		.iRetCmd			(retCmd),
 		.iStall				(rSemiStall),
-		.iHalt				(haltPC),
-		.iRst_n				(rst_n)
+		.iHalt				(haltPC)
 	);
 	// TODO: Check input signals for Fetch Stage.
 
@@ -96,7 +95,7 @@ module Processor(
 					id_if_Instruction	<= 32'h0;
 				end
 				else begin
-					id_if_Instruction	<= if_id_NextPC == 32'h1 ? 32'h0 : if_id_Instruction;
+					id_if_Instruction	<= if_id_Instruction;
 					id_if_NextPC		<= if_id_NextPC;
 				end
 			end
