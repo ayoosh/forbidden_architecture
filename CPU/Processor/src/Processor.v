@@ -85,22 +85,22 @@ module Processor(
 	);
 	// TODO: Check input signals for Fetch Stage.
 
-	reg		[31:0]	id_if_Instruction;
+	wire		[31:0]	id_if_Instruction;
 
 	always @ (posedge clk) begin
 		if (!rst_n || !fullStall) begin
-			if (!rst_n || !semiStall) begin
+			//if (!rst_n || !semiStall) begin
 				if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt) begin
 					id_if_NextPC		<= 32'h0;
-					id_if_Instruction	<= 32'h0;
 				end
 				else begin
-					id_if_Instruction	<= if_id_Instruction;
 					id_if_NextPC		<= if_id_NextPC;
 				end
-			end
+			//end
 		end
 	end
+	
+	assign id_if_Instruction = if_id_Instruction;
 
 	wire	[31:0]	id_ex_Src0, id_ex_Src1, id_ex_Immediate, id_ex_NextPC;
 	wire	[4:0]	id_ex_ExuShift;

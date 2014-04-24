@@ -12,7 +12,7 @@ module InstructionMemory (
 	reg		[31:0]	instr_mem[0:65535];
 
 	// Memory is latched on clock low
-	always @(negedge clk) begin
+	always @(posedge clk) begin
 		if (rd_en) begin
 			instr	<= instr_mem[addr];
 			ready	<= 1'b1;
