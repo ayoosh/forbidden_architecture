@@ -81,7 +81,7 @@ module Processor(
 		.iJumpCmd			(jumpCmd),
 		.iRetCmd			(retCmd),
 		.iFullStall			(fullStall),
-		.iStall				(rSemiStall),
+		.iStall				(rSemiStall | rFullStall),
 		.iHalt				(haltPC)
 	);
 	// TODO: Check input signals for Fetch Stage.
@@ -90,18 +90,16 @@ module Processor(
 
 	always @ (posedge clk) begin
 		if (!rst_n || !fullStall) begin
-			//if (!rst_n || !semiStall) begin
-				if (!rst_n || mem_wb_RetCmd || mem_wb_Halt) begin
-					id_if_NextPC		<= 32'h0;
-				end
-				else begin
-					id_if_NextPC		<= if_id_NextPC;
-				end
-			//end
+			if (!rst_n || mem_wb_RetCmd || mem_wb_Halt) begin
+				id_if_NextPC		<= 32'h0;
+			end
+			else begin
+				id_if_NextPC		<= if_id_NextPC;
+			end
 		end	
 	end
 	
-	assign id_if_Instruction = if_id_Instruction;
+	assign id_if_Instruction = rSemiStall | rFullStall ? 32'h0 : if_id_Instruction;
 
 	wire	[31:0]	id_ex_Src0, id_ex_Src1, id_ex_Immediate, id_ex_NextPC;
 	wire	[4:0]	id_ex_ExuShift;
@@ -204,72 +202,70 @@ module Processor(
 
 	always @ (posedge clk) begin
 		if (!rst_n || !fullStall) begin
-			if (!rst_n || !rSemiStall) begin
-				if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt) begin
-					ex_id_Immediate		<= 0;
-					ex_id_NextPC		<= 0;
-					ex_id_ExuShift		<= 0;
-					ex_id_ExuOp			<= 0;
-					ex_id_AluOp			<= 0;
-					ex_id_MduOp			<= 0;
-					ex_id_FpuOp			<= 0;
-					ex_id_BranchOp		<= 0;
-					ex_id_BranchCmd		<= 0;
-					ex_id_AluCmd		<= 0;
-					ex_id_Halt			<= 0;
-					ex_id_MemWrite		<= 0;
-					ex_id_MemValid		<= 0;
-					ex_id_MemToReg		<= 0;
-					ex_id_CacheFlush	<= 0;
-					ex_id_ZeroEn		<= 0;
-					ex_id_NegativeEn	<= 0;
-					ex_id_OverflowEn	<= 0;
-					ex_id_WriteAddr		<= 0;
-					ex_id_WriteEn		<= 0;
-					ex_id_Offset		<= 0;
-					ex_id_RetCmd		<= 0;
-					ex_id_Halt			<= mem_wb_Halt & rst_n;
-					ex_id_BranchPredict	<= 0;
-					ex_id_BranchAddr	<= 0;
-					ex_id_NpuCfgOp		<= 0;
-					ex_id_NpuEnqOp		<= 0;
-					ex_id_NpuDeqOp		<= 0;
-					ex_id_Instruction	<= 0;
-					ex_if_LoadCmd		<= 0;
-					ex_id_StoreCmd		<= 0;
-				end
-				else begin
-					ex_id_Immediate		<= id_ex_Immediate;
-					ex_id_NextPC		<= id_ex_NextPC;
-					ex_id_ExuShift		<= id_ex_ExuShift;
-					ex_id_ExuOp			<= id_ex_ExuOp;
-					ex_id_AluOp			<= id_ex_AluOp;
-					ex_id_MduOp			<= id_ex_MduOp;
-					ex_id_FpuOp			<= id_ex_FpuOp;
-					ex_id_BranchOp		<= id_ex_BranchOp;
-					ex_id_BranchCmd		<= id_ex_BranchCmd;
-					ex_id_AluCmd		<= id_ex_AluCmd;
-					ex_id_Halt			<= id_ex_Halt;
-					ex_id_MemWrite		<= id_ex_MemWrite;
-					ex_id_MemValid		<= id_ex_MemValid;
-					ex_id_MemToReg		<= id_ex_MemToReg;
-					ex_id_CacheFlush	<= id_ex_CacheFlush;
-					ex_id_ZeroEn		<= id_ex_ZeroEn;
-					ex_id_NegativeEn	<= id_ex_NegativeEn;
-					ex_id_OverflowEn	<= id_ex_OverflowEn;
-					ex_id_WriteAddr		<= id_ex_WriteAddr;
-					ex_id_WriteEn		<= id_ex_WriteEn;
-					ex_id_Offset		<= offset;
-					ex_id_RetCmd		<= id_ex_RetCmd;
-					ex_if_LoadCmd		<= id_ex_LoadCmd;
-					ex_id_BranchPredict	<= id_ex_BranchPredict;
-					ex_id_BranchAddr	<= branchAddr;
-					ex_id_NpuCfgOp		<= id_ex_NpuCfgOp;
-					ex_id_NpuEnqOp		<= id_ex_NpuEnqOp;
-					ex_id_NpuDeqOp		<= id_ex_NpuDeqOp;
-					ex_id_Instruction	<= id_ex_Instruction;
-					ex_id_StoreCmd		<= id_ex_StoreCmd;
-				end
+			if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt) begin
+				ex_id_Immediate		<= 0;
+				ex_id_NextPC		<= 0;
+				ex_id_ExuShift		<= 0;
+				ex_id_ExuOp			<= 0;
+				ex_id_AluOp			<= 0;
+				ex_id_MduOp			<= 0;
+				ex_id_FpuOp			<= 0;
+				ex_id_BranchOp		<= 0;
+				ex_id_BranchCmd		<= 0;
+				ex_id_AluCmd		<= 0;
+				ex_id_Halt			<= 0;
+				ex_id_MemWrite		<= 0;
+				ex_id_MemValid		<= 0;
+				ex_id_MemToReg		<= 0;
+				ex_id_CacheFlush	<= 0;
+				ex_id_ZeroEn		<= 0;
+				ex_id_NegativeEn	<= 0;
+				ex_id_OverflowEn	<= 0;
+				ex_id_WriteAddr		<= 0;
+				ex_id_WriteEn		<= 0;
+				ex_id_Offset		<= 0;
+				ex_id_RetCmd		<= 0;
+				ex_id_Halt			<= mem_wb_Halt & rst_n;
+				ex_id_BranchPredict	<= 0;
+				ex_id_BranchAddr	<= 0;
+				ex_id_NpuCfgOp		<= 0;
+				ex_id_NpuEnqOp		<= 0;
+				ex_id_NpuDeqOp		<= 0;
+				ex_id_Instruction	<= 0;
+				ex_if_LoadCmd		<= 0;
+				ex_id_StoreCmd		<= 0;
+			end
+			else begin
+				ex_id_Immediate		<= id_ex_Immediate;
+				ex_id_NextPC		<= id_ex_NextPC;
+				ex_id_ExuShift		<= id_ex_ExuShift;
+				ex_id_ExuOp			<= id_ex_ExuOp;
+				ex_id_AluOp			<= id_ex_AluOp;
+				ex_id_MduOp			<= id_ex_MduOp;
+				ex_id_FpuOp			<= id_ex_FpuOp;
+				ex_id_BranchOp		<= id_ex_BranchOp;
+				ex_id_BranchCmd		<= id_ex_BranchCmd;
+				ex_id_AluCmd		<= id_ex_AluCmd;
+				ex_id_Halt			<= id_ex_Halt;
+				ex_id_MemWrite		<= id_ex_MemWrite;
+				ex_id_MemValid		<= id_ex_MemValid;
+				ex_id_MemToReg		<= id_ex_MemToReg;
+				ex_id_CacheFlush	<= id_ex_CacheFlush;
+				ex_id_ZeroEn		<= id_ex_ZeroEn;
+				ex_id_NegativeEn	<= id_ex_NegativeEn;
+				ex_id_OverflowEn	<= id_ex_OverflowEn;
+				ex_id_WriteAddr		<= id_ex_WriteAddr;
+				ex_id_WriteEn		<= id_ex_WriteEn;
+				ex_id_Offset		<= offset;
+				ex_id_RetCmd		<= id_ex_RetCmd;
+				ex_if_LoadCmd		<= id_ex_LoadCmd;
+				ex_id_BranchPredict	<= id_ex_BranchPredict;
+				ex_id_BranchAddr	<= branchAddr;
+				ex_id_NpuCfgOp		<= id_ex_NpuCfgOp;
+				ex_id_NpuEnqOp		<= id_ex_NpuEnqOp;
+				ex_id_NpuDeqOp		<= id_ex_NpuDeqOp;
+				ex_id_Instruction	<= id_ex_Instruction;
+				ex_id_StoreCmd		<= id_ex_StoreCmd;
 			end
 		end
 	end

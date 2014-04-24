@@ -61,7 +61,7 @@ module InstructionFetchStage (
 	assign nextPC			= currentPC + 1;	// Each address correspond to 32-bit instruction
 
 	// Outputs assignment
-	assign oInstrMemAddress	= iFullStall & ~iStall ? currentPC - 1 : currentPC;		// Request from memory a instruction
+	assign oInstrMemAddress	= currentPC;		// Request from memory a instruction
 	assign oInstruction		= iInstrMemData;	// Read from memory a instruction
 	assign oNextPC			= nextPC;			// Output next program counter
 	assign oInstrMemValid	= 1'b1;				// Always reading instruction memory
