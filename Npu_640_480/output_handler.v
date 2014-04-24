@@ -63,7 +63,7 @@ always@(posedge clk) begin
 	end
 end
 	
-output_ram YourInstanceName (
+output_ram outram (
 	.clka(clk),
 	.ena(1'b1),
 	.wea(output_ram_write_enable), // Bus [0 : 0] 
