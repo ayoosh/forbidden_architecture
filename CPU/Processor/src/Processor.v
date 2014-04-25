@@ -524,7 +524,7 @@ module Processor(
 		.iHalt				(mem_ex_Halt)
 	);
 
-	wire	[31:0]	wb_mem_MemData;
+	reg		[31:0]	wb_mem_MemData;
 	
 	reg		[31:0]	wb_mem_ExuData;
 	reg		[4:0]	wb_mem_WriteAddr;
@@ -562,11 +562,12 @@ module Processor(
 				wb_mem_MemValid		<= mem_ex_MemValid; // Look at this!
 				wb_mem_NpuCfgOp		<= mem_wb_NpuCfgOp;
 				wb_mem_NpuEnqOp		<= mem_wb_NpuEnqOp;
+				wb_mem_MemData		<= mem_wb_MemData;
 			end
 		end
 	end
 	
-	assign wb_mem_MemData = mem_wb_MemData;
+	//assign wb_mem_MemData = mem_wb_MemData;
 	assign wb_mem_RetAddr = mem_wb_RetAddr;
 
 	WriteBackStage WriteBackStage_0 (
