@@ -28,13 +28,15 @@ module InstructionFetchStage (
 	input			iRetCmd,
 	input			iFullStall,
 	input			iStall,
-	input			iHalt
+	input			iHalt,
+	input			iClk
 );
 
 	// Internal signals declaration
 	wire	[31:0]	newPC;
 	wire	[31:0]	nextPC;
 	wire	[31:0]	currentPC;
+	reg		[31:0]	lastPC;
 
 	// External modules instantiation
 	JumpMux JumpMux_0(							// Selects the next address to program counter
@@ -56,12 +58,17 @@ module InstructionFetchStage (
 		.iNextPC	(newPC),
 		.iHalt		(iHalt)
 	);
+	
+	always @ (posedge iClk) begin
+		lastPC <= currentPC;
+	end
 
+	
 	// Internal signals assignment
 	assign nextPC			= currentPC + 1;	// Each address correspond to 32-bit instruction
 
 	// Outputs assignment
-	assign oInstrMemAddress	= currentPC;		// Request from memory a instruction
+	assign oInstrMemAddress	= iFullStall ? lastPC : currentPC;		// Request from memory a instruction
 	assign oInstruction		= iInstrMemData;	// Read from memory a instruction
 	assign oNextPC			= nextPC;			// Output next program counter
 	assign oInstrMemValid	= 1'b1;				// Always reading instruction memory
