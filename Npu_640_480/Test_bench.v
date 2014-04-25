@@ -1,5 +1,8 @@
+`timescale 1ns/100ps
+
 module top_level();
 
+reg clk, reset;
 wire [31:0]input_data, config_data, output_data;
 
 wire input_fifo_write_enable, config_fifo_write_enable, output_fifo_read_enable;
@@ -7,7 +10,21 @@ wire output_fifo_empty, input_fifo_full, config_fifo_full, output_ready;
 wire [15:0]ram_address;
 wire [63:0]ram_data; 
  
-input_handling  in(
+ 
+ 
+initial begin
+	clk = 1;
+	reset=1;	
+	#60 reset=0;
+end
+
+always
+	#5 clk = ~clk ;
+	
+//initial
+//	#175000 $stop;
+
+input_handling in(
 	//inputs
 	.clk(clk),
 	.reset(reset),

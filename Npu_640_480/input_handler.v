@@ -9,21 +9,28 @@ module input_handling(
 	output input_fifo_write_enable
 );
 
-reg [9:0]row_index;
-reg [8:0]column_index ;
+reg [9:0]config_addr;
+reg [8:0]row_index;
+reg [9:0]column_index ;
 reg [3:0]count;	
 reg [18:0]addr;
-wire [18:0]input_rom_address;
+wire [18:0]input_rom_address, rom_addr;
 wire [18:0]present_address;
 wire [63:0]image_data;
 wire [31:0]input_fifo;
+wire [9:0]next_config_addr;
+wire [8:0]next_row;
+wire [9:0]next_column;
+reg input_state, config_state, fifo_enable, latched_input;
 
-assign next_column = ( column_index == 638) ? (1'b1) : (column_index + 1);
-assign next_row = ( row_index == 479 && column_index == 638) ? (1'b0) : (column_address == 638) ?(row_index + 1): row_index;
-assign input_fifo_write_enable = ~input_fifo_full && input_state;
+assign next_column = (column_index == 10'd638) ? (1'b1) : (column_index+1'b1);
+assign next_row = ( row_index == 478 && column_index == 638) ? (1'b0) : (column_index == 638) ?(row_index + 1): row_index;
+assign input_fifo_write_enable = ~input_fifo_full && latched_input /*&& fifo_enable*/;
 assign config_fifo_write_enable = ~reset && config_state;
 assign next_config_addr = config_addr + 1;
 assign present_address = (row_index * 640) + column_index ;
+assign rom_addr = (input_fifo_full) ? addr[18:3] : input_rom_address[18:3] ;
+
 assign input_rom_address = (count == 0) ? (present_address - 641 ) :
 									(count == 1) ? (present_address - 1 ) :
 									(count == 2) ? (present_address + 639 ) :
@@ -43,41 +50,51 @@ assign input_fifo_data = ((addr[2:0] == 0) ? {{24{1'b0}},image_data[7:0]}:
 						((addr[2:0] == 6) ? {{24{1'b0}},image_data[55:48]}:
 						(({{24{1'b0}},image_data[63:56]})))))))));
 
+Config_fifo configu (
+	.clka(clk),
+	.addra(config_addr), // Bus [9 : 0] 
+	.douta(config_fifo_data)); // Bus [31 : 0] 
+
 rom64x38400 rom(
   .clka(clk), // input clka
-  .addra(input_rom_address[18:3]), // input [15 : 0] addra
+  .addra(rom_addr[18:3]), // input [15 : 0] addra
   .douta(image_data) // output [63 : 0] douta
 );
 		 
 always@(posedge clk)begin
 	if(reset)begin
-		row_index <= 1 ;
+		row_index <= 300 ;
 		column_index <= 1 ;
 		count <= 0 ;
 		addr <= 0 ;
 		config_addr <= 0 ;
 		config_state <= 1 ;
+		input_state <= 0;
+		fifo_enable <= 0;
 	end
 	else if(config_state) begin
-		if(config_addr == ) begin
+		latched_input <= input_state;
+		if(config_addr == 604) begin
 			input_state <= 1;
 			config_state <= 0;
 		end
 		else begin
 			config_addr <= next_config_addr ;
-	
+			
 		end
 	end	
 	else if(input_state) begin
+		latched_input <= input_state;
+		fifo_enable <= ~input_fifo_full;
 		if(~input_fifo_full ) begin
 			addr <= input_rom_address;
 			if(count == 8) begin
 				count <= 0;
-				coulmn_index <= next_column;
+				column_index <= next_column;
 				row_index <= next_row;
 			end
 			else begin
-				count <= count + 1 ;
+				count <= count + 1  ;
 			end
 		end
 		else begin
@@ -85,4 +102,6 @@ always@(posedge clk)begin
 		end	
 	end
 end
+
+endmodule
 	
