@@ -1,0 +1,2 @@
+SETPROJECT "I:/GitHub/forbidden_architecture/Npu_640_480/config/coregen.cgp"
+LAUNCHXCO "I:/GitHub/forbidden_architecture/Npu_640_480/config/Config_fifo.xco"
