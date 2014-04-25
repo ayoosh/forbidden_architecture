@@ -44,11 +44,12 @@ module cache_memory #(
 	wire	[TAG_WIDTH-1:0]		addr_tag;
 	wire	[INDEX_WIDTH-1:0]	addr_index;
 	wire	[OFFSET_WIDTH-1:0]	addr_offset;
-	wire	[BLOCK_SIZE-1:0]	data;
-	wire    [TAG_WIDTH-1:0]		tag;
-	wire						dirty;
-	wire						valid;
 	
+	reg	[BLOCK_SIZE-1:0]	data;
+	reg	[TAG_WIDTH-1:0]	tag;
+	reg						dirty;
+	reg						valid;
+		
 	integer						i;
 	
 	assign addr_tag		= addr[ADDR_WIDTH-1:ADDR_WIDTH-TAG_WIDTH];
@@ -60,20 +61,30 @@ module cache_memory #(
 	assign dirty_read	= dirty;
 	assign hit			= valid & (addr_tag == tag);
 	
-	assign 	data		= memory[addr_index][MEMORY_SIZE-1:MEMORY_SIZE-BLOCK_SIZE];
-	assign 	tag			= memory[addr_index][MEMORY_SIZE-BLOCK_SIZE-1:2];
-	assign	dirty		= memory[addr_index][1]; 
-	assign	valid		= memory[addr_index][0];
-	
 	always @ (posedge clk) begin
 	//always @ (posedge clk) begin // Changed to posedge from negedge - Problem write_en is high for just 1 cycle - NOT fixed
 		if(!rst_n) begin
 			for (i = 0; i < NUM_BLOCKS; i = i + 1)
-				memory[i][0] <= 1'b0;		
+				memory[i][0] <= 1'b0;
+
+			data		<= 0;
+			tag		<= 0;
+			dirty		<= 0;
+			valid		<= 0;
+			
 		end
 		else
+			begin
+			
+	 	data		= memory[addr_index][MEMORY_SIZE-1:MEMORY_SIZE-BLOCK_SIZE];
+	 	tag			= memory[addr_index][MEMORY_SIZE-BLOCK_SIZE-1:2];
+		dirty		= memory[addr_index][1]; 
+		valid		= memory[addr_index][0];			
+			
 			if (write_en)
 				memory[addr_index] <= {data_write, addr_tag, dirty_write, 1'b1};
-	end
+			end	
+	end	
+	
 	
 endmodule

@@ -63,10 +63,11 @@ module cache_controller #(
 	endfunction
 
 	//---------------------------------------------------------------------------------
-	localparam	IDLE		= 2'b00;
-	localparam	COMPARE_TAG	= 2'b01;
-	localparam	WRITE_BACK	= 2'b10;
-	localparam	ALLOCATE	= 2'b11;
+	localparam	IDLE		= 3'b000;
+	localparam	COMPARE_TAG	= 3'b001;
+	localparam	WRITE_BACK	= 3'b010;
+	localparam	ALLOCATE	= 3'b011;
+	localparam  ALLOCATE_IDLE = 3'b100;
 	//----------------------------------------------------------------------------------
 	localparam	DATA_BLOCKS	= BLOCK_SIZE / DATA_WIDTH;
 	localparam	NUM_BLOCKS	= (CACHE_SIZE * 8) / (BLOCK_SIZE * NUM_WAYS);
@@ -81,7 +82,7 @@ module cache_controller #(
 	wire	[DATA_WIDTH-1:0]	data;
 	wire	[BLOCK_SIZE-1:0]	write_block_data[NUM_WAYS-1:0];
 	//---------------------------------------------------------------------------------
-	reg		[1:0]				State, NextState;
+	reg		[2:0]				State, NextState;
 	//---------------------------------------------------------------------------------
 
 	//---------------------------------------------------------------------------------
@@ -169,8 +170,13 @@ module cache_controller #(
 					NextState = ALLOCATE;
 			end
 			ALLOCATE: begin
-				NextState = mem_ready ? COMPARE_TAG : ALLOCATE;
+				NextState = mem_ready ? ALLOCATE_IDLE : ALLOCATE;
 			end
+			
+			ALLOCATE_IDLE: begin
+				NextState = COMPARE_TAG;
+			end
+			
 			WRITE_BACK: begin
 				if (mem_ready) begin
 					if (flush_flag)
