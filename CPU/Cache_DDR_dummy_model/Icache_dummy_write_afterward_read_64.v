@@ -50,10 +50,10 @@ module Icache_dummy #(
 	reg [255:0] temp_mem_addr [0:35];
 	reg [5:0] cycle_count;
    reg  enable_cycle;	
-	reg [5:0] rom_addr;
+	reg [16:0] rom_addr;
 	reg [5:0] mem_ready_count;
 	assign mem_data_wr1 = temp_mem[rom_addr];
-   assign mem_data_addr1 = temp_mem_addr[rom_addr];
+      assign mem_data_addr1 = {12'd0,rom_addr};
 	
 	
 	
@@ -74,7 +74,7 @@ module Icache_dummy #(
 	begin
 		if(rst)
 		begin
-			rom_addr <= 6'd0;
+			rom_addr <= 16'd0;
 			temp_mem[0] <= 256'h0A0A_0B0B__ABCD_EF12__6666_5555__BDC1_4444__1234_5678__ADAD_BABA__5885_0990__3FBA_BAF1;
 			temp_mem[1] <= 256'h1111_1111__2222_2222__3333_3333__4444_4444__5555_5555__6666_6666__7777_7777__8888_8888;
 			temp_mem[2] <= 256'h100040C0100040C8900040D0900040D8440030E0900030E8100030F0100030F8;
@@ -131,7 +131,7 @@ module Icache_dummy #(
 		end
 		else
 		begin
-			if(rom_addr == 6'd35 && (mem_ready_data1 | enable_cycle) )
+			if(rom_addr == 16'd32768 && (mem_ready_data1 | enable_cycle) )
 				begin
 				
 				if(cycle_count == CYCLE_DELAY)
@@ -142,12 +142,12 @@ module Icache_dummy #(
 					if(mem_ready_count == 1)  // Last Command was read, so now write
 						begin
 						mem_rw_data1 <= 1;
-						rom_addr <= 6'd0;
+						rom_addr <= 16'd0;
 						end
 					else if(mem_ready_count == 2)
 						begin
 						mem_rw_data1 <= 0;
-						rom_addr <= 6'd0;
+						rom_addr <= 16'd0;
 						end
 					end
 					
@@ -172,11 +172,11 @@ module Icache_dummy #(
 					if(mem_ready_count == 2)  // Last Command was write, so now write
 						begin
 						mem_rw_data1 <= 1;
-						rom_addr <= rom_addr+1;
+						rom_addr <= rom_addr+8;
 						end
 					else if(mem_ready_count == 1)
 						begin
-						rom_addr <= rom_addr+1;
+						rom_addr <= rom_addr+8;
 						mem_rw_data1 <= 0;
 						end
 					end
