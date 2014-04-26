@@ -25,13 +25,13 @@ module CPU_Dcache_dummy #(
 		input clk,
 		input rst,
 		
-	output  	reg   [31:0] mem_data_wr1,
+	output  	   [31:0] mem_data_wr1,
 								// Input data from cache
 								
 	input   [31:0] mem_data_rd1,
 								// Output the data to cache
 								
-   output   reg     [27:0]  mem_data_addr1,
+   output        [27:0]  mem_data_addr1,
 								// DDR2 address from cache to read/write the data from/to
 								
 	output reg               mem_rw_data1,
@@ -52,54 +52,8 @@ module CPU_Dcache_dummy #(
    reg  enable_cycle;	
 	reg [5:0] rom_addr;
 	reg [5:0] mem_ready_count;
-	
-	reg [31:0] mem_data_wr;
-	reg  [27:0] mem_data_addr;
-	reg  [31:0] mem_rd_data;
-	
-	always @(posedge clk)
-	begin
-		if(rst)
-		begin
-		mem_data_wr <= 32'h010000FF;
-		mem_data_addr <= 28'h000_0008;  // Initial address
-		mem_rd_data <= 32'd0;
-		end
-		
-		else if (rom_addr == 6'd63)
-		begin
-		mem_data_wr <= temp_mem[0];
-		mem_data_addr <= temp_mem_addr[0];	
-      mem_rd_data <= temp_mem[rom_addr];		
-		end
-		else
-		begin
-		mem_data_wr <= temp_mem[rom_addr+1];
-		mem_data_addr <= temp_mem_addr[rom_addr+1];	
-      mem_rd_data <= temp_mem[rom_addr];		
-		end
-	end	
-
-		always @(posedge clk)
-	begin
-		if(rst)
-		begin
-		mem_data_wr1 <= 32'h010000FF;
-		mem_data_addr1 <= 28'h000_0008;  // Initial address
-		end
-		
-		else if ( rom_addr == 6'd63 & (cycle_count == CYCLE_DELAY) & (mem_ready_count == 1) & ~update_write  )
-		begin
-		mem_data_wr1 <= temp_mem[0] + 32'd2; // On mem_ready_data it gets value from previous register
-	//	mem_data_addr1 <= mem_data_addr;		
-		end
-		
-		else if(mem_ready_data1)
-		begin
-		mem_data_wr1 <= mem_data_wr; // On mem_ready_data it gets value from previous register
-		mem_data_addr1 <= mem_data_addr;		
-		end
-	end	
+	assign mem_data_wr1 = temp_mem[rom_addr];
+   assign mem_data_addr1 = temp_mem_addr[rom_addr];
 	
 	
 	
@@ -111,25 +65,15 @@ module CPU_Dcache_dummy #(
 	error <= 0;
 	else
 		begin
-		if((mem_ready_data1 & mem_valid_data1 & ~mem_rw_data1) & (mem_data_rd1 != mem_rd_data))
+		if((mem_ready_data1 & mem_valid_data1 & ~mem_rw_data1) & (mem_data_rd1 != temp_mem[rom_addr]))
 		error <= 1;
-	//	else if(mem_ready_data1)
-	//	error <= 0;
+		else if(mem_ready_data1)
+		error <= 0;
 		end
 	end
 	
 	integer i;
 	reg update_write;
-	
-	/*
-	reg [31:0] tick_cycle;
-	
-	always @(posedge clk)
-	if(rst)
-	tick_cycle <= 32'd0;
-	else
-	tick_cycle <= tick_cycle + 1;
-	*/
 	
 	always @(posedge clk)
 	begin
@@ -297,8 +241,7 @@ module CPU_Dcache_dummy #(
 						update_write <= 1;
 						// Update with new data
 				    	for(i = 0; i <64; i = i + 1)
-						temp_mem[i] <= temp_mem[i] + 32'd2;
-					//	temp_mem[i] <= tick_cycle;
+						temp_mem[i] <= temp_mem[i] + 32'd0;
 						
 						end
 						
