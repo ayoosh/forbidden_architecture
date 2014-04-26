@@ -48,8 +48,7 @@ module cache_memory #(
 	reg	[BLOCK_SIZE-1:0]	data;
 	reg	[TAG_WIDTH-1:0]	tag;
 	reg						dirty;
-	reg   [NUM_BLOCKS-1:0]  valid_bit;
-	wire						valid;
+	reg						valid;
 		
 	integer						i;
 	
@@ -60,19 +59,18 @@ module cache_memory #(
 	
 	assign data_read	= data;
 	assign dirty_read	= dirty;
-	assign valid      =  valid_bit[addr_index]; // New change
 	assign hit			= valid & (addr_tag == tag);
-		
+	
 	always @ (negedge clk) begin
 	//always @ (posedge clk) begin // Changed to posedge from negedge - Problem write_en is high for just 1 cycle - NOT fixed
 		if(!rst_n) begin
-		//	for (i = 0; i < NUM_BLOCKS; i = i + 1)
-			//	memory[i][0] <= 1'b0;
+			for (i = 0; i < NUM_BLOCKS; i = i + 1)
+				memory[i][0] <= 1'b0;
 
 			data		<= 0;
 			tag		<= 0;
 			dirty		<= 0;
-			valid_bit		<= 0;
+			valid		<= 0;
 			
 		end
 		else
@@ -81,13 +79,10 @@ module cache_memory #(
 	 	data		<= memory[addr_index][MEMORY_SIZE-1:MEMORY_SIZE-BLOCK_SIZE];
 	 	tag			<= memory[addr_index][MEMORY_SIZE-BLOCK_SIZE-1:2];
 		dirty		<= memory[addr_index][1]; 
-	//	valid		<= memory[addr_index][0];			
+		valid		<= memory[addr_index][0];			
 			
 			if (write_en)
-				begin
 				memory[addr_index] <= {data_write, addr_tag, dirty_write, 1'b1};
-				valid_bit[addr_index] <= 1'b1;
-				end
 			end	
 	end	
 	
