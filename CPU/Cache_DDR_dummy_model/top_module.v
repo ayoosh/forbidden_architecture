@@ -202,7 +202,7 @@ module top_module #
 		reg [31:0] cycle_count;
 		wire icache_done;
 		
-		assign icache_done = (cycle_count == 32'd1000) ? 1 : 0;
+		assign icache_done = (cycle_count == 32'd65536) ? 1 : 0;
 		
 	
 		always @(posedge clk)
@@ -210,14 +210,16 @@ module top_module #
 		
 		if(rst)
 		cycle_count <= 32'd0;
-		else if(cycle_count == 32'd1000)
+		else if(cycle_count == 32'd65536)
 		cycle_count <= cycle_count;
 		else if(mem_ready_data1)
 		cycle_count <= cycle_count + 1;
 		
 		end
 		
-		
+			// ROM temp
+	wire [15:0] rom_addr;
+	wire [63:0] rom_data;
 	
 		Arbiter arbiter_module (
 		.clk(clk), 
@@ -324,7 +326,9 @@ module top_module #
 		.mem_data_addr1(cache_addr), 
 		.mem_rw_data1(cache_rw), 
 		.mem_valid_data1(cache_valid), 
-		.mem_ready_data1(cache_ready)
+		.mem_ready_data1(cache_ready),
+		.rom_addr(rom_addr),
+		.rom_data(rom_data)
 	);
 	
 		DVI_dummy DVI_dummy (
@@ -339,6 +343,12 @@ module top_module #
 		.error(memory_read_error3)
 	);
 	
+
+rom64x38400 rom_image (
+  .clka(clk), // input clka
+  .addra(rom_addr), // input [15 : 0] addra
+  .douta(rom_data) // output [63 : 0] douta
+);
 
 	/*
 	npu npu_module(

@@ -1,0 +1,16 @@
+# Output products list for <npu_sigmoid_fifo>
+_xmsgs\pn_parser.xmsgs
+fifo_generator_readme.txt
+fifo_generator_ug175.pdf
+npu_sigmoid_fifo.asy
+npu_sigmoid_fifo.gise
+npu_sigmoid_fifo.ngc
+npu_sigmoid_fifo.sym
+npu_sigmoid_fifo.v
+npu_sigmoid_fifo.veo
+npu_sigmoid_fifo.vhd
+npu_sigmoid_fifo.vho
+npu_sigmoid_fifo.xco
+npu_sigmoid_fifo.xise
+npu_sigmoid_fifo_flist.txt
+npu_sigmoid_fifo_xmdf.tcl
