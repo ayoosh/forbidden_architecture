@@ -37,7 +37,7 @@ module BranchPredictor (
 	end
 	
 	// FSM: Flip-Flops
-	always @ (posedge iClk, negedge iRst_n) begin
+	always @ (posedge iClk) begin
 		if (!iRst_n)
 			state <= TAKEN1;
 		else

@@ -654,8 +654,14 @@ module Processor(
 	assign halt = haltPC;
 	
 	always @ (posedge clk) begin
-		rFullStall	<= fullStall;
-		rSemiStall	<= semiStall;
+		if (!rst_n) begin
+			rFullStall	<= 0;
+			rSemiStall	<= 0;
+		end
+		else begin
+			rFullStall	<= fullStall;
+			rSemiStall	<= semiStall;
+		end
 	end
 	
 endmodule
