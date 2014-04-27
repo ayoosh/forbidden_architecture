@@ -258,7 +258,7 @@ module TB_Cache_DDR_test;
 	@ (posedge clk)
 	cache_addr = 28'h200_1018;
 
-
+/*
 	// Invalidation
 	@ (posedge cache_ready) 	
 	@ (posedge clk) begin
@@ -270,6 +270,19 @@ module TB_Cache_DDR_test;
 	@ (posedge clk) begin
 	cache_addr = 28'h130_1018;
 	end
+	*/
+
+	@ (posedge cache_ready) 	
+	@ (posedge clk) begin
+	flush = 1;
+	end
+	
+		@ (posedge cache_ready) 
+
+	@ (posedge clk) begin
+	flush = 0;
+		cache_valid = 1'b0;
+	end		
 	
 	
 	end
