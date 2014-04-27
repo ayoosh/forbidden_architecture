@@ -30,6 +30,9 @@ module DualPortRAM #(
 
 	// Internal signals declaration
 	reg		[DATA_WIDTH-1:0]	ram[(2**ADDR_WIDTH)-1:0];
+	
+	//initial
+	//	ram[0] = {DATA_WIDTH{1'b0}};
 
 	// Internal signals assignment
 	always @ (negedge iClkA) begin		// Port A: Clock A logic

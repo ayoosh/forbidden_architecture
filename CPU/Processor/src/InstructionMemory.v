@@ -1,4 +1,7 @@
-module InstructionMemory (
+module InstructionMemory #(
+	parameter			MEMORY_FILENAME = "../init/InstructionMemory.hex"
+)
+(
 	// Outputs
 	output	reg	[31:0]	instr,	//output of insturction memory
 	output	reg			ready,
@@ -24,7 +27,7 @@ module InstructionMemory (
 	end
 
 	initial begin
-	  $readmemh("../init/InstructionMemory.hex", instr_mem);
+	  $readmemh(MEMORY_FILENAME, instr_mem);
 	end
 
 endmodule

@@ -88,13 +88,13 @@ module RegisterFile #(
 
 	// Internal signals assignment
 	assign memAddrA		= (rState == READ) ? rAddrRead0 : iAddrWrite;
-	assign oDataRead0	= (rAddrRead0 == 5'h00) ? 32'h0000_0000 : rDataRead0;
+	assign oDataRead0	= rDataRead0;
 	assign memDataInA	= iDataWrite;
 	assign memEnA		= (rState == READ) ? rEnRead0 : iEnWrite;
 	assign memWeA		= ((rState == WRITE) && !(iAddrWrite == 5'h00)) ? iEnWrite : 1'b0;
 
 	assign memAddrB		= iAddrRead1;
-	assign oDataRead1	= (iAddrRead1 == 5'h00) ? 32'h0000_0000 : rDataRead1;
+	assign oDataRead1	= rDataRead1;
 	assign memDataInB	= 32'h0;
 	assign memEnB		= (rState == READ) ? iEnRead1 : 1'b0;
 	assign memWeB		= 1'b0;
@@ -133,8 +133,8 @@ module RegisterFile #(
 			rDataRead1	<= 0;
 		end
 		else begin
-			rDataRead0	<= memDataOutA;
-			rDataRead1	<= memDataOutB;
+			rDataRead0	<= (rAddrRead0 == 5'h00) ? 32'h0000_0000 : memDataOutA;
+			rDataRead1	<= (iAddrRead1 == 5'h00) ? 32'h0000_0000 : memDataOutB;
 		end
 	end
 
