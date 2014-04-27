@@ -1,0 +1,15 @@
+# Output products list for <npu_mul_add_dsp>
+_xmsgs\pn_parser.xmsgs
+npu_mul_add_dsp.asy
+npu_mul_add_dsp.gise
+npu_mul_add_dsp.ngc
+npu_mul_add_dsp.sym
+npu_mul_add_dsp.v
+npu_mul_add_dsp.veo
+npu_mul_add_dsp.vhd
+npu_mul_add_dsp.vho
+npu_mul_add_dsp.xco
+npu_mul_add_dsp.xise
+npu_mul_add_dsp_flist.txt
+npu_mul_add_dsp_readme.txt
+npu_mul_add_dsp_xmdf.tcl

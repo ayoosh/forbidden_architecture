@@ -1,0 +1,16 @@
+# Output products list for <npu_circ_buf_fifo_large>
+_xmsgs\pn_parser.xmsgs
+fifo_generator_readme.txt
+fifo_generator_ug175.pdf
+npu_circ_buf_fifo_large.asy
+npu_circ_buf_fifo_large.gise
+npu_circ_buf_fifo_large.ngc
+npu_circ_buf_fifo_large.sym
+npu_circ_buf_fifo_large.v
+npu_circ_buf_fifo_large.veo
+npu_circ_buf_fifo_large.vhd
+npu_circ_buf_fifo_large.vho
+npu_circ_buf_fifo_large.xco
+npu_circ_buf_fifo_large.xise
+npu_circ_buf_fifo_large_flist.txt
+npu_circ_buf_fifo_large_xmdf.tcl
