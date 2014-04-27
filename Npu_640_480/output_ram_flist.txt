@@ -5,6 +5,7 @@ blk_mem_gen_readme.txt
 output_ram.asy
 output_ram.gise
 output_ram.ngc
+output_ram.sym
 output_ram.v
 output_ram.veo
 output_ram.vhd

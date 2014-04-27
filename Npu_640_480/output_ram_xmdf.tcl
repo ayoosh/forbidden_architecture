@@ -52,6 +52,10 @@ utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path output_ram.n
 utilities_xmdf::xmdfSetData $instance FileSet $fcount type ngc
 incr fcount
 
+utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path output_ram.sym
+utilities_xmdf::xmdfSetData $instance FileSet $fcount type symbol
+incr fcount
+
 utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path output_ram.v
 utilities_xmdf::xmdfSetData $instance FileSet $fcount type verilog
 incr fcount

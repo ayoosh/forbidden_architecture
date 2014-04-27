@@ -35,7 +35,7 @@ output_ram YourInstanceName (
 	.clka(clka),
 	.ena(ena),
 	.wea(wea), // Bus [0 : 0] 
-	.addra(addra), // Bus [15 : 0] 
+	.addra(addra), // Bus [14 : 0] 
 	.dina(dina), // Bus [63 : 0] 
 	.douta(douta)); // Bus [63 : 0] 
 

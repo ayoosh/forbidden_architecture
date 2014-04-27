@@ -34,10 +34,14 @@ component output_ram
 	clka: IN std_logic;
 	ena: IN std_logic;
 	wea: IN std_logic_VECTOR(0 downto 0);
-	addra: IN std_logic_VECTOR(15 downto 0);
+	addra: IN std_logic_VECTOR(14 downto 0);
 	dina: IN std_logic_VECTOR(63 downto 0);
 	douta: OUT std_logic_VECTOR(63 downto 0));
 end component;
+
+-- Synplicity black box declaration
+attribute syn_black_box : boolean;
+attribute syn_black_box of output_ram: component is true;
 
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
 

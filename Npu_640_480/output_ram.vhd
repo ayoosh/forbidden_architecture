@@ -45,7 +45,7 @@ ENTITY output_ram IS
 	clka: IN std_logic;
 	ena: IN std_logic;
 	wea: IN std_logic_VECTOR(0 downto 0);
-	addra: IN std_logic_VECTOR(15 downto 0);
+	addra: IN std_logic_VECTOR(14 downto 0);
 	dina: IN std_logic_VECTOR(63 downto 0);
 	douta: OUT std_logic_VECTOR(63 downto 0));
 END output_ram;
@@ -57,7 +57,7 @@ component wrapped_output_ram
 	clka: IN std_logic;
 	ena: IN std_logic;
 	wea: IN std_logic_VECTOR(0 downto 0);
-	addra: IN std_logic_VECTOR(15 downto 0);
+	addra: IN std_logic_VECTOR(14 downto 0);
 	dina: IN std_logic_VECTOR(63 downto 0);
 	douta: OUT std_logic_VECTOR(63 downto 0));
 end component;
@@ -88,24 +88,24 @@ end component;
 			c_has_mem_output_regs_a => 0,
 			c_load_init_file => 0,
 			c_xdevicefamily => "virtex5",
-			c_write_depth_b => 65535,
-			c_write_depth_a => 65535,
+			c_write_depth_b => 20000,
+			c_write_depth_a => 20000,
 			c_has_rstb => 0,
 			c_has_rsta => 0,
 			c_has_mux_output_regs_b => 0,
 			c_inita_val => "0",
 			c_has_mux_output_regs_a => 0,
-			c_addra_width => 16,
+			c_addra_width => 15,
 			c_has_softecc_input_regs_a => 0,
-			c_addrb_width => 16,
+			c_addrb_width => 15,
 			c_default_data => "0",
 			c_use_ecc => 0,
 			c_algorithm => 1,
 			c_disable_warn_bhv_range => 0,
 			c_write_width_b => 64,
 			c_write_width_a => 64,
-			c_read_depth_b => 65535,
-			c_read_depth_a => 65535,
+			c_read_depth_b => 20000,
+			c_read_depth_a => 20000,
 			c_byte_size => 9,
 			c_sim_collision_check => "ALL",
 			c_common_clk => 0,
