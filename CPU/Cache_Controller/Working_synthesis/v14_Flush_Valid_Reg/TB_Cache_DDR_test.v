@@ -109,11 +109,11 @@ module TB_Cache_DDR_test;
 		rst = 0;
       #100;	
 		
-	/*		for (i = 0; i < 1024; i = i + 1) begin
+			for (i = 0; i < 1024; i = i + 1) begin
 			uut.Dcache_inst.gen_way[0].memory.memory[i] = 273'h0;
 			uut.Dcache_inst.gen_way[1].memory.memory[i] = 273'h0;
 		   end
-        */
+        
 		// Add stimulus here
 
    # 1000; // Start after some delay, need for DDR functioning
@@ -162,16 +162,6 @@ module TB_Cache_DDR_test;
 	@ (posedge cache_ready) 
 	@ (posedge clk)
 	cache_addr = 28'h000_0007;
-
-
-// Evict block but not dirty
-	@ (posedge cache_ready) 
-	@ (posedge clk)
-	cache_addr = 28'h110_0000;
-	
-		@ (posedge cache_ready) 
-	@ (posedge clk)
-	cache_addr = 28'h120_0000;
 
 /*
 //---------------------------------------------------------------
@@ -227,18 +217,35 @@ module TB_Cache_DDR_test;
 	cache_wr = 32'h6666_7777;
 	cache_valid = 1'b1;
 	cache_rw = 1'b1;
-	
 	end
 	
-
+	
+	
 	///2nd entry
 	@ (posedge cache_ready) 
 	@ (posedge clk)
 	cache_addr = 28'h200_1018;
 	cache_wr = 32'hCD12_12CD;
 	
-	// READ BACk
+	//3rd entry on the same index
 	@ (posedge cache_ready) 
+	@ (posedge clk)
+	cache_addr = 28'h100_1018;
+	cache_wr = 32'hAB00_00BA;
+	
+	
+	// PAUSE
+	@ (posedge cache_ready) 
+	@ (posedge clk) begin
+	cache_valid = 1'b0;
+	cache_rw = 1'b0;
+	
+	end
+	
+	#100
+	
+	// READ BACk
+	
 	@ (posedge clk) begin
 	cache_valid = 1'b1;
 	cache_rw = 1'b0;
@@ -248,7 +255,7 @@ module TB_Cache_DDR_test;
 	// 1st entry
 	@ (posedge cache_ready) 	
 	@ (posedge clk) begin
-	cache_addr = 28'h000_1018;
+	cache_addr = 28'h100_1018;
 	end
 	
 	
@@ -257,35 +264,75 @@ module TB_Cache_DDR_test;
 	@ (posedge cache_ready) 
 	@ (posedge clk)
 	cache_addr = 28'h200_1018;
+	
+	// READ OTHER ADDRESSES FROM I CACHE
+	//3 entry
+	@ (posedge cache_ready) 
+	@ (posedge clk)
+	cache_addr = 28'h200_0000;
+
+	
+	//4 entry
+	@ (posedge cache_ready) 
+	@ (posedge clk)
+	cache_addr = 28'h000_1010;
 
 /*
-	// Invalidation
-	@ (posedge cache_ready) 	
-	@ (posedge clk) begin
-	cache_addr = 28'h120_1018;
-	end	
+	//5 entry
+	@ (posedge cache_ready) 
+	@ (posedge clk)
+	cache_addr = 28'h000_1018;
+*/
 
-	// Invalidation
-	@ (posedge cache_ready) 	
+	//5 entry
+	@ (posedge cache_ready) 
+	@ (posedge clk)
+	cache_addr = 28'h000_1030;
+	
+	
+	//6 entry
+	@ (posedge cache_ready) 
+	@ (posedge clk)
+	cache_addr = 28'h300_1038;
+
+	
+	//7 entry
+	@ (posedge cache_ready) 
+	@ (posedge clk)
+	cache_addr = 28'h300_1040;
+	
+	@ (posedge cache_ready) 
 	@ (posedge clk) begin
-	cache_addr = 28'h130_1018;
+	cache_valid = 0; 
 	end
-	*/
-
-	@ (posedge cache_ready) 	
+	
+	#500
 	@ (posedge clk) begin
 	flush = 1;
+	cache_valid = 1; 
 	end
 	
-		@ (posedge cache_ready) 
-
-	@ (posedge clk) begin
+	@ (posedge cache_ready) begin
 	flush = 0;
-		cache_valid = 1'b0;
-	end		
-	
-	
+	cache_valid = 0; 
 	end
+	
+	
+	//temp_mem_addr[0] <= 31'h000_0000;
+	//temp_mem_addr[1] <= 31'h200_0000;
+	//temp_mem_addr[2] <= 31'h000_1010;
+	//temp_mem_addr[3] <= 31'h000_1018;
+	//temp_mem_addr[4] <= 31'h100_1018;
+	//temp_mem_addr[5] <= 31'h200_1018;
+	//temp_mem_addr[6] <= 31'h000_1030;
+	//temp_mem_addr[7] <= 31'h300_1038;
+	//temp_mem_addr[8] <= 31'h300_1040;
+
+
+
+	
+	
+	end //for initial
 	
 		always begin
     #5  clk =  ! clk;

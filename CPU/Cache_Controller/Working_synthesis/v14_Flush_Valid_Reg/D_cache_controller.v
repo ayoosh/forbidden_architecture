@@ -63,10 +63,11 @@ module cache_controller #(
 	endfunction
 
 	//---------------------------------------------------------------------------------
-	localparam	IDLE		= 2'b00;
-	localparam	COMPARE_TAG	= 2'b01;
-	localparam	WRITE_BACK	= 2'b10;
-	localparam	ALLOCATE	= 2'b11;
+	localparam	IDLE		= 3'b000;
+	localparam	COMPARE_TAG	= 3'b001;
+	localparam	WRITE_BACK	= 3'b010;
+	localparam	ALLOCATE	= 3'b011;
+	localparam  ALLOCATE_IDLE = 3'b100;
 	//----------------------------------------------------------------------------------
 	localparam	DATA_BLOCKS	= BLOCK_SIZE / DATA_WIDTH;
 	localparam	NUM_BLOCKS	= (CACHE_SIZE * 8) / (BLOCK_SIZE * NUM_WAYS);
@@ -81,7 +82,7 @@ module cache_controller #(
 	wire	[DATA_WIDTH-1:0]	data;
 	wire	[BLOCK_SIZE-1:0]	write_block_data[NUM_WAYS-1:0];
 	//---------------------------------------------------------------------------------
-	reg		[1:0]				State, NextState;
+	reg		[2:0]				State, NextState;
 	//---------------------------------------------------------------------------------
 
 	//---------------------------------------------------------------------------------
@@ -103,6 +104,9 @@ module cache_controller #(
 	wire	[2:0]				addr_offset;
 	wire	[14:0]				replace_tag [NUM_WAYS-1:0];
 	wire	[28:0]				cache_addr_with_flush;
+	
+	// ---- FLUSH -----
+	wire 	[NUM_WAYS-1:0]		valid_bit_flush;
 	//---------------------------------------------------------------------------------
 
 	// FORMAT cache_addr = [Tag[27:13] | Index[12:3] | Block Offset[2:0]]
@@ -137,7 +141,8 @@ module cache_controller #(
 				.dirty_write(dirty_write[i]),
 				.write_en(write_en[i]),
 				.clk(clk),
-				.rst_n(rst_n)
+				.rst_n(rst_n),
+				.valid_bit_flush(valid_bit_flush[i])
 			);
 
 			for (j = 0; j < DATA_BLOCKS; j = j + 1) begin : gen_demux_data
@@ -147,6 +152,7 @@ module cache_controller #(
 			assign write_en[i] = (tag_matched & cache_rw & way[i]) | ((State == ALLOCATE) & mem_ready & lru[i]);
 			assign data_write[i] = (State == ALLOCATE) ? mem_rd : write_block_data[i];
 			assign dirty_write[i] = tag_matched & cache_rw;
+			assign valid_bit_flush[i] = flush_flag ? ~lru[i] : 1'b1;
 		end
 		
 		for (i = 0; i < DATA_BLOCKS; i = i + 1) begin : gen_mux_data
@@ -173,8 +179,15 @@ module cache_controller #(
 					NextState = ALLOCATE;
 			end
 			ALLOCATE: begin
-				NextState = mem_ready ? COMPARE_TAG : ALLOCATE;
+				NextState = mem_ready ? ALLOCATE_IDLE : ALLOCATE;
 			end
+			
+			
+			ALLOCATE_IDLE: begin
+				NextState = COMPARE_TAG;
+			end
+			
+			
 			WRITE_BACK: begin
 				if (mem_ready) begin
 					if (flush_flag)
@@ -221,23 +234,17 @@ module cache_controller #(
 	
 	assign counter = flush_flag ? count[9:0] : addr_index;
 	
-	always @ (rst_n, IO_rd, IO_ready, tag_matched, cache_rw, data, cache_flushed, cache_addr) begin
+	always @ (rst_n, tag_matched, cache_rw, data, cache_flushed) begin
 		if (!rst_n) begin
 			cache_rd_reg	= 32'h0000_0000;
 			cache_ready_reg	= 1'b0;
 		end
 		else begin
-			if (cache_addr[27]) begin
-				cache_rd_reg 	= IO_rd;
-				cache_ready_reg = IO_ready;
-			end
-			else begin
 				if (tag_matched && !cache_rw)
 					cache_rd_reg = data;
 				else
 					cache_rd_reg	= 32'h0000_0000;
-					cache_ready_reg	= (tag_matched | cache_flushed);
-			end
+				cache_ready_reg	= (tag_matched | cache_flushed);
 		end
 	end
 	

@@ -9,9 +9,12 @@
 // Processor testbench
 module Processor_t();
 
-	localparam	DELAY		= 1;
-	localparam	CLK_DELAY	= 2*DELAY;
-	localparam	RST_DELAY	= 10*CLK_DELAY;
+	localparam	ITERATIONS		= 500;
+	localparam	DELAY			= 1;
+	localparam	CLK_DELAY		= 2*DELAY;
+	localparam	RST_DELAY		= 10*CLK_DELAY;
+	
+	localparam	MEMORY_FILENAME	= "../init/BootLoader_2.hex";
 
 	// Simulation signal
 	reg				Clk, ClkX2, Rst_n;
@@ -59,7 +62,10 @@ module Processor_t();
 		.rst_n					(Rst_n)
 	);
 
-	InstructionMemory InstructionMemory_0 (
+	InstructionMemory #(
+		.MEMORY_FILENAME		(MEMORY_FILENAME)
+	)
+	InstructionMemory_0 (
 		.instr					(readICache),
 		.ready					(readyICache),
 		.addr					(addrICache),
@@ -70,7 +76,7 @@ module Processor_t();
 	DataMemory	DataMemory_0 (
 		.rd_data				(readDCache),
 		.ready					(readyDCache),
-		.addr					(addrDCache),
+		.addr					({16'h0, addrDCache[15:0]}),
 		.wr_data				(writeDCache),
 		.rw						(rwDCache),
 		.valid					(validDCache),
@@ -102,7 +108,7 @@ module Processor_t();
 		for (i = 0; i < RST_DELAY; i = i + 1)
 			clockPulse;
 
-		while (!Halt) begin
+		for (i = 0; i < ITERATIONS && !Halt; i = i + 1) begin
 			clockPulse;
 			clockPulse;
 		end

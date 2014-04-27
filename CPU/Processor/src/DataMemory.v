@@ -13,7 +13,7 @@ module DataMemory (
 	input				clk
 );
 
-	reg		[31:0]	data_mem[15:0];
+	reg		[31:0]	data_mem[4111:0];
 	reg				rd_ready, wr_ready;
 	
 	initial			data_mem[1] = 32'h1;

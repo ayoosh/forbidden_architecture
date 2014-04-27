@@ -133,8 +133,8 @@ module RegisterFile #(
 			rDataRead1	<= 0;
 		end
 		else begin
-			rDataRead0	<= memDataOutA;
-			rDataRead1	<= memDataOutB;
+			rDataRead0	<= (rAddrRead0 == 5'h00) ? 32'h0000_0000 : memDataOutA;
+			rDataRead1	<= (iAddrRead1 == 5'h00) ? 32'h0000_0000 : memDataOutB;
 		end
 	end
 
