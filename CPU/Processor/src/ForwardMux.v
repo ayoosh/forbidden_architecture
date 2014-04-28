@@ -1,6 +1,3 @@
-// Timescale definition
-`timescale	1ns/1ps
-
 // Include listing
 
 // Forward Multiplexer module ports declaration

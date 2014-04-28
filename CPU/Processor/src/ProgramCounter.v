@@ -1,6 +1,3 @@
-// Timescale definition
-`timescale	1ns/1ps
-
 // Include listing
 
 // Program Counter module ports declaration

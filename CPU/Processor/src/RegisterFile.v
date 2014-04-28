@@ -4,9 +4,6 @@
 	read on clock low
 ***********************************************************************************/
 
-// Timescale definition
-`timescale	1ns/1ps
-
 // Include listing
 `include	"../src/DualPortRAM.v"
 

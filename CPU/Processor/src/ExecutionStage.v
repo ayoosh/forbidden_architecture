@@ -1,6 +1,3 @@
-// Timescale definition
-`timescale	1ns/1ps
-
 // Include listing
 `include	"../src/BranchAdder.v"
 `include	"../src/AluMux.v"

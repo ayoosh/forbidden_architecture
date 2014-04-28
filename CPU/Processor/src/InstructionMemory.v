@@ -1,5 +1,5 @@
 module InstructionMemory #(
-	parameter			MEMORY_FILENAME = "../init/InstructionMemory.hex"
+	parameter			MEMORY_FILENAME = "../hex/InstructionMemory.hex"
 )
 (
 	// Outputs

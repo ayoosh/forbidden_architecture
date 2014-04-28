@@ -1,21 +1,18 @@
-// Timescale definition
-`timescale	1ns/1ps
-
 // Include listing
 `include	"../src/Processor.v"
 `include	"../src/InstructionMemory.v"
 `include	"../src/DataMemory.v"
 
 // Processor testbench
-module Processor_t();
+module Processor_t ();
 
+
+	localparam	MEMORY_FILENAME	= "../hex/InstructionMemory.hex";
 	localparam	ITERATIONS		= 500;
 	localparam	DELAY			= 1;
 	localparam	CLK_DELAY		= 2*DELAY;
 	localparam	RST_DELAY		= 10*CLK_DELAY;
 	
-	localparam	MEMORY_FILENAME	= "../init/BootLoader_2.hex";
-
 	// Simulation signal
 	reg				Clk, ClkX2, Rst_n;
 	wire			Halt;
@@ -83,10 +80,12 @@ module Processor_t();
 		.clk					(Clk)
 	);
 
-	initial begin
-		$dumpfile("Processor_t.vcd");
-		$dumpvars(0, Processor_t);
-	end
+	`ifdef __ICARUS__
+		initial begin
+			$dumpfile("Processor_t.vcd");
+			$dumpvars(0, Processor_t);
+		end
+	`endif
 
 	// Reset Execution
 	initial begin
@@ -96,6 +95,7 @@ module Processor_t();
 		emptyOutputNPU	= 1'b0;
 		fullInputNPU	= 1'b0;
 		fullConfigNPU	= 1'b0;
+		
 
 		#RST_DELAY Rst_n = 1'b1;
 	end
