@@ -32,7 +32,7 @@ module DualPortRAM #(
 	//	ram[0] = {DATA_WIDTH{1'b0}};
 
 	// Internal signals assignment
-	always @ (negedge iClkA) begin		// Port A: Clock A logic
+	always @ (posedge iClkA) begin		// Port A: Clock A logic
 		if (iEnA) begin
 			oDataA <= ram[iAddrA];		// Port A: Read logic
 			
@@ -41,7 +41,7 @@ module DualPortRAM #(
 		end
 	end
 
-	always @ (negedge iClkB) begin		// Port B: Clock B logic
+	always @ (posedge iClkB) begin		// Port B: Clock B logic
 		if (iEnB) begin
 			oDataB <= ram[iAddrB];		// Port B: Read logic
 			
