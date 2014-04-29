@@ -44,6 +44,7 @@ module RegisterFile #(
 	
 	reg		[ADDR_WIDTH-1:0]	rAddrWrite;
 	reg		[DATA_WIDTH-1:0]	rDataWrite;
+	reg							rEnWrite;
 
 	// External modules instantiation
 	DualPortRAM #(
@@ -100,6 +101,7 @@ module RegisterFile #(
 
 			rAddrWrite	<= 0;
 			rDataWrite	<= 0;
+			rEnWrite	<= 0;
 		end
 		else begin
 			rAddrRead0	<= iAddrRead0;		
@@ -107,11 +109,12 @@ module RegisterFile #(
 			
 			rAddrWrite	<= iAddrWrite;
 			rDataWrite	<= iDataWrite;
+			rEnWrite	<= iEnWrite;
 		end
 	end
 	
 	
-	assign oDataRead0 = (rAddrRead0 == 5'h00) ? 32'h0000_0000 : ((rAddrRead0 == rAddrWrite) && iEnWrite) ? rDataWrite : memDataOut0_A;
-	assign oDataRead1 = (rAddrRead1 == 5'h00) ? 32'h0000_0000 : ((rAddrRead1 == rAddrWrite) && iEnWrite) ? rDataWrite : memDataOut1_A;
+	assign oDataRead0 = (rAddrRead0 == 5'h00) ? 32'h0000_0000 : ((rAddrRead0 == rAddrWrite) && rEnWrite) ? rDataWrite : memDataOut0_A;
+	assign oDataRead1 = (rAddrRead1 == 5'h00) ? 32'h0000_0000 : ((rAddrRead1 == rAddrWrite) && rEnWrite) ? rDataWrite : memDataOut1_A;
 
 endmodule
