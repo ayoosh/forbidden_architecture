@@ -111,7 +111,7 @@ module RegisterFile #(
 	end
 	
 	
-	assign oDataRead0 = (rAddrRead0 == 5'h00) ? 32'h0000_0000 : (rAddrRead0 == rAddrWrite) ? rDataWrite : memDataOut0_A;
-	assign oDataRead1 = (rAddrRead1 == 5'h00) ? 32'h0000_0000 : (rAddrRead1 == rAddrWrite) ? rDataWrite : memDataOut1_A;
+	assign oDataRead0 = (rAddrRead0 == 5'h00) ? 32'h0000_0000 : ((rAddrRead0 == rAddrWrite) && iEnWrite) ? rDataWrite : memDataOut0_A;
+	assign oDataRead1 = (rAddrRead1 == 5'h00) ? 32'h0000_0000 : ((rAddrRead1 == rAddrWrite) && iEnWrite) ? rDataWrite : memDataOut1_A;
 
 endmodule
