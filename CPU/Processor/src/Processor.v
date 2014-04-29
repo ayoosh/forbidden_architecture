@@ -56,6 +56,7 @@ module Processor(
 
 	reg		[31:0]	id_if_NextPC_Stall, if_id_NextPC_Stall;
 	wire	[31:0]	id_if_NextPC;
+	reg				afterReset;
 	
 	// External modules instantiation
 	InstructionFetchStage InstructionFetchStage_0 (
@@ -81,7 +82,8 @@ module Processor(
 		.iFullStall			(fullStall),
 		.iStall				(rSemiStall),
 		.iHalt				(haltPC),
-		.iClk				(clk)
+		.iClk				(clk),
+		.iRst_n				(rst_n)
 	);
 	// TODO: Check input signals for Fetch Stage.
 
@@ -106,8 +108,12 @@ module Processor(
 		end
 	end
 	
+	always @ (posedge clk) begin
+		afterReset <= rst_n;
+	end
+	
 	assign id_if_NextPC = (semiStall & ~rSemiStall) ? if_id_NextPC_Stall : id_if_NextPC_Stall;
-	assign id_if_Instruction = if_id_Instruction;
+	assign id_if_Instruction = !afterReset ? 32'h0000_0000 : if_id_Instruction;
 
 	wire	[31:0]	id_ex_Src0, id_ex_Src1, id_ex_Immediate, id_ex_NextPC;
 	wire	[4:0]	id_ex_ExuShift;
@@ -534,7 +540,7 @@ module Processor(
 	reg				wb_mem_MemValid;
 	reg				wb_mem_NpuCfgOp, wb_mem_NpuEnqOp;
 	
-	wire	[31:0]	wb_mem_RetAddr;
+	reg		[31:0]	wb_mem_RetAddr;
 
 	always @ (posedge clk) begin
 		if (!rst_n || !fullStall) begin
@@ -549,6 +555,8 @@ module Processor(
 				wb_mem_MemValid		<= 0;
 				wb_mem_NpuCfgOp		<= 0;
 				wb_mem_NpuEnqOp		<= 0;
+				wb_mem_MemData		<= 0;
+				wb_mem_RetAddr		<= 0;
 			end
 			else begin
 				wb_mem_ExuData		<= mem_wb_ExuData;
@@ -562,12 +570,13 @@ module Processor(
 				wb_mem_NpuCfgOp		<= mem_wb_NpuCfgOp;
 				wb_mem_NpuEnqOp		<= mem_wb_NpuEnqOp;
 				wb_mem_MemData		<= mem_wb_MemData;
+				wb_mem_RetAddr		<= mem_wb_RetAddr;
 			end
 		end
 	end
 	
 	//assign wb_mem_MemData = mem_wb_MemData;
-	assign wb_mem_RetAddr = mem_wb_RetAddr;
+	//assign wb_mem_RetAddr = mem_wb_RetAddr;
 
 	WriteBackStage WriteBackStage_0 (
 		// Outputs

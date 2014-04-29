@@ -26,7 +26,8 @@ module InstructionFetchStage (
 	input			iFullStall,
 	input			iStall,
 	input			iHalt,
-	input			iClk
+	input			iClk,
+	input			iRst_n
 );
 
 	// Internal signals declaration
@@ -57,9 +58,15 @@ module InstructionFetchStage (
 	);
 	
 	always @ (posedge iClk) begin
-		lastPC <= currentPC;
+		if (!iRst_n)
+			lastPC <= 0;
+		else begin
+			if (~iFullStall)
+				lastPC <= currentPC;
+			else
+				lastPC <= lastPC;
+		end
 	end
-
 	
 	// Internal signals assignment
 	assign nextPC			= currentPC + 1;	// Each address correspond to 32-bit instruction
