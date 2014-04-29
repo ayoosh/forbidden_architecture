@@ -75,13 +75,13 @@ module IOport_dummy #(
 		if(rst)
 		begin
 			rom_addr <= 4'd0;
-			temp_mem[0] <= 32'h00000000;   // Start Address, that's where its written
-			temp_mem[1] <= 32'h00000000;
+			temp_mem[0] <= 32'h01000000;   // Start Address, that's where its written
+			temp_mem[1] <= 32'h00000001;
 			temp_mem[2] <= 32'h01000001;  // Display on
-			temp_mem[3] <= 32'h00000000;
+			temp_mem[3] <= 32'h00000001;
 			temp_mem[4] <= 32'h00000001;  // Display on
 			
-			temp_mem[5] <= 32'h00000000;  // Writing wrong address
+			temp_mem[5] <= 32'h01000000;  // Writing wrong address
 			temp_mem[6] <= 32'h00000001;   // Display on
 			temp_mem[7] <= 32'h01000000;
 			temp_mem[8] <= 32'h00000001;  // Display on

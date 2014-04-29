@@ -63,7 +63,7 @@ rom64x38400 rom(
 		 
 always@(posedge clk)begin
 	if(reset)begin
-		row_index <= 241 ;
+		row_index <= 1 ;
 		column_index <= 1 ;
 		count <= 0 ;
 		addr <= 0 ;
