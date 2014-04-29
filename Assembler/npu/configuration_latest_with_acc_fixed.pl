@@ -1,10 +1,10 @@
 use Switch;
 
-open my $output_conf, '>', 'configuration_bansi.coe' or die "error trying to overwrite: $!";
+open my $output_conf, '>', 'configuration_inversek2j.coe' or die "error trying to overwrite: $!";
 open my $out_sak, '>', 'configuration_sakshi.txt' or die "error rying to overwrite: $!";
 
 # weights / biases input file here
-open(DATA, "weight_sobel_final.txt") or die "Can't open"; #change the file name for input file
+open(DATA, "Weight_inversek2j.txt") or die "Can't open"; #change the file name for input file
 
 @lines = <DATA>;
 $n = @lines;
@@ -12,12 +12,12 @@ close(DATA);
 
 #Inputs to be entered here........................
 $input_format = "0000000000000000"; #THIS IS THE FORMAT FOR THE INPUT
-$output_format = "0000000000001000"; #THIS IS THE FORMAT FOR THE OUTPUT
-$input = 9; #INPUT COUNT IN DECIMAL
-$output_count = 1; #OUTPUT COUNT IN DECIMAL
+$output_format = "0000000000000000"; #THIS IS THE FORMAT FOR THE OUTPUT
+$input = 2; #INPUT COUNT IN DECIMAL
+$output_count = 2; #OUTPUT COUNT IN DECIMAL
 @sigmoid = (0,0); #sIGMOID FUNCTION IN EACH LAYER
-@input_per_layer = (9,8); # INPUTS TO EVERY LAYER
-@neurons_per_layer =  (8,1);#NUMBER OF NEURONS IN EVERY LAYER
+@input_per_layer = (2,4); # INPUTS TO EVERY LAYER
+@neurons_per_layer =  (4,2);#NUMBER OF NEURONS IN EVERY LAYER
 $layer_count=2; # Number of hidden layers plus 1
 
 #DON'T TOUCH ANYTHING AFTER THIS-----------------------------------------------------------------------------------------
