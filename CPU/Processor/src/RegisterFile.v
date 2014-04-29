@@ -83,33 +83,33 @@ module RegisterFile #(
 
 	// Internal signals assignment
 	assign memAddrA		= (rState == READ) ? iAddrRead0 : iAddrWrite;
-	assign oDataRead0	= rDataRead0;
+	assign oDataRead0	= (iAddrRead0 == 5'h00) ? 32'h0000_0000 : (rState == WRITE) ? memDataOutA : rDataRead0;
 	assign memDataInA	= iDataWrite;
 	assign memEnA		= (rState == READ) ? iEnRead0 : iEnWrite;
 	assign memWeA		= ((rState == WRITE) && !(iAddrWrite == 5'h00)) ? iEnWrite : 1'b0;
 
 	assign memAddrB		= iAddrRead1;
-	assign oDataRead1	= rDataRead1;
+	assign oDataRead1	= (iAddrRead1 == 5'h00) ? 32'h0000_0000 : (rState == WRITE) ? memDataOutB : rDataRead1;
 	assign memDataInB	= 32'h0;
 	assign memEnB		= (rState == READ) ? iEnRead1 : 1'b0;
 	assign memWeB		= 1'b0;
 
 	// State change: posedge clk writes, negedge of clk reads
 	always @ (posedge iClkX2) begin
-		if (!iClk)
+		if (iClk)
 			rState <= WRITE;	// RF is written on clock high
 		else
 			rState <= READ;		// RF is read on clock low
 	end
 	
-	always @ (posedge iClk) begin
+	always @ (posedge iClkX2) begin
 		if (!iRst_n) begin
 			rDataRead0	<= 0;
 			rDataRead1	<= 0;
 		end
 		else begin
-			rDataRead0	<= (iAddrRead0 == 5'h00) ? 32'h0000_0000 : memDataOutA;
-			rDataRead1	<= (iAddrRead1 == 5'h00) ? 32'h0000_0000 : memDataOutB;
+			rDataRead0	<= memDataOutA;
+			rDataRead1	<= memDataOutB;
 		end
 	end
 
