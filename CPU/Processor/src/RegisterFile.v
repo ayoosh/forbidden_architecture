@@ -32,85 +32,86 @@ module RegisterFile #(
 	input						iRst_n
 );
 
-	// Internal parameters declaration
-	localparam	READ			= 1'b0;
-	localparam	WRITE			= 1'b1;
-
-	// Internal variables declaration
-	integer						i;
-
-	// Internal signals declaration
-	reg							rState;
-
-	reg		[DATA_WIDTH-1:0]	rDataRead0;				// have to capture write data from previous cycle
-	reg		[DATA_WIDTH-1:0]	rDataRead1;				// have to capture write data from previous cycle
-
 	// Dual-Port Block RAM signals
-	wire	[DATA_WIDTH-1:0]	memDataOutA;
-	wire	[DATA_WIDTH-1:0]	memDataInA;
-	wire	[ADDR_WIDTH-1:0]	memAddrA;
-	wire						memEnA;
-	wire						memWeA;
-	wire	[DATA_WIDTH-1:0]	memDataOutB;
-	wire	[DATA_WIDTH-1:0]	memDataInB;
-	wire	[ADDR_WIDTH-1:0]	memAddrB;
-	wire						memEnB;
-	wire						memWeB;
+	wire	[DATA_WIDTH-1:0]	memDataOut0_A;
+	wire	[DATA_WIDTH-1:0]	memDataOut0_B;
+	
+	wire	[DATA_WIDTH-1:0]	memDataOut1_A;
+	wire	[DATA_WIDTH-1:0]	memDataOut1_B;
+	
+	reg		[ADDR_WIDTH-1:0]	rAddrRead0;
+	reg		[ADDR_WIDTH-1:0]	rAddrRead1;
+	
+	reg		[ADDR_WIDTH-1:0]	rAddrWrite;
+	reg		[DATA_WIDTH-1:0]	rDataWrite;
 
 	// External modules instantiation
 	DualPortRAM #(
 		.DATA_WIDTH(DATA_WIDTH),
 		.ADDR_WIDTH(ADDR_WIDTH)
 	)
-	mem (
+	mem_0 (
 		// Outputs
-		.oDataA	(memDataOutA),
-		.oDataB	(memDataOutB),
+		.oDataA	(memDataOut0_A),
+		.oDataB	(memDataOut0_B),
 
 		// Inputs
-		.iDataA	(memDataInA),
-		.iAddrA	(memAddrA),
-		.iEnA	(memEnA),
-		.iWeA	(memWeA),
-		.iClkA	(iClkX2),
-		.iDataB	(memDataInB),
-		.iAddrB	(memAddrB),
-		.iEnB	(memEnB),
-		.iWeB	(memWeB),
-		.iClkB	(iClkX2),
+		.iDataA	(32'h0000_0000),
+		.iAddrA	(iAddrRead0),
+		.iEnA	(iEnRead0),
+		.iWeA	(1'b0),
+		.iClkA	(iClk),
+		.iDataB	(iDataWrite),
+		.iAddrB	(iAddrWrite),
+		.iEnB	(iEnWrite),
+		.iWeB	(1'b1),
+		.iClkB	(iClk),
+		.iRst_n	(iRst_n)
+	);
+	
+	DualPortRAM #(
+		.DATA_WIDTH(DATA_WIDTH),
+		.ADDR_WIDTH(ADDR_WIDTH)
+	)
+	mem_1 (
+		// Outputs
+		.oDataA	(memDataOut1_A),
+		.oDataB	(memDataOut1_B),
+
+		// Inputs
+		.iDataA	(32'h0000_0000),
+		.iAddrA	(iAddrRead1),
+		.iEnA	(iEnRead1),
+		.iWeA	(1'b0),
+		.iClkA	(iClk),
+		.iDataB	(iDataWrite),
+		.iAddrB	(iAddrWrite),
+		.iEnB	(iEnWrite),
+		.iWeB	(1'b1),
+		.iClkB	(iClk),
 		.iRst_n	(iRst_n)
 	);
 
 	// Internal signals assignment
-	assign memAddrA		= (rState == READ) ? iAddrRead0 : iAddrWrite;
-	assign oDataRead0	= (iAddrRead0 == 5'h00) ? 32'h0000_0000 : (rState == WRITE) ? memDataOutA : rDataRead0;
-	assign memDataInA	= iDataWrite;
-	assign memEnA		= (rState == READ) ? iEnRead0 : iEnWrite;
-	assign memWeA		= ((rState == WRITE) && !(iAddrWrite == 5'h00)) ? iEnWrite : 1'b0;
-
-	assign memAddrB		= iAddrRead1;
-	assign oDataRead1	= (iAddrRead1 == 5'h00) ? 32'h0000_0000 : (rState == WRITE) ? memDataOutB : rDataRead1;
-	assign memDataInB	= 32'h0;
-	assign memEnB		= (rState == READ) ? iEnRead1 : 1'b0;
-	assign memWeB		= 1'b0;
-
-	// State change: posedge clk writes, negedge of clk reads
-	always @ (posedge iClkX2) begin
-		if (iClk)
-			rState <= WRITE;	// RF is written on clock high
-		else
-			rState <= READ;		// RF is read on clock low
-	end
-	
-	always @ (posedge iClkX2) begin
+	always @ (posedge iClk) begin
 		if (!iRst_n) begin
-			rDataRead0	<= 0;
-			rDataRead1	<= 0;
+			rAddrRead0	<= 0;
+			rAddrRead1	<= 0;
+
+			rAddrWrite	<= 0;
+			rDataWrite	<= 0;
 		end
 		else begin
-			rDataRead0	<= memDataOutA;
-			rDataRead1	<= memDataOutB;
+			rAddrRead0	<= iAddrRead0;		
+			rAddrRead1	<= iAddrRead1;
+			
+			rAddrWrite	<= iAddrWrite;
+			rDataWrite	<= iDataWrite;
 		end
 	end
+	
+	
+	assign oDataRead0 = (rAddrRead0 == 5'h00) ? 32'h0000_0000 : (rAddrRead0 == rAddrWrite) ? rDataWrite : memDataOut0_A;
+	assign oDataRead1 = (rAddrRead1 == 5'h00) ? 32'h0000_0000 : (rAddrRead1 == rAddrWrite) ? rDataWrite : memDataOut1_A;
 
 endmodule

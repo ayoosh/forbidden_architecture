@@ -56,7 +56,7 @@ module Processor(
 
 	reg		[31:0]	id_if_NextPC_Stall, if_id_NextPC_Stall;
 	wire	[31:0]	id_if_NextPC;
-	reg		[31:0]	id_if_Instruction_Stall;
+	reg				afterReset;
 	
 	// External modules instantiation
 	InstructionFetchStage InstructionFetchStage_0 (
@@ -109,14 +109,11 @@ module Processor(
 	end
 	
 	always @ (posedge clk) begin
-		if (!rst_n)
-			id_if_Instruction_Stall	<= 0;
-		else
-			id_if_Instruction_Stall <= if_id_Instruction;
+		afterReset <= rst_n;
 	end
 	
 	assign id_if_NextPC = (semiStall & ~rSemiStall) ? if_id_NextPC_Stall : id_if_NextPC_Stall;
-	assign id_if_Instruction = fullStall ? id_if_Instruction_Stall : if_id_Instruction;
+	assign id_if_Instruction = !afterReset ? 32'h0000_0000 : if_id_Instruction;
 
 	wire	[31:0]	id_ex_Src0, id_ex_Src1, id_ex_Immediate, id_ex_NextPC;
 	wire	[4:0]	id_ex_ExuShift;

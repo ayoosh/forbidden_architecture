@@ -78,7 +78,7 @@ module Processor_t ();
 	);
 
 	DataMemory #(
-		.NUM_CLK_CYCLES			(10)
+		.NUM_CLK_CYCLES			(0)
 	)
 	DataMemory_0 (
 		.rd_data				(readDCache),
@@ -107,7 +107,9 @@ module Processor_t ();
 		fullConfigNPU	= 1'b0;
 		
 
-		#RST_DELAY Rst_n = 1'b1;
+		#RST_DELAY;
+		@ (posedge Clk);
+		Rst_n = 1'b1;
 	end
 	
 	// Main Execution
