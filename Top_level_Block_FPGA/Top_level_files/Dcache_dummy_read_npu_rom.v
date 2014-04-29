@@ -69,7 +69,7 @@ module Dcache_dummy #(
 			begin
 
 			// Check for last address, if last address, read_done is always zero
-			if(rom_addr == 16'd38400)
+			if(rom_addr == 16'd19200)
 				read_done <= 0;
 			else
 				begin

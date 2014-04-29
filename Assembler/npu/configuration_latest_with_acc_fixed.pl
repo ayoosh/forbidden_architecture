@@ -4,7 +4,7 @@ open my $output_conf, '>', 'configuration_bansi.coe' or die "error trying to ove
 open my $out_sak, '>', 'configuration_sakshi.txt' or die "error rying to overwrite: $!";
 
 # weights / biases input file here
-open(DATA, "test_cpu_weights.txt") or die "Can't open"; #change the file name for input file
+open(DATA, "weight_sobel_final.txt") or die "Can't open"; #change the file name for input file
 
 @lines = <DATA>;
 $n = @lines;
@@ -13,12 +13,12 @@ close(DATA);
 #Inputs to be entered here........................
 $input_format = "0000000000000000"; #THIS IS THE FORMAT FOR THE INPUT
 $output_format = "0000000000001000"; #THIS IS THE FORMAT FOR THE OUTPUT
-$input = 2; #INPUT COUNT IN DECIMAL
-$output_count = 2; #OUTPUT COUNT IN DECIMAL
-@sigmoid = (1); #sIGMOID FUNCTION IN EACH LAYER
-@input_per_layer = (2); # INPUTS TO EVERY LAYER
-@neurons_per_layer =  (2);#NUMBER OF NEURONS IN EVERY LAYER
-$layer_count=1; # Number of hidden layers plus 1
+$input = 9; #INPUT COUNT IN DECIMAL
+$output_count = 1; #OUTPUT COUNT IN DECIMAL
+@sigmoid = (0,0); #sIGMOID FUNCTION IN EACH LAYER
+@input_per_layer = (9,8); # INPUTS TO EVERY LAYER
+@neurons_per_layer =  (8,1);#NUMBER OF NEURONS IN EVERY LAYER
+$layer_count=2; # Number of hidden layers plus 1
 
 #DON'T TOUCH ANYTHING AFTER THIS-----------------------------------------------------------------------------------------
 

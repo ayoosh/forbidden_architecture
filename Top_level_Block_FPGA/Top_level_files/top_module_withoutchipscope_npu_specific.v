@@ -453,11 +453,23 @@ npu np(
     .npu_output_fifo_read_enable(output_fifo_read_enable),
 	
     //outputs
-	.npu_output_data(output_data),   //31..0
+	 .npu_output_data(output_data),   //31..0
     .npu_output_fifo_empty(output_fifo_empty),
     .npu_input_fifo_full(input_fifo_full),
     .npu_config_fifo_full(config_fifo_full)
     );
+
+//fifo_for_npu fiforefifo (
+//  .clk(clk_in), // input clk
+//  .rst(gl_rst), // input rst
+//  .din(input_data), // input [15 : 0] din
+//  .wr_en(input_fifo_write_enable), // input wr_en
+//  .rd_en(output_fifo_read_enable), // input rd_en
+//  .dout(output_data), // output [15 : 0] dout
+//  .full(input_fifo_full), // output full
+//  .empty(output_fifo_empty) // output empty
+//);
+
 	
 output_handling oh(
 	//input
