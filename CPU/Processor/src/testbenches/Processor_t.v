@@ -1,4 +1,13 @@
+// Definitions
+`ifndef MEMORY_FILENAME
+	`define MEMORY_FILENAME	"../hex/InstructionMemory.hex"
+`endif
+
 // Include listing
+`ifdef XILINX
+	`include "../src/testbenches/Xilinx.v"
+`endif
+
 `include	"../src/Processor.v"
 `include	"../src/InstructionMemory.v"
 `include	"../src/DataMemory.v"
@@ -6,8 +15,6 @@
 // Processor testbench
 module Processor_t ();
 
-
-	localparam	MEMORY_FILENAME	= "../hex/InstructionMemory.hex";
 	localparam	ITERATIONS		= 500;
 	localparam	DELAY			= 1;
 	localparam	CLK_DELAY		= 2*DELAY;
@@ -60,7 +67,7 @@ module Processor_t ();
 	);
 
 	InstructionMemory #(
-		.MEMORY_FILENAME		(MEMORY_FILENAME)
+		.MEMORY_FILENAME		(`MEMORY_FILENAME)
 	)
 	InstructionMemory_0 (
 		.instr					(readICache),
@@ -70,7 +77,10 @@ module Processor_t ();
 		.clk					(Clk)
 	);
 
-	DataMemory	DataMemory_0 (
+	DataMemory #(
+		.NUM_CLK_CYCLES			(10)
+	)
+	DataMemory_0 (
 		.rd_data				(readDCache),
 		.ready					(readyDCache),
 		.addr					({16'h0, addrDCache[15:0]}),

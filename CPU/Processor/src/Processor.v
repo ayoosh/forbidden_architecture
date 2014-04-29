@@ -81,7 +81,8 @@ module Processor(
 		.iFullStall			(fullStall),
 		.iStall				(rSemiStall),
 		.iHalt				(haltPC),
-		.iClk				(clk)
+		.iClk				(clk),
+		.iRst_n				(rst_n)
 	);
 	// TODO: Check input signals for Fetch Stage.
 
@@ -534,7 +535,7 @@ module Processor(
 	reg				wb_mem_MemValid;
 	reg				wb_mem_NpuCfgOp, wb_mem_NpuEnqOp;
 	
-	wire	[31:0]	wb_mem_RetAddr;
+	reg		[31:0]	wb_mem_RetAddr;
 
 	always @ (posedge clk) begin
 		if (!rst_n || !fullStall) begin
@@ -549,6 +550,8 @@ module Processor(
 				wb_mem_MemValid		<= 0;
 				wb_mem_NpuCfgOp		<= 0;
 				wb_mem_NpuEnqOp		<= 0;
+				wb_mem_MemData		<= 0;
+				wb_mem_RetAddr		<= 0;
 			end
 			else begin
 				wb_mem_ExuData		<= mem_wb_ExuData;
@@ -562,12 +565,13 @@ module Processor(
 				wb_mem_NpuCfgOp		<= mem_wb_NpuCfgOp;
 				wb_mem_NpuEnqOp		<= mem_wb_NpuEnqOp;
 				wb_mem_MemData		<= mem_wb_MemData;
+				wb_mem_RetAddr		<= mem_wb_RetAddr;
 			end
 		end
 	end
 	
 	//assign wb_mem_MemData = mem_wb_MemData;
-	assign wb_mem_RetAddr = mem_wb_RetAddr;
+	//assign wb_mem_RetAddr = mem_wb_RetAddr;
 
 	WriteBackStage WriteBackStage_0 (
 		// Outputs
