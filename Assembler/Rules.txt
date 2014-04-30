@@ -19,7 +19,7 @@ Rules for asssembler for CPU
 
 To run the script, the format is: 
 
-perl assembler_for_cpu.pl source.txt
+perl assembler_for_cpu.pl source.txt starting_address
 
 
 Here source.txt is the source assembly file
