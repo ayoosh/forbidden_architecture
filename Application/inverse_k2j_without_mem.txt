@@ -1,0 +1,132 @@
+# First comes the config file
+# then series of LHW and LLW and then set of ENQD and then set of DEQD
+
+LLW R1 0x   ;
+LHW R1 0x   ;
+
+LLW R2 0x   ;
+LHW R2 0x   ;
+
+LLW R3 0x   ;
+LHW R3 0x   ;
+
+LLW R4 0x   ;
+LHW R4 0x   ;
+
+LLW R5 0x   ;
+LHW R5 0x   ;
+
+LLW R6 0x   ;
+LHW R6 0x   ;
+
+LLW R7 0x   ;
+LHW R7 0x   ;
+
+LLW R8 0x   ;
+LHW R8 0x   ;
+
+LLW R9 0x   ;
+LHW R9 0x   ;
+
+LLW R10 0x   ;
+LHW R10 0x   ;
+
+LLW R11 0x   ;
+LHW R11 0x   ;
+
+LLW R12 0x   ;
+LHW R12 0x   ;
+
+LLW R13 0x   ;
+LHW R13 0x   ;
+
+LLW R14 0x   ;
+LHW R14 0x   ;
+
+LLW R15 0x   ;
+LHW R15 0x   ;
+
+LLW R16 0x   ;
+LHW R16 0x   ;
+
+LLW R17 0x   ;
+LHW R17 0x   ;
+
+LLW R18 0x   ;
+LHW R18 0x   ;
+
+LLW R19 0x   ;
+LHW R19 0x   ;
+
+LLW R20 0x   ;
+LHW R20 0x   ;
+
+ENQD0 R1 ;
+ENQD0 R2 ;
+ENQD0 R3 ;
+ENQD0 R4 ;
+ENQD0 R5 ;
+ENQD0 R6 ;
+ENQD0 R7 ;
+ENQD0 R8 ;
+ENQD0 R9 ;
+ENQD0 R10 ;
+ENQD0 R11 ;
+ENQD0 R12 ;
+ENQD0 R13 ;
+ENQD0 R14 ;
+ENQD0 R15 ;
+ENQD0 R16 ;
+ENQD0 R17 ;
+ENQD0 R18 ;
+ENQD0 R19 ;
+ENQD0 R20 ;
+
+DEQD0 R1 ;
+DEQD0 R2 ;
+DEQD0 R3 ;
+DEQD0 R4 ;
+DEQD0 R5 ;
+DEQD0 R6 ;
+DEQD0 R7 ;
+DEQD0 R8 ;
+DEQD0 R9 ;
+DEQD0 R10 ;
+DEQD0 R11 ;
+DEQD0 R12 ;
+DEQD0 R13 ;
+DEQD0 R14 ;
+DEQD0 R15 ;
+DEQD0 R16 ;
+DEQD0 R17 ;
+DEQD0 R18 ;
+DEQD0 R19 ;
+DEQD0 R20 ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
