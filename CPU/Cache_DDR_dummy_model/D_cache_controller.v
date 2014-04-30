@@ -112,7 +112,12 @@ module cache_controller #(
 
 	// cache memory = [Data[273:18] | LRU[17] | V[16] | D[15] | TAG[14:0]]
 	genvar i, j;
-
+	
+	// Preventing valid to go to high when address is 8000000
+	wire int_cache_valid;
+   
+	assign int_cache_valid = cache_addr[27] ? 0	: cache_valid;
+   
 	generate
 		for (i = 0; i < NUM_WAYS; i = i + 1) begin : gen_way
 			cache_memory #(
@@ -156,7 +161,7 @@ module cache_controller #(
 	assign hit		= |way;									//GLOBAL	
 
 	
-	always @ (State, cache_valid, flush, hit, dirty_read, lru, mem_ready, flush_flag, count) begin
+	always @ (State, int_cache_valid, flush, hit, dirty_read, lru, mem_ready, flush_flag, count) begin
 		case (State)
 			IDLE: begin
 					NextState = flush ? WRITE_BACK : COMPARE_TAG;
@@ -197,8 +202,8 @@ module cache_controller #(
 			lru			<= 2'b10;
 		end
 		else begin
-			State <= cache_valid ? NextState : IDLE;
-			flush_flag <= cache_valid & (State == IDLE) & flush;
+			State <= int_cache_valid ? NextState : IDLE;
+			flush_flag <= int_cache_valid & (State == IDLE) & flush;
 			lru <= tag_matched ? way[0] ? 2'b10 : 2'b01 : lru;  // LRU must be exclusive. LRU = 1 means least recently used meaning Replace it!
 		end
 	end		

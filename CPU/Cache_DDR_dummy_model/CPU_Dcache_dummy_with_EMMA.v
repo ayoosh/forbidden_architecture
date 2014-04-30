@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module CPU_Dcache_dummy #(
-      parameter CYCLE_DELAY = 10
+      parameter CYCLE_DELAY = 1
 		)
 (
 		input clk,
@@ -57,12 +57,22 @@ module CPU_Dcache_dummy #(
 
 	reg [5:0] mem_ready_count;
 	
+	reg [3:0] increment_address; 
+	
 	assign mem_data_wr1 = rom_data[31:0];
 	// This generates error
 	// assign mem_data_wr1 = (rom_addr == 16'd20000 & mem_rw_data1) ? 32'hFFFFFFFF : rom_data[31:0];
-   assign mem_data_addr1 = {12'd0,rom_addr};
+   assign mem_data_addr1 = {8'd0,increment_address,rom_addr};
 	
-	
+	always @(posedge clk)
+	begin
+		if(rst)
+		increment_address <= 4'd0;
+		else if( ( (rom_addr == 16'd20000) & ~last_command_done ) && (mem_ready_data1) & (mem_ready_count == 1) )
+		increment_address <= increment_address + 1;
+		else
+		increment_address <= increment_address;
+	end
 	
 	//assign error = (mem_ready_data1 & mem_valid_data1 & ~mem_rw_data1) ? ( (mem_data_rd1 == temp_mem[rom_addr]) ? 0 : 1) : 1'b0;
 	
