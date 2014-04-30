@@ -90,7 +90,10 @@ while($line_number<$line_count)
                 case "FMULT"{ append_1(); }
                 case "FDIV" { append_1(); }
                 case "MULT" { append_1(); }
-                case "DIV"  { append_1(); }
+                case "DIV"  { 
+                    $error = $line_number + 1;
+                	die "Division instruction at the line $error\n ";
+                 }
 		#Correct till here - expecte operands are 3---------------------------------------------------------------------------
 
                 case "NOT"  { append_2(); }
@@ -116,7 +119,10 @@ while($line_number<$line_count)
 
 		case "RET" { append_7(); }
 		case "FLUSH" { append_7(); }		
-		case "HALT" { append_7(); }
+		case "HALT" { 
+            $error = $line_number + 1;
+            die "HALT instruction at the line $error\n ";
+        }
 		#no operands needed------------------------------------------------------
 		
 		case "ENQC0" { append_5(); }
