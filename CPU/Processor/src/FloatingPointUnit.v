@@ -33,6 +33,8 @@ module FloatingPointUnit (
 	wire	[31:0]	dataFtoiResult;
 	wire	[31:0]	dataItofResult;
 	wire	[31:0]	dataSqrtResult;
+	
+	reg		[2:0]	rOperation;
 
 	// External modules instantiation
 	FPU_Adder FPU_Adder_0 (
@@ -78,15 +80,19 @@ module FloatingPointUnit (
 
 	// Internal signals assignment
 	assign adderOp	= (iOperation == SUB) ? FPU_SUB : FPU_ADD;
+	
+	always @ (posedge iClk) begin
+		rOperation <= iOperation;
+	end
 
 	// Outputs assignment
-	assign oResult	=	(iOperation == ADD)	? dataAdderResult :
-						(iOperation == SUB) ? dataAdderResult :
-						(iOperation == MULT) ? dataMultiplierResult :
-						(iOperation == DIV) ? dataDividerResult :
-						(iOperation == FTOI) ? dataFtoiResult :
-						(iOperation == ITOF) ? dataItofResult :
-						(iOperation == SQRT) ? dataSqrtResult :
+	assign oResult	=	(rOperation == ADD)	? dataAdderResult :
+						(rOperation == SUB) ? dataAdderResult :
+						(rOperation == MULT) ? dataMultiplierResult :
+						(rOperation == DIV) ? dataDividerResult :
+						(rOperation == FTOI) ? dataFtoiResult :
+						(rOperation == ITOF) ? dataItofResult :
+						(rOperation == SQRT) ? dataSqrtResult :
 						32'h0000_0000;
 
 endmodule

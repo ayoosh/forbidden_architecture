@@ -17,7 +17,7 @@ module MultiplyDivideUnit (
 	wire	[31:0]	dividerResult;
 	wire	[31:0]	fractionalResult;
 	wire			dataReady;
-	reg			operation;
+	reg				rOperation;
 
 	// Internal signals assignment
 	always @ (posedge iClk) begin
@@ -25,11 +25,11 @@ module MultiplyDivideUnit (
 	end
 	
 	always @ (posedge iClk) begin
-		operation <= iOperation;
+		rOperation <= iOperation;
 	end
 
 	// Output assignment
-	assign oResult = operation ? (dataReady ? dividerResult : 32'h0000_0000) : multiplierResult[31:0];
+	assign oResult = rOperation ? (dataReady ? dividerResult : 32'h0000_0000) : multiplierResult[63:32];
 	
 
 	// External modules instantiation
