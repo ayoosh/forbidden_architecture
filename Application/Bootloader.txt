@@ -21,7 +21,7 @@ LHW R1 0X03FF ;
 
 # Set the base address and offset to store image ;
 LLW R11 0x0000 ;
-LHW R11 0x0000 ;
+LHW R11 0x0020 ;
 LLW R10 0x0000 ;
 
 
@@ -41,7 +41,7 @@ LLW R7 0x0069 ;
 # Hex value of 640*480 = 307200 is 0x0004B000
 # LLW R6 0xB000 ;
 # LHW R6 0x0004 ;
-# 640*480/4/4
+
 LLW R6 0xAFFC ;
 LHW R6 0x0004 ;
 

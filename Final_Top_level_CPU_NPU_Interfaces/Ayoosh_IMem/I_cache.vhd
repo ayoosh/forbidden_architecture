@@ -43,7 +43,7 @@ LIBRARY XilinxCoreLib;
 ENTITY I_cache IS
   PORT (
     clka : IN STD_LOGIC;
-    addra : IN STD_LOGIC_VECTOR(6 DOWNTO 0);
+    addra : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
     douta : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
   );
 END I_cache;
@@ -53,7 +53,7 @@ ARCHITECTURE I_cache_a OF I_cache IS
 COMPONENT wrapped_I_cache
   PORT (
     clka : IN STD_LOGIC;
-    addra : IN STD_LOGIC_VECTOR(6 DOWNTO 0);
+    addra : IN STD_LOGIC_VECTOR(11 DOWNTO 0);
     douta : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
   );
 END COMPONENT;
@@ -61,8 +61,8 @@ END COMPONENT;
 -- Configuration specification
   FOR ALL : wrapped_I_cache USE ENTITY XilinxCoreLib.blk_mem_gen_v6_1(behavioral)
     GENERIC MAP (
-      c_addra_width => 7,
-      c_addrb_width => 7,
+      c_addra_width => 12,
+      c_addrb_width => 12,
       c_algorithm => 1,
       c_axi_id_width => 4,
       c_axi_slave_type => 0,
@@ -95,8 +95,8 @@ END COMPONENT;
       c_mem_type => 3,
       c_mux_pipeline_stages => 0,
       c_prim_type => 1,
-      c_read_depth_a => 128,
-      c_read_depth_b => 128,
+      c_read_depth_a => 4096,
+      c_read_depth_b => 4096,
       c_read_width_a => 32,
       c_read_width_b => 32,
       c_rst_priority_a => "CE",
@@ -112,8 +112,8 @@ END COMPONENT;
       c_use_softecc => 0,
       c_wea_width => 1,
       c_web_width => 1,
-      c_write_depth_a => 128,
-      c_write_depth_b => 128,
+      c_write_depth_a => 4096,
+      c_write_depth_b => 4096,
       c_write_mode_a => "WRITE_FIRST",
       c_write_mode_b => "WRITE_FIRST",
       c_write_width_a => 32,

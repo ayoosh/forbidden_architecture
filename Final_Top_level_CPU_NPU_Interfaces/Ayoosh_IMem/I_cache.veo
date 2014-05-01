@@ -40,7 +40,7 @@
 //----------- Begin Cut here for INSTANTIATION Template ---// INST_TAG
 I_cache your_instance_name (
   .clka(clka), // input clka
-  .addra(addra), // input [6 : 0] addra
+  .addra(addra), // input [11 : 0] addra
   .douta(douta) // output [31 : 0] douta
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
