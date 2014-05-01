@@ -4,8 +4,8 @@ close all;
 
 B = imread('emma_640_480', 'jpg');
 A=rgb2gray(B);
-figure(1);
-imshow(A);
+% figure(1);
+% imshow(A);
 [Am, An] = size(A);
 imgTrans = A';
 img1D = imgTrans(:);
@@ -22,19 +22,22 @@ set(s, 'FlowControl', 'none');
 
 fopen(s);
 
+while(1)
+    count = 0;
+    command = 0;
+    
+    while((count == 0)) 
+        [command, count] = fread(s,1, 'uint32');
+        command
+    end
+    fprintf('\nGot command from fpga\n');
 
-count = 0;
-while(count == 0) 
-    [command, count] = fread(s,1, 'uint32');
-    command
+    for index = 1:4:(640*480)
+        datasend = bitor(img1D(index), bitor(bitshift(img1D(index+1), 8), bitor(bitshift(img1D(index+2), 16), bitshift(img1D(index+3), 24))));
+        fwrite(s, datasend, 'uint32');
+    end
+    fprintf('Done sending data\n');
 end
-printf('Got command from fpga');
-
-for index = 1:4:(640*480)
-    datasend = bitor(img1D(index), bitor(bitshift(img1D(index+1), 8), bitor(bitshift(img1D(index+2), 16), bitshift(img1D(index+3), 24))));
-    fwrite(s, datasend, 'uint32');
-end
-
 fclose(s);
 delete(s);
 clear s;
