@@ -1,0 +1,9 @@
+CPU sends to Matlab
+i - Send image 1
+j - Send image 2
+
+
+
+
+
+Matlab sends to CPU

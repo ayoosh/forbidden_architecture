@@ -1,29 +1,29 @@
 Address [ 28 bits ]
 Description
-0x000 0000 - 0x3FF FFFF DDR2 Memory (256 MB)
-0x400 0000 - 0x400 3FFF Boot ROM (64 KB)
-0x800 0000 - 0x800 0003 SPART I/O Mapping and SPART related registers
-0x800 0004 - VGA_Addr Register inside Memory Controller
+0x0000 0000 - 0x3FF FFFF DDR2 Memory (256 MB)
+0x0400 0000 - 0x400 3FFF Boot ROM (64 KB)
+0x0800 0000 - 0x800 0003 SPART I/O Mapping and SPART related registers
+0x0800 0004 - VGA_Addr Register inside Memory Controller
 
 SPART
-0x800 0000 - Memory Mapped I/O address to send/receive 32 bit data (RW)
-0x800 0001 - SPART status register - present in MMU
+0x0800 0000 - Memory Mapped I/O address to send/receive 32 bit data (RW)
+0x0800 0001 - SPART status register - present in MMU
 				Bit[0:0] - Write Buffer Status, 1 implies buffer ready to receive data, 0 implies buffer full 
 				Bit[1:1] - Read Buffer Status, 1 implies receive data available, 0 implies no data received 
 				Bit[31:2] - Reserved
 
-0x800 0002 - DB(Low) Division Buffer register - present in SPART, bit[7:0] are only used, rest are reserved
-0x800 0003 - DB(High) Division Buffer register - present in SPART, bit[7:0] are only used, rest are reserved
+0x0800 0002 - DB(Low) Division Buffer register - present in SPART, bit[7:0] are only used, rest are reserved
+0x0800 0003 - DB(High) Division Buffer register - present in SPART, bit[7:0] are only used, rest are reserved
 
 DVI
-0x800 0004 - VGA Addr register used by CPU to indicate start address of stored image, Call FLUSH before updating.
+0x0800 0004 - VGA Addr register used by CPU to indicate start address of stored image, Call FLUSH before updating.
 
-0x800 0005 - DVI ON register
+0x0800 0005 - DVI ON register
 				Bit[0:0] -  1 implies DVI on, 0 implies DVI off .. reset value is 0
 				Bit[31:1] - Reserved
 				
 
-0x800 0006 - Tic Counter - 
+0x0800 0006 - Tic Counter - 
 			 Any write to this register resets it to 0
 			 Reading will give the current value
              If value reaches maximum value (2^32 - 1) then it just keeps it same, doesn't make it zero.
@@ -32,27 +32,27 @@ DVI
 DDR2 Breakup
 For every image we need 307200 32bit entries. Choose 512*1024 entries aka 19 bits
 address space per image instead. We have 2 input images. And 4 corresponding output images
-0x000 0000 - 0x01F FFFF - Input Image 1
-0x020 0000 - 0x03F FFFF - Input Image 2
-0x040 0000 - 0x05F FFFF - Output Image 1 Algo
-0x060 0000 - 0x07F FFFF - Output Image 1 NPU
-0x080 0000 - 0x09F FFFF - Output Image 2 Algo
-0x0A0 0000 - 0x0BF FFFF - Output Image 2 NPU
+0x0000 0000 - 0x01F FFFF - Input Image 1
+0x0020 0000 - 0x03F FFFF - Input Image 2
+0x0040 0000 - 0x05F FFFF - Output Image 1 Algo
+0x0060 0000 - 0x07F FFFF - Output Image 1 NPU
+0x0080 0000 - 0x09F FFFF - Output Image 2 Algo
+0x00A0 0000 - 0x0BF FFFF - Output Image 2 NPU
 
-0x0C0 0000 - 0x0C0 0FFF - Inversek2j Inputs, 2048 input sets (every set has 2 values)
-0x0C0 1000 - 0x0C0 1FFF - Inversek2j Algo Outputs, 2048 Output sets (every set has 2 values)
-0x0C0 2000 - 0x0C0 2FFF - Inversek2j NPU Outputs, 2048 Output sets (every set has 2 values)
+0x00C0 0000 - 0x0C0 0FFF - Inversek2j Inputs, 2048 input sets (every set has 2 values)
+0x00C0 1000 - 0x0C0 1FFF - Inversek2j Algo Outputs, 2048 Output sets (every set has 2 values)
+0x00C0 2000 - 0x0C0 2FFF - Inversek2j NPU Outputs, 2048 Output sets (every set has 2 values)
 
-0x0C0 3000 - 1 Sobel ALgo tics
-0x0C0 3001 - 1 Sobel NPU tics
-0x0C0 3002 - 2 Sobel ALgo tics
-0x0C0 3003 - 2 Sobel NPU tics
-0x0C0 3004 - Inversek2j ALgo tics
-0x0C0 3005 - Inversek2j NPU tics
+0x00C0 3000 - 1 Sobel ALgo tics
+0x00C0 3001 - 1 Sobel NPU tics
+0x00C0 3002 - 2 Sobel ALgo tics
+0x00C0 3003 - 2 Sobel NPU tics
+0x00C0 3004 - Inversek2j ALgo tics
+0x00C0 3005 - Inversek2j NPU tics
 
-0x0C0 3006 - 0x0FF FFFF - Unassigned
+0x00C0 3006 - 0x0FF FFFF - Unassigned
 
-0x100 0000 - 0x1FF FFFF - Code segment, Store code from Spart here
+0x0100 0000 - 0x1FF FFFF - Code segment, Store code from Spart here
 
-0x200 0000 - 0x2FF FFFF - Temporary data, use as memory dump in software
-0x300 0000 - 0x3FF FFFF - Stack, R1 Stack pointer starts at 0x3FF FFFF and decrements on every Push to stack
+0x0200 0000 - 0x2FF FFFF - Temporary data, use as memory dump in software
+0x0300 0000 - 0x3FF FFFF - Stack, R1 Stack pointer starts at 0x3FF FFFF and decrements on every Push to stack

@@ -1,0 +1,14 @@
+# Output products list for <Dummy_npu>
+Dummy_npu.asy
+Dummy_npu.gise
+Dummy_npu.ngc
+Dummy_npu.sym
+Dummy_npu.v
+Dummy_npu.veo
+Dummy_npu.xco
+Dummy_npu.xise
+Dummy_npu_flist.txt
+Dummy_npu_xmdf.tcl
+_xmsgs\pn_parser.xmsgs
+fifo_generator_readme.txt
+fifo_generator_ug175.pdf

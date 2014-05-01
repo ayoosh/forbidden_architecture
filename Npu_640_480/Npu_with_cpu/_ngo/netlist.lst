@@ -1,0 +1,16 @@
+C:\Temp\Npu_with_cpu\top_module.ngc 1398812963
+I:/GitHub/forbidden_architecture/Top_level_Block_FPGA/DVI/xfifo_1.ngc 1398133626
+I:/GitHub/forbidden_architecture/MMU/Emma_ROM/rom64x38400.ngc 1398133601
+I:/GitHub/forbidden_architecture/Npu_640_480/config/Config_fifo.ngc 1398762777
+I:/GitHub/forbidden_architecture/Npu_640_480/output_ram.ngc 1398728352
+I:/GitHub/forbidden_architecture/NPU_Reduced/coregens/npu_config_fifo.ngc 1398728347
+I:/GitHub/forbidden_architecture/NPU_Reduced/coregens/npu_float2fixed.ngc 1398728347
+I:/GitHub/forbidden_architecture/NPU_Reduced/coregens/npu_io_fifo.ngc 1398728348
+I:/GitHub/forbidden_architecture/Npu_640_480/config/tansig.ngc 1398728352
+I:/GitHub/forbidden_architecture/NPU_Reduced/coregens/npu_fixed2float.ngc 1398728347
+I:/GitHub/forbidden_architecture/NPU_Reduced/coregens/npu_circ_buf_fifo_large.ngc 1398728343
+I:/GitHub/forbidden_architecture/NPU_Reduced/coregens/npu_mul_add_dsp.ngc 1398728348
+I:/GitHub/forbidden_architecture/NPU_Reduced/coregens/npu_circ_buf_fifo_small.ngc 1398728346
+I:/GitHub/forbidden_architecture/NPU_Reduced/coregens/npu_sigmoid_fifo.ngc 1398728349
+I:/GitHub/forbidden_architecture/NPU_Reduced/coregens/npu_accum_fifo.ngc 1398728343
+OK

@@ -1,0 +1,16 @@
+# Output products list for <ayoosh_instruction_rom>
+_xmsgs\pn_parser.xmsgs
+ayoosh_instruction_rom.asy
+ayoosh_instruction_rom.gise
+ayoosh_instruction_rom.mif
+ayoosh_instruction_rom.ngc
+ayoosh_instruction_rom.v
+ayoosh_instruction_rom.veo
+ayoosh_instruction_rom.vhd
+ayoosh_instruction_rom.vho
+ayoosh_instruction_rom.xco
+ayoosh_instruction_rom.xise
+ayoosh_instruction_rom_flist.txt
+ayoosh_instruction_rom_xmdf.tcl
+blk_mem_gen_ds512.pdf
+blk_mem_gen_readme.txt
