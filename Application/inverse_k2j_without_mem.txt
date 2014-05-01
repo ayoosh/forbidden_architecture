@@ -1,65 +1,85 @@
 # First comes the config file
 # then series of LHW and LLW and then set of ENQD and then set of DEQD
+# 1. x = -0.39581   y = -0.0087662  th1 =  0.33354     th2 = 2.3822
+# 2. x = -0.39579   y =-0.0087775   th1 = 0.33245      th2 = 2.3823
+# 3. x =-0.98867    y = -0.0087513  th1 = 0.044725     th2 = 0.2645
+# 4. x = -0.96843   y = -0.090251   th1 = -1.0386      th2 = 0.41891
+# 5. x = -0.995     y = 0.070545    th1 = 1.0857       th2 = 0.14648
+# 6. x = -0.98935   y = -0.0043935  th1 = 0.10159      th2 = 0.25832
+# 7. x = -0.99374   y = 0.035169    th1 = 0.54018      th2 = 0.21346
+# 8. x = -0.98866   y = -0.0087811  th1 = 0.044335	   th2 = 0.26454
+# 9. x = -0.96842   y = -0.09028    th1 = -1.0391	   th2 = 0.41897
+# 10. x = -0.995    y = 0.070515    th1 = 1.0847	   th2 = 0.14659
 
-LLW R1 0x   ;
-LHW R1 0x   ;
+# values 1
+LLW R1 0xa79c ;
+LHW R1 0xbeca ;
 
-LLW R2 0x   ;
-LHW R2 0x   ;
+LLW R2 0xa01c ;
+LHW R2 0x3c0f
 
-LLW R3 0x   ;
-LHW R3 0x   ;
+# values 2
+LLW R3 0xa4fd ;
+LHW R3 0xbeca ;
 
-LLW R4 0x   ;
-LHW R4 0x   ;
+LLW R4 0xcf81 ;
+LHW R4 0xbc0f ;
 
-LLW R5 0x   ;
-LHW R5 0x   ;
+# values 3
+LLW R5 0x197a ;
+LHW R5 0xbf7d ;
 
-LLW R6 0x   ;
-LHW R6 0x   ;
+LLW R6 0x619d ;
+LHW R6 0xbc0f ;
 
-LLW R7 0x   ;
-LHW R7 0x   ;
+# values 4
+LLW R7 0xeb07 ;
+LHW R7 0xbf77 ;
 
-LLW R8 0x   ;
-LHW R8 0x   ;
+LLW R8 0xd584 ;
+LHW R8 0xbdb8 ;
 
-LLW R9 0x   ;
-LHW R9 0x   ;
+# values 5
+LLW R9 0xb852 ;
+LHW R9 0xbf7e ;
 
-LLW R10 0x   ;
-LHW R10 0x   ;
+LLW R10 0x79e6 ;
+LHW R10 0x3d90 ;
 
-LLW R11 0x   ;
-LHW R11 0x   ;
+# values 6
+LLW R11 0x460b ;
+LHW R11 0xbf7d ;
 
-LLW R12 0x   ;
-LHW R12 0x   ;
+LLW R12 0xf759 ;
+LHW R12 0xbb8f ;
 
-LLW R13 0x   ;
-LHW R13 0x   ;
+# values 7
+LLW R13 0x65bf ;
+LHW R13 0xbf7e ;
 
-LLW R14 0x   ;
-LHW R14 0x   ;
+LLW R14 0x0d5f ;
+LHW R14 0x3d10 ;
 
-LLW R15 0x   ;
-LHW R15 0x   ;
+# values 8
+LLW R15 0x18d2 ;
+LHW R15 0xbf7d ;
 
-LLW R16 0x   ;
-LHW R16 0x   ;
+LLW R16 0xde9a ;
+LHW R16 0xbc0f ;
 
-LLW R17 0x   ;
-LHW R17 0x   ;
+# values 9
+LLW R17 0xea60 ;
+LHW R17 0xbf77 ;
 
-LLW R18 0x   ;
-LHW R18 0x   ;
+LLW R18 0xe4b8 ;
+LHW R18 0xbdb8 ;
 
-LLW R19 0x   ;
-LHW R19 0x   ;
+# values 10
+LLW R19 0xb852 ;
+LHW R19 0xbf7e ;
 
-LLW R20 0x   ;
-LHW R20 0x   ;
+LLW R20 0x6a2b ;
+LHW R20 0x3d90 ;
 
 ENQD0 R1 ;
 ENQD0 R2 ;
