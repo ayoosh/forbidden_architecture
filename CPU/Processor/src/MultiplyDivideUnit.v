@@ -29,7 +29,7 @@ module MultiplyDivideUnit (
 	end
 
 	// Output assignment
-	assign oResult = operation ? (dataReady ? dividerResult : 32'h0000_0000) : multiplierResult[63:32];
+	assign oResult = operation ? (dataReady ? dividerResult : 32'h0000_0000) : multiplierResult[31:0];
 	
 
 	// External modules instantiation
