@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 12.2
-# Date: Thu May 01 05:06:04 2014
+# Date: Thu May 01 22:05:00 2014
 #
 ##############################################################
 #
@@ -39,7 +39,7 @@ CSET additional_inputs_for_power_estimation=false
 CSET algorithm=Minimum_Area
 CSET assume_synchronous_clk=false
 CSET byte_size=9
-CSET coe_file=.\COE\Load_Store_DDR_cache_SPART_Assembly_code_Rohit.coe
+CSET coe_file=.\COE\Load_Store_DDR_cache_SPART_Assembly_code_Rohit_1000_data.coe
 CSET collision_warnings=ALL
 CSET component_name=newInstructionMem
 CSET disable_collision_warnings=false
@@ -90,4 +90,4 @@ CSET write_width_a=32
 CSET write_width_b=32
 # END Parameters
 GENERATE
-# CRC: de40dda4
+# CRC: 6e7ec7f9
