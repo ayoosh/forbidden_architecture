@@ -21,7 +21,9 @@ LHW R1 0X03FF ;
 
 # Set the base address and offset to store image ;
 LLW R11 0x0000 ;
-LHW R11 0x0020 ;
+# LLW R11 0x0000 ;
+# LLW R11 0x0000 ;
+# LHW R11 0x0020 ;
 LLW R10 0x0000 ;
 
 
@@ -88,8 +90,10 @@ B NEQ IM1_GET_PIXEL ;
 
 # #################################################################################################################
 FLUSH ;
-LLW R2 0x0000 ;
-LHW R2 0x0020 ;
+LLW R2 0x8000 ;
+# LLW R2 0x0000 ;
+# LLW R2 0x0000 ;
+# LHW R2 0x0200 ;
 LLW R3 0x0001 ;
 LLW R4 0x0004 ;
 LHW R4 0x0800 ;
@@ -99,8 +103,10 @@ ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
-STORE R2 R4 0x00 ;
-STORE R3 R5 0x00 ;
+STORE R2 R4 0x0000 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+STORE R3 R5 0x0000 ;
 
 INFINITE B UNCOND INFINITE ;
 # ####################################################################################
