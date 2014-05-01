@@ -1,21 +1,45 @@
 ##############################################################
+#
+# Xilinx Core Generator version 12.2
+# Date: Thu May 01 05:06:04 2014
+#
 ##############################################################
+#
+#  This file contains the customisation parameters for a
+#  Xilinx CORE Generator IP GUI. It is strongly recommended
+#  that you do not manually alter this file as it may cause
+#  unexpected and unsupported behavior.
+#
 ##############################################################
+#
+# BEGIN Project Options
+SET addpads = false
+SET asysymbol = true
+SET busformat = BusFormatAngleBracketNotRipped
+SET createndf = false
 SET designentry = Verilog
-SET BusFormat = BusFormatAngleBracketNotRipped
-SET devicefamily = virtex5
 SET device = xc5vlx110t
+SET devicefamily = virtex5
+SET flowvendor = Foundation_ISE
+SET formalverification = false
+SET foundationsym = false
+SET implementationfiletype = Ngc
 SET package = ff1136
+SET removerpms = false
+SET simulationfiles = Behavioral
 SET speedgrade = -1
-SET FlowVendor = Foundation_ISE
-SET VerilogSim = True
-SET VHDLSim = True
+SET verilogsim = true
+SET vhdlsim = true
+# END Project Options
+# BEGIN Select
 SELECT Block_Memory_Generator family Xilinx,_Inc. 4.2
+# END Select
+# BEGIN Parameters
 CSET additional_inputs_for_power_estimation=false
 CSET algorithm=Minimum_Area
 CSET assume_synchronous_clk=false
 CSET byte_size=9
-CSET coe_file=.\SPART_Send_R1.coe
+CSET coe_file=.\COE\Load_Store_DDR_cache_SPART_Assembly_code_Rohit.coe
 CSET collision_warnings=ALL
 CSET component_name=newInstructionMem
 CSET disable_collision_warnings=false
@@ -64,3 +88,6 @@ CSET use_rstb_pin=false
 CSET write_depth_a=64
 CSET write_width_a=32
 CSET write_width_b=32
+# END Parameters
+GENERATE
+# CRC: de40dda4

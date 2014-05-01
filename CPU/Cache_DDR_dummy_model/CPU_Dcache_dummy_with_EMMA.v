@@ -47,7 +47,9 @@ module CPU_Dcache_dummy #(
 								
 	input 				  mem_ready_data1,
 	
-	output   reg			error
+	output   reg			error,
+	
+	output reg  flush
                         // To indicate to cache that response is ready	
     );
 
@@ -62,8 +64,9 @@ module CPU_Dcache_dummy #(
 	assign mem_data_wr1 = rom_data[31:0];
 	// This generates error
 	// assign mem_data_wr1 = (rom_addr == 16'd20000 & mem_rw_data1) ? 32'hFFFFFFFF : rom_data[31:0];
-   assign mem_data_addr1 = {8'd0,increment_address,rom_addr};
-	
+ //  assign mem_data_addr1 = {8'd0,increment_address,rom_addr};
+	assign mem_data_addr1 = {12'd0,rom_addr};
+		
 	always @(posedge clk)
 	begin
 		if(rst)
@@ -106,6 +109,7 @@ module CPU_Dcache_dummy #(
 			update_write <= 0;
 			last_address <= 0;
 			last_command_done <= 0;
+			flush <= 0;
 		end
 		else
 		begin
@@ -122,14 +126,23 @@ module CPU_Dcache_dummy #(
 					begin
 
 
-					if(mem_ready_count == 1 & ~update_write)  // Last Command was read, so now write
+					if(mem_ready_count == 2)  // Last Command was read, so now write
 						begin
 						//mem_rw_data1 <= 1;
 						//rom_addr <= 6'd0;
+
+						mem_valid_data1 <= 1;
+						flush <= 1;
+						end
+						
+					else if(mem_ready_count == 2 & flush & mem_ready_data1 & ~update_write)  // Last Command was read, so now write
+						begin
+						mem_valid_data1 <= 0;
+						flush <= 0;
 						update_write <= 1;
 						end
 						
-					else if(mem_ready_count == 1 & update_write)
+					else if(mem_ready_count == 1)
 						begin
 						mem_valid_data1 <= 1;
 					   cycle_count <= 32'd0;
@@ -137,12 +150,12 @@ module CPU_Dcache_dummy #(
 						
 						mem_rw_data1 <= 1;
 						//rom_addr <= 16'd0;
-						update_write <= 0; // Setting it back
+
 					   last_address <= 0;
 						end
 											
 						
-					else if(mem_ready_count == 2)
+					else if(mem_ready_count == 2 & update_write)
 						begin
 						mem_valid_data1 <= 1;
 					   cycle_count <= 32'd0;
@@ -150,7 +163,8 @@ module CPU_Dcache_dummy #(
 						
 						mem_rw_data1 <= 0;
 						//rom_addr <= 16'd0;
-					   last_address <= 0;						
+					   last_address <= 0;	
+						update_write <= 0; // Setting it back						
 						end
 					end
 					
@@ -214,9 +228,9 @@ module CPU_Dcache_dummy #(
 	begin
    if(rst)
 	mem_ready_count <= 0;
-	else if(mem_rw_data1 & mem_valid_data1) // For write increment by 2
+	else if(mem_rw_data1 & mem_valid_data1 & ~flush) // For write increment by 2
 	mem_ready_count <= 2;   // Write
-	else if(~mem_rw_data1 & mem_valid_data1)
+	else if(~mem_rw_data1 & mem_valid_data1 & ~flush)
 	mem_ready_count <= 1;  // Read
 	
 	end
