@@ -604,7 +604,7 @@ module Processor(
 	wire	[4:0]		wbRegRd;
 	
 	assign	exRegRs		= ex_id_NpuCfgOp ? 5'h0 : ((ex_id_NpuEnqOp || ex_if_LoadCmd) ? ex_id_Offset[25:21] : ex_id_Offset[20:16]);
-	assign	exRegRt		= (ex_id_NpuCfgOp || ex_id_NpuEnqOp) ? 5'h0 : (ex_id_StoreCmd ? 5'h00 : ex_id_Offset[15:11]);
+	assign	exRegRt		= (ex_id_NpuCfgOp || ex_id_NpuEnqOp) ? 5'h0 : (ex_id_StoreCmd ? ex_id_Offset[25:21] : ex_id_Offset[15:11]);
 	assign	memRegRd	= (mem_ex_NpuCfgOp || mem_ex_NpuEnqOp) ? 5'h0 : mem_ex_Offset[25:21];
 	assign	wbRegRd		= (wb_mem_NpuCfgOp || wb_mem_NpuEnqOp) ? 5'h0 : wb_mem_Offset[25:21];
 
@@ -622,6 +622,10 @@ module Processor(
 		.iWbRegWrite		(wb_mem_WriteEn)
 	);
 
+	wire			id_if_StoreCmd;
+	
+	assign id_if_StoreCmd = (id_if_Instruction[31:26] == 6'b01_0101);
+	
 
 	HazardDetectionUnit HazardDetectionUnit_0 (
 		// Outputs
@@ -630,7 +634,7 @@ module Processor(
 
 		// Inputs
 		.iIdRegRs			(id_if_Instruction[20:16]),
-		.iIdRegRt			(id_if_Instruction[15:11]),
+		.iIdRegRt			(id_if_StoreCmd ? id_if_Instruction[25:21] : id_if_Instruction[15:11]),
 		.iExRegRt			(ex_id_Offset[25:21]),
 		.iExMemRead			(ex_id_MemValid & ~ex_id_MemWrite),
 		.iExRetCmd			(ex_id_RetCmd),
