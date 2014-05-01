@@ -21,7 +21,9 @@ LHW R1 0X03FF ;
 
 # Set the base address and offset to store image ;
 LLW R11 0x0000 ;
+LHW R11 0x0000 ;
 LLW R10 0x0000 ;
+
 
 LLW R2 0x0000 ;
 LHW R2 0x0800 ;
@@ -37,7 +39,10 @@ LLW R7 0x0069 ;
 
 # Number of pixels that will be received from MATLAB.
 # Hex value of 640*480 = 307200 is 0x0004B000
-LLW R6 0xB000 ;
+# LLW R6 0xB000 ;
+# LHW R6 0x0004 ;
+# 640*480/4/4
+LLW R6 0xAFFC ;
 LHW R6 0x0004 ;
 
 IM1_SPART_TX_NOT_READY_1 LOAD R8 R3 0x00 ;
@@ -84,6 +89,7 @@ B NEQ IM1_GET_PIXEL ;
 # #################################################################################################################
 FLUSH ;
 LLW R2 0x0000 ;
+LHW R2 0x0020 ;
 LLW R3 0x0001 ;
 LLW R4 0x0004 ;
 LHW R4 0x0800 ;
