@@ -21,10 +21,9 @@ LLW R4 0x1000 ;
 LHW R4 0x00c0 ;
 LLW R6 0x0000 ;
 LHW R6 0x3f00 ;
-ADD R7 R0 R5 ; # L1 = L2 = 0.5
+ADD R7 R0 R6 ; # L1 = L2 = 0.5
 
 LLW R21 0x0002 ;
-LHW R21 0x0000 ;
 LLW R22 0x07FE ;
 ADD R8 R0 R0 ; # Loop counter
 
