@@ -42,7 +42,7 @@
             <spirit:configurableElementValue spirit:referenceId="parameter_enable_a">Always_Enabled</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_enable_b">Always_Enabled</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_port_a_enable_rate">100</spirit:configurableElementValue>
-            <spirit:configurableElementValue spirit:referenceId="parameter_write_depth_a">64</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_write_depth_a">96</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_algorithm">Minimum_Area</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_output_reset_value_a">0</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_output_reset_value_b">0</spirit:configurableElementValue>
@@ -60,12 +60,12 @@
             <spirit:configurableElementValue spirit:referenceId="parameter_register_portb_output_of_memory_primitives">false</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_port_b_enable_rate">0</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_use_rsta_pin">false</spirit:configurableElementValue>
-            <spirit:configurableElementValue spirit:referenceId="parameter_coe_file">.\sobel.coe</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_coe_file">.\sobel_64_48.coe</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_fill_remaining_memory_locations">false</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_collision_warnings">ALL</spirit:configurableElementValue>
          </spirit:configurableElementValues>
          <spirit:vendorExtensions>
-            <xilinx:instanceProperties xmlns:xilinx="http://www.xilinx.com">
+            <xilinx:instanceProperties>
              <xilinx:projectOptions>
                <xilinx:projectName>coregen</xilinx:projectName>
                <xilinx:outputDirectory>./</xilinx:outputDirectory>
@@ -95,6 +95,165 @@
                <xilinx:foundationSym>false</xilinx:foundationSym>
              </xilinx:simulationOptions>
            </xilinx:instanceProperties>
+            <xilinx:generationHistory>
+               <xilinx:fileSet>
+                  <xilinx:name>customization_generator</xilinx:name>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem.mif</xilinx:name>
+                     <xilinx:userFileType>mif</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:22:20 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x5AB0118C</xilinx:checkSum>
+                  </xilinx:file>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>ip_xco_generator</xilinx:name>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem.xco</xilinx:name>
+                     <xilinx:userFileType>xco</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:22:20 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x56C19965</xilinx:checkSum>
+                  </xilinx:file>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>implementation_netlist_generator</xilinx:name>
+                  <xilinx:file>
+                     <xilinx:name>./blk_mem_gen_ds512.pdf</xilinx:name>
+                     <xilinx:userFileType>pdf</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:22:55 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x7914E183</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./blk_mem_gen_readme.txt</xilinx:name>
+                     <xilinx:userFileType>txt</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:22:54 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x4F6653C3</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem.asy</xilinx:name>
+                     <xilinx:userFileType>asy</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:22:23 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x63EBB479</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem.mif</xilinx:name>
+                     <xilinx:userFileType>mif</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:22:23 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x5AB0118C</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem.ngc</xilinx:name>
+                     <xilinx:userFileType>ngc</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:23:03 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0xA84AEBE0</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem.sym</xilinx:name>
+                     <xilinx:userFileType>asy</xilinx:userFileType>
+                     <xilinx:userFileType>unknown</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:22:56 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x4C21D642</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem.v</xilinx:name>
+                     <xilinx:userFileType>verilog</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:22:56 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x0165A6E3</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem.veo</xilinx:name>
+                     <xilinx:userFileType>veo</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:22:56 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0xA4F4223B</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem.vhd</xilinx:name>
+                     <xilinx:userFileType>vhdl</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:22:56 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x1BAEDC26</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem.vho</xilinx:name>
+                     <xilinx:userFileType>vho</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:22:56 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0xCDA1697E</xilinx:checkSum>
+                  </xilinx:file>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>instantiation_template_generator</xilinx:name>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem.veo</xilinx:name>
+                     <xilinx:userFileType>veo</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:23:04 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0xA4F4223B</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem.vho</xilinx:name>
+                     <xilinx:userFileType>vho</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:23:04 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0xCDA1697E</xilinx:checkSum>
+                  </xilinx:file>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>xco_generator</xilinx:name>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem.xco</xilinx:name>
+                     <xilinx:userFileType>xco</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:23:10 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x167C65F8</xilinx:checkSum>
+                  </xilinx:file>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>xmdf_generator</xilinx:name>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem_xmdf.tcl</xilinx:name>
+                     <xilinx:userFileType>tclXmdf</xilinx:userFileType>
+                     <xilinx:userFileType>tcl</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:23:10 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x953E6825</xilinx:checkSum>
+                  </xilinx:file>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>ise_generator</xilinx:name>
+                  <xilinx:file>
+                     <xilinx:name>./_xmsgs/pn_parser.xmsgs</xilinx:name>
+                     <xilinx:userFileType>ignore</xilinx:userFileType>
+                     <xilinx:userFileType>unknown</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:23:14 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0xCC9C5077</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem.gise</xilinx:name>
+                     <xilinx:userFileType>ignore</xilinx:userFileType>
+                     <xilinx:userFileType>gise</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:23:15 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0xCBFA6DD6</xilinx:checkSum>
+                  </xilinx:file>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem.xise</xilinx:name>
+                     <xilinx:userFileType>ignore</xilinx:userFileType>
+                     <xilinx:userFileType>xise</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:23:15 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0xEE6C400C</xilinx:checkSum>
+                  </xilinx:file>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>deliver_readme_generator</xilinx:name>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>flist_generator</xilinx:name>
+                  <xilinx:file>
+                     <xilinx:name>./newInstructionMem_flist.txt</xilinx:name>
+                     <xilinx:userFileType>ignore</xilinx:userFileType>
+                     <xilinx:userFileType>txtFlist</xilinx:userFileType>
+                     <xilinx:userFileType>txt</xilinx:userFileType>
+                     <xilinx:timeStamp>Fri May 02 07:23:15 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x5570CCF6</xilinx:checkSum>
+                  </xilinx:file>
+               </xilinx:fileSet>
+               <xilinx:fileSet>
+                  <xilinx:name>view_readme_generator</xilinx:name>
+               </xilinx:fileSet>
+            </xilinx:generationHistory>
          </spirit:vendorExtensions>
       </spirit:componentInstance>
       <spirit:componentInstance>
@@ -157,7 +316,7 @@
             <spirit:configurableElementValue spirit:referenceId="parameter_collision_warnings">ALL</spirit:configurableElementValue>
          </spirit:configurableElementValues>
          <spirit:vendorExtensions>
-            <xilinx:instanceProperties>
+            <xilinx:instanceProperties xmlns:xilinx="http://www.xilinx.com">
              <xilinx:projectOptions>
                <xilinx:projectName>coregen</xilinx:projectName>
                <xilinx:outputDirectory>./</xilinx:outputDirectory>
@@ -187,165 +346,6 @@
                <xilinx:foundationSym>false</xilinx:foundationSym>
              </xilinx:simulationOptions>
            </xilinx:instanceProperties>
-            <xilinx:generationHistory>
-               <xilinx:fileSet>
-                  <xilinx:name>customization_generator</xilinx:name>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48.mif</xilinx:name>
-                     <xilinx:userFileType>mif</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:03:47 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0xFE0246E2</xilinx:checkSum>
-                  </xilinx:file>
-               </xilinx:fileSet>
-               <xilinx:fileSet>
-                  <xilinx:name>ip_xco_generator</xilinx:name>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48.xco</xilinx:name>
-                     <xilinx:userFileType>xco</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:03:47 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x439FA813</xilinx:checkSum>
-                  </xilinx:file>
-               </xilinx:fileSet>
-               <xilinx:fileSet>
-                  <xilinx:name>implementation_netlist_generator</xilinx:name>
-                  <xilinx:file>
-                     <xilinx:name>./blk_mem_gen_ds512.pdf</xilinx:name>
-                     <xilinx:userFileType>pdf</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:28 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x7914E183</xilinx:checkSum>
-                  </xilinx:file>
-                  <xilinx:file>
-                     <xilinx:name>./blk_mem_gen_readme.txt</xilinx:name>
-                     <xilinx:userFileType>txt</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:27 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x4F6653C3</xilinx:checkSum>
-                  </xilinx:file>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48.asy</xilinx:name>
-                     <xilinx:userFileType>asy</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:03:53 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0xC8945E16</xilinx:checkSum>
-                  </xilinx:file>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48.mif</xilinx:name>
-                     <xilinx:userFileType>mif</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:03:53 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0xFE0246E2</xilinx:checkSum>
-                  </xilinx:file>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48.ngc</xilinx:name>
-                     <xilinx:userFileType>ngc</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:43 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x607D82E7</xilinx:checkSum>
-                  </xilinx:file>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48.sym</xilinx:name>
-                     <xilinx:userFileType>asy</xilinx:userFileType>
-                     <xilinx:userFileType>unknown</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:29 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x9CF47709</xilinx:checkSum>
-                  </xilinx:file>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48.v</xilinx:name>
-                     <xilinx:userFileType>verilog</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:29 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x8FA4DC7A</xilinx:checkSum>
-                  </xilinx:file>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48.veo</xilinx:name>
-                     <xilinx:userFileType>veo</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:29 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x62A59724</xilinx:checkSum>
-                  </xilinx:file>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48.vhd</xilinx:name>
-                     <xilinx:userFileType>vhdl</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:29 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x3B47395F</xilinx:checkSum>
-                  </xilinx:file>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48.vho</xilinx:name>
-                     <xilinx:userFileType>vho</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:29 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x0F7E5C28</xilinx:checkSum>
-                  </xilinx:file>
-               </xilinx:fileSet>
-               <xilinx:fileSet>
-                  <xilinx:name>instantiation_template_generator</xilinx:name>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48.veo</xilinx:name>
-                     <xilinx:userFileType>veo</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:45 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x62A59724</xilinx:checkSum>
-                  </xilinx:file>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48.vho</xilinx:name>
-                     <xilinx:userFileType>vho</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:45 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x0F7E5C28</xilinx:checkSum>
-                  </xilinx:file>
-               </xilinx:fileSet>
-               <xilinx:fileSet>
-                  <xilinx:name>xco_generator</xilinx:name>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48.xco</xilinx:name>
-                     <xilinx:userFileType>xco</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:50 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x0382B59B</xilinx:checkSum>
-                  </xilinx:file>
-               </xilinx:fileSet>
-               <xilinx:fileSet>
-                  <xilinx:name>xmdf_generator</xilinx:name>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48_xmdf.tcl</xilinx:name>
-                     <xilinx:userFileType>tclXmdf</xilinx:userFileType>
-                     <xilinx:userFileType>tcl</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:50 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x83DB25CE</xilinx:checkSum>
-                  </xilinx:file>
-               </xilinx:fileSet>
-               <xilinx:fileSet>
-                  <xilinx:name>ise_generator</xilinx:name>
-                  <xilinx:file>
-                     <xilinx:name>./_xmsgs/pn_parser.xmsgs</xilinx:name>
-                     <xilinx:userFileType>ignore</xilinx:userFileType>
-                     <xilinx:userFileType>unknown</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:54 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0xB4A8317B</xilinx:checkSum>
-                  </xilinx:file>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48.gise</xilinx:name>
-                     <xilinx:userFileType>ignore</xilinx:userFileType>
-                     <xilinx:userFileType>gise</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:54 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x8E40B8F5</xilinx:checkSum>
-                  </xilinx:file>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48.xise</xilinx:name>
-                     <xilinx:userFileType>ignore</xilinx:userFileType>
-                     <xilinx:userFileType>xise</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:54 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0xE050733B</xilinx:checkSum>
-                  </xilinx:file>
-               </xilinx:fileSet>
-               <xilinx:fileSet>
-                  <xilinx:name>deliver_readme_generator</xilinx:name>
-               </xilinx:fileSet>
-               <xilinx:fileSet>
-                  <xilinx:name>flist_generator</xilinx:name>
-                  <xilinx:file>
-                     <xilinx:name>./rom_64_48_flist.txt</xilinx:name>
-                     <xilinx:userFileType>ignore</xilinx:userFileType>
-                     <xilinx:userFileType>txtFlist</xilinx:userFileType>
-                     <xilinx:userFileType>txt</xilinx:userFileType>
-                     <xilinx:timeStamp>Fri May 02 07:04:54 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x39EA108A</xilinx:checkSum>
-                  </xilinx:file>
-               </xilinx:fileSet>
-               <xilinx:fileSet>
-                  <xilinx:name>view_readme_generator</xilinx:name>
-               </xilinx:fileSet>
-            </xilinx:generationHistory>
          </spirit:vendorExtensions>
       </spirit:componentInstance>
    </spirit:componentInstances>
