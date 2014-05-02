@@ -1,6 +1,6 @@
 # Set Stack Pointer ;
 LLW R1 0xFFFF ;
-LHW R1 0x03FF ;
+LHW R1 0x020F ;
 
 # Get inputs from SPART and store them to DDR
 # R2 - SPART Address

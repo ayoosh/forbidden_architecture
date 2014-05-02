@@ -55,4 +55,4 @@ address space per image instead. We have 2 input images. And 4 corresponding out
 0x0100 0000 - 0x1FF FFFF - Code segment, Store code from Spart here
 
 0x0200 0000 - 0x2FF FFFF - Temporary data, use as memory dump in software
-0x0300 0000 - 0x3FF FFFF - Stack, R1 Stack pointer starts at 0x3FF FFFF and decrements on every Push to stack
+0x0300 0000 - 0x03FF FFFF - Stack, R1 Stack pointer starts at 0x3FF FFFF and decrements on every Push to stack

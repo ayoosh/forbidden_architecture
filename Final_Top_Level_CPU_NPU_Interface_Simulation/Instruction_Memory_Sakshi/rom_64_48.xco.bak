@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 12.2
-# Date: Fri May 02 06:39:18 2014
+# Date: Fri May 02 07:04:50 2014
 #
 ##############################################################
 #
@@ -17,10 +17,10 @@ SET addpads = false
 SET asysymbol = true
 SET busformat = BusFormatAngleBracketNotRipped
 SET createndf = false
-SET designentry = Advanced
+SET designentry = Verilog
 SET device = xc5vlx110t
 SET devicefamily = virtex5
-SET flowvendor = Other
+SET flowvendor = Foundation_ISE
 SET formalverification = false
 SET foundationsym = false
 SET implementationfiletype = Ngc
@@ -39,7 +39,7 @@ CSET additional_inputs_for_power_estimation=false
 CSET algorithm=Minimum_Area
 CSET assume_synchronous_clk=false
 CSET byte_size=9
-CSET coe_file=I:\GitHub\forbidden_architecture\Final_Top_Level_CPU_NPU_Interface_Simulation\Instruction_Memory_Sakshi\ROM_64_48.coe
+CSET coe_file=.\ROM_64_48.coe
 CSET collision_warnings=ALL
 CSET component_name=rom_64_48
 CSET disable_collision_warnings=false
@@ -90,4 +90,4 @@ CSET write_width_a=64
 CSET write_width_b=64
 # END Parameters
 GENERATE
-# CRC: 9f8ef1f7
+# CRC: 13f30741
