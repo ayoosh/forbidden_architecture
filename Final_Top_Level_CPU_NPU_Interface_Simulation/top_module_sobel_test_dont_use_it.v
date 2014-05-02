@@ -429,8 +429,8 @@ module top_module #
 // Instantiating ROM	
 rom_64_48 rom_image (
   .clka(clk_in), // input clka
-  .addra(rom_addr), // input [15 : 0] addra
-  .douta(rom_data) // output [63 : 0] douta
+  .addra(ram_address), // input [15 : 0] addra
+  .douta(ram_data) // output [63 : 0] douta
 );
 
 		cache_controller Dcache_inst (

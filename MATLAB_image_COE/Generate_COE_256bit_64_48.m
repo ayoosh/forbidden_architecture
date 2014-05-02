@@ -5,7 +5,7 @@ B = imread('emma_640_480', 'jpg');
 %PQR = imread('Hermi', 'jpg');
 A=rgb2gray(B);
 
-A = imresize(A,0.1);
+A = imresize(A,[16 16]);
 BW = edge(A, 'sobel', 0.1);
 figure(1);
 imshow(A);

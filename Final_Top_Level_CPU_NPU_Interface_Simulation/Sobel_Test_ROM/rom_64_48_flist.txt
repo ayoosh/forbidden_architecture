@@ -1,0 +1,17 @@
+# Output products list for <rom_64_48>
+_xmsgs\pn_parser.xmsgs
+blk_mem_gen_ds512.pdf
+blk_mem_gen_readme.txt
+rom_64_48.asy
+rom_64_48.gise
+rom_64_48.mif
+rom_64_48.ngc
+rom_64_48.sym
+rom_64_48.v
+rom_64_48.veo
+rom_64_48.vhd
+rom_64_48.vho
+rom_64_48.xco
+rom_64_48.xise
+rom_64_48_flist.txt
+rom_64_48_xmdf.tcl
