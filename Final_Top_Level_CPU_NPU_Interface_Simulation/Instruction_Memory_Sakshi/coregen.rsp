@@ -1,2 +1,2 @@
 SETPROJECT "I:/GitHub/forbidden_architecture/Final_Top_Level_CPU_NPU_Interface_Simulation/Instruction_Memory_Sakshi/coregen.cgp"
-LAUNCHXCO "I:/GitHub/forbidden_architecture/Final_Top_Level_CPU_NPU_Interface_Simulation/Instruction_Memory_Sakshi/newInstructionMem.xco"
+LAUNCHXCO "I:/GitHub/forbidden_architecture/Final_Top_Level_CPU_NPU_Interface_Simulation/Instruction_Memory_Sakshi/rom_64_48.xco"

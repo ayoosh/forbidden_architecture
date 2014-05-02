@@ -64,8 +64,8 @@ module CPU_Dcache_dummy #(
 	assign mem_data_wr1 = rom_data[31:0];
 	// This generates error
 	// assign mem_data_wr1 = (rom_addr == 16'd20000 & mem_rw_data1) ? 32'hFFFFFFFF : rom_data[31:0];
-   assign mem_data_addr1 = {8'd0,increment_address,rom_addr};
-//	assign mem_data_addr1 = {12'd0,rom_addr};
+ //  assign mem_data_addr1 = {8'd0,increment_address,rom_addr};
+	assign mem_data_addr1 = {12'd0,rom_addr};
 		
 	always @(posedge clk)
 	begin
