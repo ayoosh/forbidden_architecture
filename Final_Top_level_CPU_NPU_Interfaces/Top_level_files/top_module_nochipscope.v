@@ -252,7 +252,7 @@ module top_module_nochipscope #
 		 
 		 // Cache CPU wires
 		 	// Cache wires
-		wire	[27:0]	cache_addr;
+		wire	[31:0]	cache_addr;
 		wire		[31:0]	cache_wr;
 		wire				cache_rw;
 		wire				cache_valid;
@@ -403,7 +403,7 @@ module top_module_nochipscope #
 		cache_controller Dcache_inst (
 		.clk 			(clk_in),
 		.rst_n 			(~gl_rst),
-		.cache_addr		(cache_addr),
+		.cache_addr		(cache_addr[27:0]),
 		.cache_wr		(cache_wr),
 		.cache_rw		(cache_rw),
 		.cache_valid	(cache_valid),
@@ -527,7 +527,7 @@ I_cache InstructionROM (
     );
 
 // Chipscope related items
-	/*	icon icon_1
+/*		icon icon_1
 	(
 		.CONTROL0(control)
 	);
@@ -539,7 +539,7 @@ I_cache InstructionROM (
 		.DATA(dataport),
 		.TRIG0(trigger)
 	);
-	*/
+*/
 	//assign dataport[0] = clk_in;
 	assign dataport[256:1] = mem_data_wr2;
 	assign dataport[512:257] = mem_data_rd2;
@@ -550,7 +550,7 @@ I_cache InstructionROM (
 		assign dataport[543] = cache_ready;
 			assign dataport[544] = cache_valid;
 			
-			assign dataport[572:545] = cache_addr;
+			assign dataport[572:545] = cache_addr[27:0];
 			assign dataport[604:573] = cache_wr;
 			
 			
@@ -575,7 +575,8 @@ I_cache InstructionROM (
 	assign dataport[833] = mc_wr_rdy;
 	assign dataport[881:850] = cache_rd;
 			
- 
+
+   assign dataport[927:900]  = mem_start; 
 	assign dataport[952] = scl_tri;
 	assign dataport[953] = sda_tri;
 	assign dataport[965:954] = D;
@@ -593,6 +594,8 @@ I_cache InstructionROM (
 	
 	assign dataport[976] = app_af_wren;
 	assign dataport[977] = app_wdf_wren;
+	
+
 	//  assign dataport[978] = state_output;
 	
 //	assign trigger[0] = clk0_tb;

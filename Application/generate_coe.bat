@@ -1,4 +1,4 @@
 del machine_code.txt
-del GetIMShowIM.coe
-perl ..\Assembler\cpu\assembler_for_cpu.pl Bootloader.txt
-rename machine_code.txt GetIMShowIM.coe
+del Sobel_1img_full.coe
+perl ..\Assembler\cpu\assembler_for_cpu.pl Sobel_1img_full.txt 0x04000000
+rename machine_code.txt Sobel_1img_full.coe
