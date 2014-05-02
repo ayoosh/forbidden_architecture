@@ -11,11 +11,11 @@ set(s, 'FlowControl', 'none');
 
 fopen(s);
 %out = get(s,'Timeout');
-for i = 1:1
+for i = 1:1000
     fwrite(s,i, 'uint32');
 end
 
-for i = 1:1
+for i = 1:1000
     [out1, count1, msg1] = fread(s,1, 'uint32');
     fprintf('out1 = %d\n', out1);
     if(out1 ~= i)
