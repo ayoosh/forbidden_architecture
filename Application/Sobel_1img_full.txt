@@ -1,6 +1,6 @@
 # Set Stack Pointer ;
 LLW R1 0xFFFF ;
-LHW R1 0x03FF ;
+LHW R1 0x020F ;
 
 # Get inputs from SPART and store them to DDR
 # R2 - SPART Address
@@ -40,7 +40,7 @@ LLW R7 0x0069 ;
 # LLW R6 0xB000 ;
 # LHW R6 0x0004 ;
 
-LLW R6 0xAFFC ;
+LLW R6 0xAFFE ;
 LHW R6 0x0004 ;
 
 IM1_SPART_TX_NOT_READY_1 LOAD R8 R3 0x00 ;
@@ -48,15 +48,13 @@ AND R0 R8 R5 ;
 B EQ IM1_SPART_TX_NOT_READY_1 ;
 
 STORE R7 R2 0x0000 ;
-LLW R31 0x0068 ;
-CALL SPART_SEND ;
 
 # Start receiving image pixel values.
 IM1_GET_PIXEL LOAD R8 R3 0x00 ;
 AND R0 R8 R4 ;
 B EQ IM1_GET_PIXEL ;
 
-# Received a pixel from matlab and stored in Register R12
+# Receive a pixel from matlab and stored in Register R12
 LOAD R12 R2 0x00 ;
 LLW R15 0x0004 ;
 IM1_SEND_PIXELS_TO_DDR2 AND R13 R12 R14 ;
@@ -85,8 +83,8 @@ B NEQ IM1_SEND_PIXELS_TO_DDR2 ;
 OR R0 R6 R0 ;
 B NEQ IM1_GET_PIXEL ;
 
-LLW R31 0x0070 ;
-CALL SPART_SEND ;
+# LLW R31 0x0070 ;
+# CALL SPART_SEND ;
 # Image1 store done
 
 # ###################################################################3
@@ -99,283 +97,282 @@ LLW R4 0x0004 ;
 LHW R4 0x0800 ;
 LLW R5 0x0005 ;
 LHW R5 0x0800 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
+
 STORE R2 R4 0x0000 ;
 ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
 STORE R3 R5 0x0000 ;
 
-LLW R31 0x0071 ;
-CALL SPART_SEND ;
+INFINITE B UNCOND INFINITE ;
 
-LLW R6 0xFFFF ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-LHW R6 0x7FFF ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-IM1_ORIGINAL_WAIT SUB R6 R6 R3 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-B NEQ IM1_ORIGINAL_WAIT ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-STORE R0 R5 0x0000 ;
+# LLW R31 0x0071 ;
+# CALL SPART_SEND ;
 
-
-# ######################################################################
-# Image 1 copy
-# First store copy of image to output image to get edges
-# R2 Input image addr
-# R3 Output Image Algo addr
-# R4 Output Image NPU addr
-# R5 Input End address
-# R6 Input value
-# R7 1
-
-LLW R2 0x0000 ;
-LLW R3 0x0000 ;
-LHW R3 0x0040 ;
-LLW R4 0x0000 ;
-LHW R4 0x0060 ;
-LLW R5 0xB000 ;
-LHW R5 0x0004 ;
-LLW R7 0x0001 ;
-
-SOBEL_IM1_COPY LOAD R6 R2 0x0 ;
-ADD R2 R2 R7 ;
-STORE R6 R3 0x0 ;
-ADD R3 R3 R7 ;
-STORE R6 R4 0x0 ;
-ADD R4 R4 R7 ;
-
-SUB R0 R2 R5 ;
-B NEQ SOBEL_IM1_COPY ; 
-
-LLW R31 0x0072 ;
-CALL SPART_SEND ;
-
-# ###################################################################3
-# Display Image and wait for ~10 seconds
-FLUSH ;
-LLW R2 0x0000 ;
-LHW R2 0x0040 ;
-LLW R3 0x0001 ;
-LLW R4 0x0004 ;
-LHW R4 0x0800 ;
-LLW R5 0x0005 ;
-LHW R5 0x0800 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-STORE R2 R4 0x0000 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-STORE R3 R5 0x0000 ;
-
-LLW R31 0x0073 ;
-CALL SPART_SEND ;
-
-LLW R6 0xFFFF ;
-LHW R6 0x3FFF ;
-IM1_COPIED_WAIT SUB R6 R6 R3 ;
-B NEQ IM1_COPIED_WAIT ;
-STORE R0 R5 0x0000 ;
-
-#####################################################
-# Now start Algo part
-# Tic Counter Reset
-# LLW R2 0x0006 ;
-# LHW R2 0x0800 ;
-# STORE R0 R2 0x00 ; 
-
-# R2 Input image start addr
-# R3 Output Image Algo start addr
-# R4 Row Limiter
-# R5 Column limiter
-# R6 Row iterator
-# R7 Column Iterator
-# R8 Current Pixel output addr
-# R9 Gx, G
-# R10 Gy
-# R11 Pixel 0,0 Addr 
-# R12 Pixel 1,0 Addr
-# R13 Pixel 2,0 Addr
-# R14  640
-# R15 Loaded input value
-# R16 - R19  Temporaries
-# R20 Partial Product
-# R21 1
-# R22 2
-# R23 128
-# R24 255
-
-ADD R2 R0 R0 ;
-ADD R3 R0 R0 ;
-LHW R3 0x0040 ;
-LLW R4 0x01DF ;
-LLW R5 0x027F ;
-LLW R6 0x0001 ;
-LLW R7 0x0001 ;
-LLW R20 0x0000 ;
-LLW R21 0x0001 ;
-LLW R22 0x0002 ;
-LLW R14 0x0280 ;
-LLW R23 0x0080 ;
-LLW R24 0x00FF ;
-
-# Start by updating addresses
-SOBEL_IM1_ALGO MULT R8 R6 R14 ;
-ADD R8 R8 R7 ;
-ADD R12 R8 R2 ;
-SUB R12 R12 R21 ;
-ADD R13 R12 R14 ;
-SUB R11 R12 R14 ;
-ADD R8 R8 R3 ; # ALL Addresses updated
-
-LLW R31 0x0074 ;
-CALL SPART_SEND ;
-
-# Calculate Gx
-LOAD R15 R11 0x0000 ;
-MULT R20 R15 R21 ;
-SUB R9 R0 R20 ;
-
-LOAD R15 R11 0x0002 ;
-MULT R20 R15 R21 ;
-ADD R9 R9 R20 ;
-
-LOAD R15 R12 0x0000 ;
-MULT R20 R15 R22 ;
-SUB R9 R9 R20 ;
-
-LOAD R15 R12 0x0002 ;
-MULT R20 R15 R22 ;
-ADD R9 R9 R20 ;
-
-LOAD R15 R13 0x0000 ;
-MULT R20 R15 R21 ;
-SUB R9 R9 R20 ;
-
-LOAD R15 R13 0x0002 ;
-MULT R20 R15 R21 ;
-ADD R9 R9 R20 ;
-
-LLW R31 0x0075 ;
-CALL SPART_SEND ;
-
-# Calculate Gy
-LOAD R15 R11 0x0000 ;
-MULT R20 R15 R21 ;
-ADD R10 R0 R20 ;
-
-LOAD R15 R11 0x0001 ;
-MULT R20 R15 R22 ;
-ADD R10 R10 R20 ;
-
-LOAD R15 R11 0x0002 ;
-MULT R20 R15 R21 ;
-ADD R10 R10 R20 ;
-
-LOAD R15 R13 0x0000 ;
-MULT R20 R15 R21 ;
-SUB R10 R0 R20 ;
-
-LOAD R15 R13 0x0001 ;
-MULT R20 R15 R22 ;
-SUB R10 R10 R20 ;
-
-LOAD R15 R13 0x0002 ;
-MULT R20 R15 R21 ;
-SUB R10 R10 R20 ;
-
-# Calculate G
-MULT R9 R9 R9 ;
-MULT R10 R10 R10 ;
-ADD R9 R9 R10 ;
-ITOF R9 R9 ;
-SQRT R9 R9 ;
-FTOI R9 R9 ;
-
-SUB R0 R9 R23 ;
-B LT SOBEL_IM1_ALGO_0 ;
-STORE R24 R8 0x00 ;
-B UNCOND SOBEL_IM1_ALGO_255 ;
-SOBEL_IM1_ALGO_0 STORE R0 R8 0x00 ;
-
-# Increment iterators and jumps ;
-SOBEL_IM1_ALGO_255 ADD R7 R7 R21 ;
-SUB R0 R7 R5 ;
-B LT SOBEL_IM1_ALGO ;
-ADD R7 R0 R21 ;
-ADD R6 R6 R21 ;
-SUB R0 R6 R4 ;
-B LT SOBEL_IM1_ALGO ;
-
-LLW R31 0x0076 ;
-CALL SPART_SEND ;
-
-# # Tic Counter store value
-# LLW R2 0x0006 ;
-# LHW R2 0x0800 ;
-# LOAD R3 R2 0x0000 ;
-# LLW R2 0x3000 ;
-# LHW R2 0x00C0 ;
-# STORE R3 R2 0x00 ;
-
-# Sobel Algo ends for Image 1 !!!!!
-
-# ###################################################################3
-# Display Image and wait for ~10 seconds
-FLUSH ;
-LLW R2 0x0000 ;
-LHW R2 0x0040 ;
-LLW R3 0x0001 ;
-LLW R4 0x0004 ;
-LHW R4 0x0800 ;
-LLW R5 0x0005 ;
-LHW R5 0x0800 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-STORE R2 R4 0x0000 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-STORE R3 R5 0x0000 ;
-
-LLW R31 0x0077 ;
-CALL SPART_SEND ;
-
-LLW R6 0xFFFF ;
-LHW R6 0x3FFF ;
-IM1_ALGO_WAIT SUB R6 R6 R3 ;
-B NEQ IM1_ALGO_WAIT ;
-STORE R0 R5 0x0000 ;
+# LLW R6 0xFFFF ;
+# ADD R0 R0 R0 ;
+# ADD R0 R0 R0 ;
+# LHW R6 0x7FFF ;
+# ADD R0 R0 R0 ;
+# ADD R0 R0 R0 ;
+# IM1_ORIGINAL_WAIT SUB R6 R6 R3 ;
+# ADD R0 R0 R0 ;
+# ADD R0 R0 R0 ;
+# ADD R0 R0 R0 ;
+# B NEQ IM1_ORIGINAL_WAIT ;
+# ADD R0 R0 R0 ;
+# ADD R0 R0 R0 ;
+# ADD R0 R0 R0 ;
+# STORE R0 R5 0x0000 ;
 
 
-#####################################################
-# Send R31 via SPART
-# R31 - Data to send
-# R30 - SPART Address
-# R29 -  SPART Status address
-# R28 - SPART Write Mask / 1
-# R27 - Temporary
+# # ######################################################################
+# # Image 1 copy
+# # First store copy of image to output image to get edges
+# # R2 Input image addr
+# # R3 Output Image Algo addr
+# # R4 Output Image NPU addr
+# # R5 Input End address
+# # R6 Input value
+# # R7 1
 
-SPART_SEND LLW R30 0x0000 ;
-LHW R30 0x0800 ;
-LLW R29 0x0001 ;
-LHW R29 0x0800 ;
-LLW R28 0x0001 ;
+# LLW R2 0x0000 ;
+# LLW R3 0x0000 ;
+# LHW R3 0x0040 ;
+# LLW R4 0x0000 ;
+# LHW R4 0x0060 ;
+# LLW R5 0xB000 ;
+# LHW R5 0x0004 ;
+# LLW R7 0x0001 ;
 
-SPART_SEND_NOT_READY LOAD R27 R29 0x00 ;
-AND R0 R27 R28 ;
-B EQ SPART_SEND_NOT_READY ;
-STORE R31 R30 0x0000 ;
-RET ;
+# SOBEL_IM1_COPY LOAD R6 R2 0x0 ;
+# ADD R2 R2 R7 ;
+# STORE R6 R3 0x0 ;
+# ADD R3 R3 R7 ;
+# STORE R6 R4 0x0 ;
+# ADD R4 R4 R7 ;
+
+# SUB R0 R2 R5 ;
+# B NEQ SOBEL_IM1_COPY ; 
+
+# LLW R31 0x0072 ;
+# CALL SPART_SEND ;
+
+# # ###################################################################3
+# # Display Image and wait for ~10 seconds
+# FLUSH ;
+# LLW R2 0x0000 ;
+# LHW R2 0x0040 ;
+# LLW R3 0x0001 ;
+# LLW R4 0x0004 ;
+# LHW R4 0x0800 ;
+# LLW R5 0x0005 ;
+# LHW R5 0x0800 ;
+# ADD R0 R0 R0 ;
+# ADD R0 R0 R0 ;
+# ADD R0 R0 R0 ;
+# ADD R0 R0 R0 ;
+# STORE R2 R4 0x0000 ;
+# ADD R0 R0 R0 ;
+# ADD R0 R0 R0 ;
+# STORE R3 R5 0x0000 ;
+
+# LLW R31 0x0073 ;
+# CALL SPART_SEND ;
+
+# LLW R6 0xFFFF ;
+# LHW R6 0x3FFF ;
+# IM1_COPIED_WAIT SUB R6 R6 R3 ;
+# B NEQ IM1_COPIED_WAIT ;
+# STORE R0 R5 0x0000 ;
+
+# #####################################################
+# # Now start Algo part
+# # Tic Counter Reset
+# # LLW R2 0x0006 ;
+# # LHW R2 0x0800 ;
+# # STORE R0 R2 0x00 ; 
+
+# # R2 Input image start addr
+# # R3 Output Image Algo start addr
+# # R4 Row Limiter
+# # R5 Column limiter
+# # R6 Row iterator
+# # R7 Column Iterator
+# # R8 Current Pixel output addr
+# # R9 Gx, G
+# # R10 Gy
+# # R11 Pixel 0,0 Addr 
+# # R12 Pixel 1,0 Addr
+# # R13 Pixel 2,0 Addr
+# # R14  640
+# # R15 Loaded input value
+# # R16 - R19  Temporaries
+# # R20 Partial Product
+# # R21 1
+# # R22 2
+# # R23 128
+# # R24 255
+
+# ADD R2 R0 R0 ;
+# ADD R3 R0 R0 ;
+# LHW R3 0x0040 ;
+# LLW R4 0x01DF ;
+# LLW R5 0x027F ;
+# LLW R6 0x0001 ;
+# LLW R7 0x0001 ;
+# LLW R20 0x0000 ;
+# LLW R21 0x0001 ;
+# LLW R22 0x0002 ;
+# LLW R14 0x0280 ;
+# LLW R23 0x0080 ;
+# LLW R24 0x00FF ;
+
+# # Start by updating addresses
+# SOBEL_IM1_ALGO MULT R8 R6 R14 ;
+# ADD R8 R8 R7 ;
+# ADD R12 R8 R2 ;
+# SUB R12 R12 R21 ;
+# ADD R13 R12 R14 ;
+# SUB R11 R12 R14 ;
+# ADD R8 R8 R3 ; # ALL Addresses updated
+
+# LLW R31 0x0074 ;
+# CALL SPART_SEND ;
+
+# # Calculate Gx
+# LOAD R15 R11 0x0000 ;
+# MULT R20 R15 R21 ;
+# SUB R9 R0 R20 ;
+
+# LOAD R15 R11 0x0002 ;
+# MULT R20 R15 R21 ;
+# ADD R9 R9 R20 ;
+
+# LOAD R15 R12 0x0000 ;
+# MULT R20 R15 R22 ;
+# SUB R9 R9 R20 ;
+
+# LOAD R15 R12 0x0002 ;
+# MULT R20 R15 R22 ;
+# ADD R9 R9 R20 ;
+
+# LOAD R15 R13 0x0000 ;
+# MULT R20 R15 R21 ;
+# SUB R9 R9 R20 ;
+
+# LOAD R15 R13 0x0002 ;
+# MULT R20 R15 R21 ;
+# ADD R9 R9 R20 ;
+
+# LLW R31 0x0075 ;
+# CALL SPART_SEND ;
+
+# # Calculate Gy
+# LOAD R15 R11 0x0000 ;
+# MULT R20 R15 R21 ;
+# ADD R10 R10 R20 ;
+
+# LOAD R15 R11 0x0001 ;
+# MULT R20 R15 R22 ;
+# ADD R10 R10 R20 ;
+
+# LOAD R15 R11 0x0002 ;
+# MULT R20 R15 R21 ;
+# ADD R10 R10 R20 ;
+
+# LOAD R15 R13 0x0000 ;
+# MULT R20 R15 R21 ;
+# SUB R10 R10 R20 ;
+
+# LOAD R15 R13 0x0001 ;
+# MULT R20 R15 R22 ;
+# SUB R10 R10 R20 ;
+
+# LOAD R15 R13 0x0002 ;
+# MULT R20 R15 R21 ;
+# SUB R10 R10 R20 ;
+
+# # Calculate G
+# MULT R9 R9 R9 ;
+# MULT R10 R10 R10 ;
+# ADD R9 R9 R10 ;
+# ITOF R9 R9 ;
+# SQRT R9 R9 ;
+# FTOI R9 R9 ;
+
+# SUB R0 R9 R23 ;
+# B LT SOBEL_IM1_ALGO_0 ;
+# STORE R24 R8 0x00 ;
+# B UNCOND SOBEL_IM1_ALGO_255 ;
+# SOBEL_IM1_ALGO_0 STORE R0 R8 0x00 ;
+
+# # Increment iterators and jumps ;
+# SOBEL_IM1_ALGO_255 ADD R7 R7 R21 ;
+# SUB R0 R7 R5 ;
+# B LT SOBEL_IM1_ALGO ;
+# ADD R7 R0 R21 ;
+# ADD R6 R6 R21 ;
+# SUB R0 R6 R4 ;
+# B LT SOBEL_IM1_ALGO ;
+
+# LLW R31 0x0076 ;
+# CALL SPART_SEND ;
+
+# # # Tic Counter store value
+# # LLW R2 0x0006 ;
+# # LHW R2 0x0800 ;
+# # LOAD R3 R2 0x0000 ;
+# # LLW R2 0x3000 ;
+# # LHW R2 0x00C0 ;
+# # STORE R3 R2 0x00 ;
+
+# # Sobel Algo ends for Image 1 !!!!!
+
+# # ###################################################################3
+# # Display Image and wait for ~10 seconds
+# FLUSH ;
+# LLW R2 0x0000 ;
+# LHW R2 0x0040 ;
+# LLW R3 0x0001 ;
+# LLW R4 0x0004 ;
+# LHW R4 0x0800 ;
+# LLW R5 0x0005 ;
+# LHW R5 0x0800 ;
+# ADD R0 R0 R0 ;
+# ADD R0 R0 R0 ;
+# ADD R0 R0 R0 ;
+# ADD R0 R0 R0 ;
+# STORE R2 R4 0x0000 ;
+# ADD R0 R0 R0 ;
+# ADD R0 R0 R0 ;
+# STORE R3 R5 0x0000 ;
+
+# LLW R31 0x0077 ;
+# CALL SPART_SEND ;
+
+# LLW R6 0xFFFF ;
+# LHW R6 0x3FFF ;
+# IM1_ALGO_WAIT SUB R6 R6 R3 ;
+# B NEQ IM1_ALGO_WAIT ;
+# STORE R0 R5 0x0000 ;
+
+
+# #####################################################
+# # Send R31 via SPART
+# # R31 - Data to send
+# # R30 - SPART Address
+# # R29 -  SPART Status address
+# # R28 - SPART Write Mask / 1
+# # R27 - Temporary
+
+# SPART_SEND LLW R30 0x0000 ;
+# LHW R30 0x0800 ;
+# LLW R29 0x0001 ;
+# LHW R29 0x0800 ;
+# LLW R28 0x0001 ;
+
+# SPART_SEND_NOT_READY LOAD R27 R29 0x00 ;
+# AND R0 R27 R28 ;
+# B EQ SPART_SEND_NOT_READY ;
+# STORE R31 R30 0x0000 ;
+# RET ;
