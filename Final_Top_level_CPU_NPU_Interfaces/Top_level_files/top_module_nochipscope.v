@@ -527,7 +527,7 @@ I_cache InstructionROM (
     );
 
 // Chipscope related items
-/*		icon icon_1
+		icon icon_1
 	(
 		.CONTROL0(control)
 	);
@@ -539,7 +539,7 @@ I_cache InstructionROM (
 		.DATA(dataport),
 		.TRIG0(trigger)
 	);
-*/
+
 	//assign dataport[0] = clk_in;
 	assign dataport[256:1] = mem_data_wr2;
 	assign dataport[512:257] = mem_data_rd2;
