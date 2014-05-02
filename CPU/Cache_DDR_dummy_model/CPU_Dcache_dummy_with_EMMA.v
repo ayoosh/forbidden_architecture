@@ -64,14 +64,14 @@ module CPU_Dcache_dummy #(
 	assign mem_data_wr1 = rom_data[31:0];
 	// This generates error
 	// assign mem_data_wr1 = (rom_addr == 16'd20000 & mem_rw_data1) ? 32'hFFFFFFFF : rom_data[31:0];
- //  assign mem_data_addr1 = {8'd0,increment_address,rom_addr};
-	assign mem_data_addr1 = {12'd0,rom_addr};
+   assign mem_data_addr1 = {8'd0,increment_address,rom_addr};
+//	assign mem_data_addr1 = {12'd0,rom_addr};
 		
 	always @(posedge clk)
 	begin
 		if(rst)
 		increment_address <= 4'd0;
-		else if( ( (rom_addr == 16'd20000) & ~last_command_done ) && (mem_ready_data1) & (mem_ready_count == 1) )
+		else if( ( (rom_addr == 16'd21000) & ~last_command_done ) && (mem_ready_data1) & (mem_ready_count == 1) )
 		increment_address <= increment_address + 1;
 		else
 		increment_address <= increment_address;
@@ -85,10 +85,10 @@ module CPU_Dcache_dummy #(
 	error <= 0;
 	else
 		begin
-		if((mem_ready_data1 & mem_valid_data1 & ~mem_rw_data1) & (mem_data_rd1 != mem_data_wr1))
+		if((mem_ready_data1 & mem_valid_data1 & ~mem_rw_data1 & ~flush) & (mem_data_rd1 != mem_data_wr1))
 		error <= 1;
-	//	else if(mem_ready_data1)
-	//	error <= 0;
+		else if(mem_ready_data1)
+		error <= 0;
 		end
 	end
 	
@@ -113,7 +113,7 @@ module CPU_Dcache_dummy #(
 		end
 		else
 		begin
-			if( ( (rom_addr == 16'd20000 | last_address) & ~last_command_done ) && (mem_ready_data1 | enable_cycle) )
+			if( ( (rom_addr == 16'd21000 | last_address) & ~last_command_done ) && (mem_ready_data1 | enable_cycle) )
 				begin
 				
 				if(mem_ready_data1)
@@ -126,7 +126,7 @@ module CPU_Dcache_dummy #(
 					begin
 
 
-					if(mem_ready_count == 2)  // Last Command was read, so now write
+					if(mem_ready_count == 2 & ~flush & ~update_write)  // Last Command was read, so now write
 						begin
 						//mem_rw_data1 <= 1;
 						//rom_addr <= 6'd0;

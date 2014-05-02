@@ -16,7 +16,7 @@ LLW R1 0xa79c ;
 LHW R1 0xbeca ;
 
 LLW R2 0xa01c ;
-LHW R2 0x3c0f
+LHW R2 0xbc0f ;
 
 # values 2
 LLW R3 0xa4fd ;
