@@ -206,7 +206,7 @@ module cache_controller #(
 			WRITE_BACK: begin
 				if (mem_ready) begin
 					if (flush_flag)
-						NextState = ((count[9:0] == 1023)) ? IDLE : WRITE_BACK;
+						NextState = ((count[9:0] == 10'd1023)) ? IDLE : WRITE_BACK;
 					else
 						NextState = ALLOCATE;
 				end
@@ -226,7 +226,7 @@ module cache_controller #(
 			State <= int_cache_valid ? NextState : IDLE;
 			//flush_flag <= cache_valid & (State == IDLE) & flush;
 		//	flush_flag <= cache_valid & flush;
-			lru <= ( (count[9:0]==1023) && flush_int ) ? ~lru : tag_matched ? way[0] ? 2'b10 : 2'b01 : lru;  // LRU must be exclusive. LRU = 1 means least recently used meaning Replace it!
+			lru <= ( (count[9:0] == 10'd1023) && flush_int ) ? ~lru : tag_matched ? way[0] ? 2'b10 : 2'b01 : lru;  // LRU must be exclusive. LRU = 1 means least recently used meaning Replace it!
 		end
 	end		
 
@@ -238,7 +238,7 @@ module cache_controller #(
 			//if ((State == WRITE_BACK) && ((mem_ready & dirty_read[convert(lru)]) | ~dirty_read[convert(lru)])) begin
 			//if ((State == WRITE_BACK) && mem_ready) begin
 				if (flush_flag)
-					count <= count + 10'h1;
+					count <= count + 11'h1;
 				else
 					count <= 11'h0;
 			end
@@ -272,7 +272,7 @@ module cache_controller #(
 	assign tag_matched = (State == COMPARE_TAG) & hit;
 	//assign cache_flushed = (State == WRITE_BACK) & mem_ready & flush_flag & (count[9:0] == 1023);
 	//assign cache_flushed = (State == WRITE_BACK) & mem_ready & flush_flag & (count == 2047);
-	assign cache_flushed = (State == WRITE_BACK) & flush_flag & ( (count == 2047) & flush_int );
+	assign cache_flushed = (State == WRITE_BACK) & flush_flag & ( (count == 11'd2047) & flush_int );
 
 	assign read_block_data = hit ? data_read[convert(way)] : 256'h0;
 
