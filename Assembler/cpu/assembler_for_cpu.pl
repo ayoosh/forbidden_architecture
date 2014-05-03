@@ -8,6 +8,7 @@ open(DATA, $ARGV[0]) or die "Can't open";
 $start_address = hex($ARGV[1]);
 
 open my $overwrite, '>>', 'machine_code.txt' or die "error trying to overwrite: $!";
+open my $ref, '>>','reference.txt' or die "error  trying to overwrite: $!";
 
 my @machine_code;
 
@@ -154,6 +155,15 @@ while($line_number<$line_count)
 	print "Source is $string[$line_number]";	
 	$machine_code[$machine_code_line_number] = $result;
         print "The machine code is $machine_code[$machine_code_line_number] \n \n";
+
+	print $ref "$machine_code[$machine_code_line_number] --- ";
+
+	@inst = split(/ /,$string[$line_number]);
+	$acc = @inst ; 
+	for($y=0;$y < $acc-1;$y = $y+1) {
+		print $ref "$inst[$y] ";		
+	}
+	print $ref "\n";
 	$line_number++;
 	$machine_code_line_number++;
 end:
