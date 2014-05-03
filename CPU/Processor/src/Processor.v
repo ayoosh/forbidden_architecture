@@ -395,7 +395,6 @@ module Processor(
 	wire			ex_mem_BranchPredict;
 	wire	[31:0]	ex_mem_BranchAddr;
 	wire			ex_mem_NpuCfgOp, ex_mem_NpuEnqOp;
-	wire			ex_mem_CacheFlush;
 
 	wire	[31:0]	mem_ex_ExuResult;
 	wire	[1:0]	forwardCmd0, forwardCmd1;
@@ -414,7 +413,7 @@ module Processor(
 		.oMemWrite			(ex_mem_MemWrite),
 		.oMemValid			(ex_mem_MemValid),
 		.oMemToReg			(ex_mem_MemToReg),
-		.oCacheFlush		(ex_mem_CacheFlush),
+		.oCacheFlush		(cache_flush_data),
 		.oWriteAddr			(ex_mem_WriteAddr),
 		.oWriteEn			(ex_mem_WriteEn),
 		.oHalt				(ex_mem_Halt),
@@ -489,7 +488,6 @@ module Processor(
 	reg				mem_ex_ZeroFlag_Stall;
 	reg				mem_ex_NegativeFlag_Stall;
 	reg				mem_ex_OverflowFlag_Stall;
-	reg				mem_ex_CacheFlush;
 
 	always @ (posedge clk) begin
 		if (!rst_n) begin
@@ -509,7 +507,6 @@ module Processor(
 			mem_ex_BranchAddr		<= 0;
 			mem_ex_NpuCfgOp			<= 0;
 			mem_ex_NpuEnqOp			<= 0;
-			mem_ex_CacheFlush		<= 0;
 		end
 		else if (!fullStall) begin
 			if (branchMissPredict || mem_wb_RetCmd || mem_wb_Halt) begin
@@ -529,7 +526,6 @@ module Processor(
 				mem_ex_BranchAddr		<= 0;
 				mem_ex_NpuCfgOp			<= 0;
 				mem_ex_NpuEnqOp			<= 0;
-				mem_ex_CacheFlush		<= 0;
 			end
 			else begin
 				mem_ex_NextPC			<= ex_mem_NextPC;
@@ -548,7 +544,6 @@ module Processor(
 				mem_ex_BranchAddr		<= ex_mem_BranchAddr;
 				mem_ex_NpuCfgOp			<= ex_mem_NpuCfgOp;
 				mem_ex_NpuEnqOp			<= ex_mem_NpuEnqOp;
-				mem_ex_CacheFlush		<= ex_mem_CacheFlush;
 			end
 		end
 	end
@@ -618,7 +613,6 @@ module Processor(
 		.oRetAddr			(mem_wb_RetAddr),
 		.oNpuCfgOp			(mem_wb_NpuCfgOp),
 		.oNpuEnqOp			(mem_wb_NpuEnqOp),
-		.oCacheFlush		(cache_flush_data),
 		.oHalt				(mem_wb_Halt),
 
 		// Inputs
@@ -643,7 +637,6 @@ module Processor(
 		.iBranchPredict		(mem_ex_BranchPredict),
 		.iNpuCfgOp			(mem_ex_NpuCfgOp),
 		.iNpuEnqOp			(mem_ex_NpuEnqOp),
-		.iCacheFlush		(mem_ex_CacheFlush),
 		.iHalt				(mem_ex_Halt)
 	);
 

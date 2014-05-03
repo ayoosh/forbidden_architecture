@@ -23,7 +23,6 @@ module MemoryStage (
 	output	[31:0]	oRetAddr,
 	output			oNpuCfgOp,
 	output			oNpuEnqOp,
-	output			oCacheFlush,
 	output			oHalt,
 
 	// Inputs
@@ -48,7 +47,6 @@ module MemoryStage (
 	input			iBranchPredict,
 	input			iNpuCfgOp,
 	input			iNpuEnqOp,
-	input			iCacheFlush,
 	input			iHalt
 );
 
@@ -82,6 +80,5 @@ module MemoryStage (
 	assign oBranchMissCmd	= oBranchCmd ^ iBranchPredict;
 	assign oNpuCfgOp		= iNpuCfgOp;
 	assign oNpuEnqOp		= iNpuEnqOp;
-	assign oCacheFlush		= iCacheFlush;
 	
 endmodule

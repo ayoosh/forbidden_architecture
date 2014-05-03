@@ -203,7 +203,7 @@ module Control (
 							(decode == DEQD));
 
 	assign	oMemToReg	= (decode == LOAD); 
-	assign	oMemValid	= ((decode == LOAD) | (decode == STORE) | (decode == CALL) | (decode == RET) | (decode == FLUSH)); 
+	assign	oMemValid	= ((decode == LOAD) | (decode == STORE) | (decode == CALL) | (decode == RET)); 
 	assign	oMemWrite	= ((decode == STORE) | (decode == CALL));
 
 	assign	oJumpCmd	= (decode == CALL);
