@@ -129,12 +129,13 @@ module ExecutionStage (
 
 	always @ (posedge iClk) begin
 		if (!iRst_n) begin
-			oZeroFlag		<= 0;
-			oNegativeFlag	<= 0;
-			oOverflowFlag	<= 0;
 			zeroEn			<= 0;
 			negativeEn		<= 0;
 			overflowEn		<= 0;
+		
+			oZeroFlag		<= 0;
+			oNegativeFlag	<= 0;
+			oOverflowFlag	<= 0;
 		end
 		else begin
 			zeroEn		<= iZeroEn;

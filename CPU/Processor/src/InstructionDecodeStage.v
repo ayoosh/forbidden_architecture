@@ -95,8 +95,7 @@ module InstructionDecodeStage (
 		.oNpuCfgOp		(oNpuCfgOp),
 		.oNpuEnqOp		(oNpuEnqOp),
 		.oNpuDeqOp		(oNpuDeqOp),
-		.iInstruction	(iInstruction),
-		.iRst_n			(iRst_n)
+		.iInstruction	(iInstruction)
 	);
 
 	RegisterFile RegisterFile_0 (

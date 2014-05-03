@@ -90,29 +90,41 @@ module Processor(
 	wire		[31:0]	id_if_Instruction;
 
 	always @ (posedge clk) begin
-		if (!rst_n || !fullStall) begin
-			if (!rst_n || !semiStall) begin
-				if (!rst_n || mem_wb_RetCmd || mem_wb_Halt) begin
-					id_if_NextPC_Stall		<= 32'h0;
-				end
-				else begin
-					id_if_NextPC_Stall		<= if_id_NextPC;
-				end
+		if (!rst_n)
+			id_if_NextPC_Stall <= 32'h0000_0000;
+		else if (!fullStall) begin
+			if (!semiStall) begin
+				if (mem_wb_RetCmd || mem_wb_Halt)
+					id_if_NextPC_Stall <= 32'h0000_0000;
+				else
+					id_if_NextPC_Stall <= if_id_NextPC;
 			end
-		end	
+			else
+				id_if_NextPC_Stall <= id_if_NextPC_Stall;
+		end
+		else
+			id_if_NextPC_Stall <= id_if_NextPC_Stall;
 	end
 	
 	always @ (posedge clk) begin
-		if (!rst_n || !fullStall) begin
-			if_id_NextPC_Stall <= id_if_NextPC_Stall;
+		if (!rst_n)
+			if_id_NextPC_Stall <= 32'h0000_0000;
+		else begin
+			if (!fullStall && !haltPC)
+				if_id_NextPC_Stall <= id_if_NextPC_Stall;
+			else
+				if_id_NextPC_Stall <= if_id_NextPC_Stall;
 		end
 	end
 	
 	always @ (posedge clk) begin
-		afterReset <= rst_n;
+		if (!rst_n)
+			afterReset <= 1'b0;
+		else
+			afterReset <= 1'b1;
 	end
 	
-	assign id_if_NextPC = (semiStall & ~rSemiStall) ? if_id_NextPC_Stall : id_if_NextPC_Stall;
+	assign id_if_NextPC = ((semiStall & ~rSemiStall) || haltPC) ? if_id_NextPC_Stall : id_if_NextPC_Stall;
 	assign id_if_Instruction = !afterReset ? 32'h0000_0000 : if_id_Instruction;
 
 	wire	[31:0]	id_ex_Src0, id_ex_Src1, id_ex_Immediate, id_ex_NextPC;
@@ -126,7 +138,6 @@ module Processor(
 	wire	[31:0]	id_ex_MemData;
 	wire	[4:0]	id_ex_WriteAddr;
 	wire			id_ex_WriteEn;
-	wire	[25:0]	id_ex_Offset;
 	wire			id_ex_CallCmd, id_ex_RetCmd, id_ex_LoadCmd;
 	wire			id_ex_Halt;
 	wire			id_ex_NpuCfgOp, id_ex_NpuEnqOp, id_ex_NpuDeqOp;
@@ -137,13 +148,46 @@ module Processor(
 	wire	[4:0]	writeRegAddr;
 	wire	[31:0]	writeRegData;
 	wire			writeRegEn;
+	
+	wire	[31:0]	id_ex_BranchAddr;
+	reg		[31:0]	rBranchAddr;
+	
+	always @ (posedge clk) begin
+		if (!rst_n)
+			rBranchAddr <= 0;
+		else begin
+			if (semiStall & ~rSemiStall)
+				rBranchAddr <= id_ex_BranchAddr;
+			else
+				rBranchAddr <= rBranchAddr;
+		end
+	end
+	
+	assign branchAddr = rSemiStall ? rBranchAddr : id_ex_BranchAddr;
+	
+	reg		[25:0]	rOffset;
+	wire	[25:0]	id_ex_Offset;
+	
+	always @ (posedge clk) begin
+		if (!rst_n)
+			rOffset <= 0;
+		else begin
+			if (semiStall & ~rSemiStall)
+				rOffset <= id_ex_Offset;
+			else
+				rOffset <= rOffset;
+		end
+	end
+	
+	assign offset = rSemiStall ? rOffset : id_ex_Offset;
+
 
 	InstructionDecodeStage InstructionDecodeStage_0 (
 		// Outputs
 		.oSrc0				(id_ex_Src0),
 		.oSrc1				(id_ex_Src1),
 		.oImmediate			(id_ex_Immediate),
-		.oOffset			(offset),
+		.oOffset			(id_ex_Offset),
 		.oNextPC			(id_ex_NextPC),
 		.oExuShift			(id_ex_ExuShift),
 		.oExuOp				(id_ex_ExuOp),
@@ -169,7 +213,7 @@ module Processor(
 		.oRetCmd			(id_ex_RetCmd),
 		.oLoadCmd			(id_ex_LoadCmd),
 		.oStoreCmd			(id_ex_StoreCmd),
-		.oBranchAddr		(branchAddr),
+		.oBranchAddr		(id_ex_BranchAddr),
 		.oBranchPredict		(id_ex_BranchPredict),
 		.oNpuCfgOp			(id_ex_NpuCfgOp),
 		.oNpuEnqOp			(id_ex_NpuEnqOp),
@@ -217,8 +261,41 @@ module Processor(
 	
 
 	always @ (posedge clk) begin
-		if (!rst_n || !fullStall) begin
-			if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt || semiStall) begin
+		if (!rst_n) begin
+			ex_id_Immediate		<= 0;
+			ex_id_NextPC		<= 0;
+			ex_id_ExuShift		<= 0;
+			ex_id_ExuOp			<= 0;
+			ex_id_AluOp			<= 0;
+			ex_id_MduOp			<= 0;
+			ex_id_FpuOp			<= 0;
+			ex_id_BranchOp		<= 0;
+			ex_id_BranchCmd		<= 0;
+			ex_id_AluCmd		<= 0;
+			ex_id_Halt			<= 0;
+			ex_id_MemWrite		<= 0;
+			ex_id_MemValid		<= 0;
+			ex_id_MemToReg		<= 0;
+			ex_id_CacheFlush	<= 0;
+			ex_id_ZeroEn		<= 0;
+			ex_id_NegativeEn	<= 0;
+			ex_id_OverflowEn	<= 0;
+			ex_id_WriteAddr		<= 0;
+			ex_id_WriteEn		<= 0;
+			ex_id_Offset		<= 0;
+			ex_id_RetCmd		<= 0;
+			ex_id_Halt			<= 0;
+			ex_id_BranchPredict	<= 0;
+			ex_id_BranchAddr	<= 0;
+			ex_id_NpuCfgOp		<= 0;
+			ex_id_NpuEnqOp		<= 0;
+			ex_id_NpuDeqOp		<= 0;
+			ex_id_Instruction	<= 0;
+			ex_if_LoadCmd		<= 0;
+			ex_id_StoreCmd		<= 0;
+		end
+		else if (!fullStall) begin
+			if (branchMissPredict || mem_wb_RetCmd || mem_wb_Halt || semiStall) begin
 				ex_id_Immediate		<= 0;
 				ex_id_NextPC		<= 0;
 				ex_id_ExuShift		<= 0;
@@ -241,7 +318,7 @@ module Processor(
 				ex_id_WriteEn		<= 0;
 				ex_id_Offset		<= 0;
 				ex_id_RetCmd		<= 0;
-				ex_id_Halt			<= mem_wb_Halt & rst_n;
+				ex_id_Halt			<= mem_wb_Halt;
 				ex_id_BranchPredict	<= 0;
 				ex_id_BranchAddr	<= 0;
 				ex_id_NpuCfgOp		<= 0;
@@ -272,7 +349,7 @@ module Processor(
 				ex_id_OverflowEn	<= rSemiStall ? 1'b0 : id_ex_OverflowEn;
 				ex_id_WriteAddr		<= id_ex_WriteAddr;
 				ex_id_WriteEn		<= id_ex_WriteEn;
-				ex_id_Offset		<= offset;
+				ex_id_Offset		<= id_ex_Offset;
 				ex_id_RetCmd		<= id_ex_RetCmd;
 				ex_if_LoadCmd		<= id_ex_LoadCmd;
 				ex_id_BranchPredict	<= id_ex_BranchPredict;
@@ -413,8 +490,26 @@ module Processor(
 	reg				mem_ex_OverflowFlag_Stall;
 
 	always @ (posedge clk) begin
-		if (!rst_n || !fullStall) begin
-			if (!rst_n || branchMissPredict || mem_wb_RetCmd || mem_wb_Halt) begin
+		if (!rst_n) begin
+			mem_ex_NextPC			<= 0;
+			mem_ex_BranchOp			<= 0;
+			mem_ex_BranchCmd		<= 0;
+			mem_ex_MemData			<= 0;
+			mem_ex_MemWrite			<= 0;
+			mem_ex_MemValid			<= 0;
+			mem_ex_MemToReg			<= 0;
+			mem_ex_WriteAddr		<= 0;
+			mem_ex_WriteEn			<= 0;
+			mem_ex_Halt				<= 0;
+			mem_ex_Offset			<= 0;
+			mem_ex_RetCmd			<= 0;
+			mem_ex_BranchPredict	<= 0;
+			mem_ex_BranchAddr		<= 0;
+			mem_ex_NpuCfgOp			<= 0;
+			mem_ex_NpuEnqOp			<= 0;
+		end
+		else if (!fullStall) begin
+			if (branchMissPredict || mem_wb_RetCmd || mem_wb_Halt) begin
 				mem_ex_NextPC			<= 0;
 				mem_ex_BranchOp			<= 0;
 				mem_ex_BranchCmd		<= 0;
@@ -424,7 +519,7 @@ module Processor(
 				mem_ex_MemToReg			<= 0;
 				mem_ex_WriteAddr		<= 0;
 				mem_ex_WriteEn			<= 0;
-				mem_ex_Halt				<= mem_wb_Halt & rst_n;
+				mem_ex_Halt				<= mem_wb_Halt;
 				mem_ex_Offset			<= 0;
 				mem_ex_RetCmd			<= 0;
 				mem_ex_BranchPredict	<= 0;
@@ -480,6 +575,22 @@ module Processor(
 	wire			mem_wb_BranchCmd;
 	wire	[25:0]	mem_wb_Offset;
 	wire			mem_wb_NpuCfgOp, mem_wb_NpuEnqOp;
+	wire	[31:0]	mem_wb_BranchMissAddr;
+	
+	reg		[31:0]	rBranchMissAddr;
+	
+	always @ (posedge clk) begin
+		if (!rst_n)
+			rBranchMissAddr <= 0;
+		else begin
+			if (semiStall & ~rSemiStall)
+				rBranchMissAddr <= mem_wb_BranchMissAddr;
+			else
+				rBranchMissAddr <= rBranchMissAddr;
+		end
+	end
+	
+	assign branchMissAddr = rSemiStall ? rBranchMissAddr : mem_wb_BranchMissAddr;
 
 	MemoryStage MemoryStage_0 (
 		// Outputs
@@ -491,7 +602,7 @@ module Processor(
 		.oDataMemData		(cache_wr_data),
 		.oDataMemRW			(cache_rw_data),
 		.oDataMemValid		(cache_valid_data),
-		.oBranchMissAddr	(branchMissAddr),
+		.oBranchMissAddr	(mem_wb_BranchMissAddr),
 		.oBranchCmd			(mem_wb_BranchCmd),
 		.oBranchMissCmd		(branchMissPredict),
 		.oWriteEn			(mem_wb_WriteEn),
@@ -543,14 +654,28 @@ module Processor(
 	reg		[31:0]	wb_mem_RetAddr;
 
 	always @ (posedge clk) begin
-		if (!rst_n || !fullStall) begin
-			if (!rst_n || haltPC) begin
+		if (!rst_n) begin
+			wb_mem_ExuData		<= 0;
+			wb_mem_WriteAddr	<= 0;
+			wb_mem_WriteEn		<= 0;
+			wb_mem_MemToReg		<= 0;
+			wb_mem_RetCmd		<= 0;
+			wb_mem_Halt			<= 0;
+			wb_mem_Offset		<= 0;
+			wb_mem_MemValid		<= 0;
+			wb_mem_NpuCfgOp		<= 0;
+			wb_mem_NpuEnqOp		<= 0;
+			wb_mem_MemData		<= 0;
+			wb_mem_RetAddr		<= 0;
+		end
+		else if (!fullStall) begin
+			if (haltPC) begin
 				wb_mem_ExuData		<= 0;
 				wb_mem_WriteAddr	<= 0;
 				wb_mem_WriteEn		<= 0;
 				wb_mem_MemToReg		<= 0;
 				wb_mem_RetCmd		<= 0;
-				wb_mem_Halt			<= mem_wb_Halt & rst_n;
+				wb_mem_Halt			<= mem_wb_Halt;
 				wb_mem_Offset		<= 0;
 				wb_mem_MemValid		<= 0;
 				wb_mem_NpuCfgOp		<= 0;
@@ -566,7 +691,7 @@ module Processor(
 				wb_mem_RetCmd		<= mem_wb_RetCmd;
 				wb_mem_Halt			<= mem_wb_Halt;
 				wb_mem_Offset		<= mem_wb_Offset;
-				wb_mem_MemValid		<= mem_ex_MemValid; // Look at this!
+				wb_mem_MemValid		<= mem_ex_MemValid;
 				wb_mem_NpuCfgOp		<= mem_wb_NpuCfgOp;
 				wb_mem_NpuEnqOp		<= mem_wb_NpuEnqOp;
 				wb_mem_MemData		<= mem_wb_MemData;
@@ -575,8 +700,21 @@ module Processor(
 		end
 	end
 	
-	//assign wb_mem_MemData = mem_wb_MemData;
-	//assign wb_mem_RetAddr = mem_wb_RetAddr;
+	wire	[31:0]	wb_if_RetAddr;
+	reg		[31:0]	rRetAddr;
+	
+	always @ (posedge clk) begin
+		if (!rst_n)
+			rRetAddr <= 0;
+		else begin
+			if (semiStall & ~rSemiStall)
+				rRetAddr <= wb_if_RetAddr;
+			else
+				rRetAddr <= rRetAddr;
+		end
+	end
+	
+	assign retAddr = rSemiStall ? rRetAddr : wb_if_RetAddr;
 
 	WriteBackStage WriteBackStage_0 (
 		// Outputs
@@ -584,7 +722,7 @@ module Processor(
 		.oWriteAddr			(writeRegAddr),
 		.oWriteEn			(writeRegEn),
 		.oRetCmd			(retCmd),
-		.oRetAddr			(retAddr),
+		.oRetAddr			(wb_if_RetAddr),
 		.oHalt				(haltPC),
 
 		// Inputs
@@ -622,7 +760,7 @@ module Processor(
 		.iWbRegWrite		(wb_mem_WriteEn)
 	);
 
-	wire			id_if_StoreCmd;
+	wire id_if_StoreCmd;
 	
 	assign id_if_StoreCmd = (id_if_Instruction[31:26] == 6'b01_0101);
 	

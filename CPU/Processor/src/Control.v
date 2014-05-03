@@ -36,8 +36,7 @@ module Control (
 	output			oNpuDeqOp,
 
 	//Inputs
-	input	[31:0]	iInstruction,
-	input			iRst_n
+	input	[31:0]	iInstruction
 );
 	
 	// Insternal signals declaration
@@ -131,39 +130,39 @@ module Control (
 	assign shift_amount	= iInstruction[4:0];
 	
 	// Instruction Decoder
-	assign	oEnWrite	= iRst_n & ~((decode == FLUSH) |
-									(decode == BRANCH) |
-									(decode == STORE) |
-									(decode == HALT) |
-									(decode == ENQC) |
-									(decode == ENQD));
+	assign	oEnWrite	= ~((decode == FLUSH) |
+							(decode == BRANCH) |
+							(decode == STORE) |
+							(decode == HALT) |
+							(decode == ENQC) |
+							(decode == ENQD));
 	assign	oAddrWrite	= ((decode == CALL) | (decode == RET)) ? 5'h01 : register_d;
 	
-	assign	oEnRead0	= iRst_n & ~((decode == LLW) |
-									(decode == FLUSH) |
-									(decode == BRANCH) |
-									(decode == HALT) |
-									(decode == ENQC) |
-									(decode == DEQD));
+	assign	oEnRead0	= ~((decode == LLW) |
+							(decode == FLUSH) |
+							(decode == BRANCH) |
+							(decode == HALT) |
+							(decode == ENQC) |
+							(decode == DEQD));
 	assign	oAddrRead0	= ((decode == LHW) | (decode == ENQD)) ? register_d : (((decode == CALL) | (decode == RET)) ? 5'h01 : register_n1);
 
-	assign	oEnRead1	= iRst_n & ~((decode == LHW) |
-									(decode == LLW) |
-									(decode == NOT) |
-									(decode == SLL) |
-									(decode == SRL) |
-									(decode == SRA) |
-									(decode == FLUSH) |
-									(decode == BRANCH) |
-									(decode == LOAD) |
-									(decode == CALL) |
-									(decode == FTOI) |
-									(decode == ITOF) |
-									(decode == SQRT) |
-									(decode == HALT) |
-									(decode == ENQC) |
-									(decode == ENQD) |
-									(decode == DEQD));
+	assign	oEnRead1	= ~((decode == LHW) |
+							(decode == LLW) |
+							(decode == NOT) |
+							(decode == SLL) |
+							(decode == SRL) |
+							(decode == SRA) |
+							(decode == FLUSH) |
+							(decode == BRANCH) |
+							(decode == LOAD) |
+							(decode == CALL) |
+							(decode == FTOI) |
+							(decode == ITOF) |
+							(decode == SQRT) |
+							(decode == HALT) |
+							(decode == ENQC) |
+							(decode == ENQD) |
+							(decode == DEQD));
 	assign	oAddrRead1	= (decode == STORE) ? register_d : ((decode == LOAD) ? register_n1 :((decode == RET) ? 5'h00 : register_n2));
 	
 	assign	oZeroEn		= ~((decode == LHW) |
@@ -203,23 +202,23 @@ module Control (
 							(decode == ENQD) |
 							(decode == DEQD));
 
-	assign	oMemToReg	= iRst_n & (decode == LOAD); 
-	assign	oMemValid	= iRst_n & ((decode == LOAD) | (decode == STORE) | (decode == CALL) | (decode == RET)); 
-	assign	oMemWrite	= iRst_n & ((decode == STORE) | (decode == CALL));
+	assign	oMemToReg	= (decode == LOAD); 
+	assign	oMemValid	= ((decode == LOAD) | (decode == STORE) | (decode == CALL) | (decode == RET)); 
+	assign	oMemWrite	= ((decode == STORE) | (decode == CALL));
 
-	assign	oJumpCmd	= iRst_n & (decode == CALL);
+	assign	oJumpCmd	= (decode == CALL);
 
-	assign	oExuOp		= (iRst_n && !(decode == FLUSH) && (decode[5:4] == 2'b01)) ? (decode[3] ? EXU_FPU : ((decode[2:1] == 2'b11) ? EXU_MDU : EXU_ALU)) : EXU_ALU;
-	assign	oExuShift	= (iRst_n & ((decode == SLL) | (decode == SRL) | (decode == SRA))) ? shift_amount : 5'h00;
+	assign	oExuOp		= (!(decode == FLUSH) && (decode[5:4] == 2'b01)) ? (decode[3] ? EXU_FPU : ((decode[2:1] == 2'b11) ? EXU_MDU : EXU_ALU)) : EXU_ALU;
+	assign	oExuShift	= (((decode == SLL) | (decode == SRL) | (decode == SRA))) ? shift_amount : 5'h00;
 	
-	assign	oAluCmd		= iRst_n & ((decode == LHW) | (decode == LLW) | (decode == LOAD) | (decode == STORE) | (decode == ENQC));
+	assign	oAluCmd		= ((decode == LHW) | (decode == LLW) | (decode == LOAD) | (decode == STORE) | (decode == ENQC));
 	
-	assign	oLoadCmd	= iRst_n & (decode == LHW);
+	assign	oLoadCmd	= (decode == LHW);
 
-	assign	oBranchCmd	= iRst_n & (decode == BRANCH);
+	assign	oBranchCmd	= (decode == BRANCH);
 
-	assign	oCacheFlush	= iRst_n & (decode == FLUSH);
-	assign	oHalt		= iRst_n & (decode == HALT);
+	assign	oCacheFlush	= (decode == FLUSH);
+	assign	oHalt		= (decode == HALT);
 	
 	assign	oAluOp		= ((decode == LOAD) | (decode == STORE) | (decode == CALL) | (decode == RET)) ? ALU_ADD : decode[3:0];
 	assign	oFpuOp		= decode[2:0];
@@ -227,13 +226,13 @@ module Control (
 	assign	oMduOp		= decode[0];
 	assign	oOffset		= iInstruction[25:0];
 	
-	assign	oNpuCfgOp	= iRst_n & (decode == ENQC);
-	assign	oNpuEnqOp	= iRst_n & (decode == ENQD);
-	assign	oNpuDeqOp	= iRst_n & (decode == DEQD);
+	assign	oNpuCfgOp	= (decode == ENQC);
+	assign	oNpuEnqOp	= (decode == ENQD);
+	assign	oNpuDeqOp	= (decode == DEQD);
 	
-	assign	oCallCmd	= iRst_n & (decode == CALL);
-	assign	oRetCmd		= iRst_n & (decode == RET);
+	assign	oCallCmd	= (decode == CALL);
+	assign	oRetCmd		= (decode == RET);
 	
-	assign	oStoreCmd	= iRst_n & (decode == STORE);
+	assign	oStoreCmd	= (decode == STORE);
 	
 endmodule

@@ -3,7 +3,7 @@
 // Program Counter module ports declaration
 module ProgramCounter (
 	// Outputs
-	output	reg	[31:0]	oPC,
+	output		[31:0]	oPC,
 
 	// Inputs
 	input		[31:0]	iNextPC,
@@ -12,10 +12,12 @@ module ProgramCounter (
 	
 	// Outputs assignment
 	// Program counter flip-flop with reset and halt mux
-	always @ (iHalt, iNextPC) begin
+	/*always @ (iHalt, iNextPC) begin
 		if (!iHalt)
 			oPC <= iNextPC;			// Update the program counter to the new one
 		else
 			oPC <= oPC;				// Halt operation freezes the program counter update
-	end
+	end*/
+	
+	assign oPC = iNextPC;
 endmodule
