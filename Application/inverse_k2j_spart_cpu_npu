@@ -1,0 +1,65 @@
+# First configure the npu with the config values.
+# Then poll the spart register to see that its ready to send data
+# Send a character to SPART. This is received by Matlab.
+# receive two data, save that to registers
+# enq these values to the npu and then wait in DEQ
+# Then send these values back to Matlab again using Spart
+
+# R2 - SPART Address
+# R3 -  SPART Status address
+# R4 - SPART Read Mask
+# R5 - SPART Write Mask / 1
+# R7 - Character sent to SPART to receive the data.
+# R8 - Value read from SPART status register.
+# R9 - Stores the received data1. 
+# R10 - Stores the received data1.
+
+LLW R2 0x0000 ;
+LHW R2 0x0800 ;
+LLW R3 0x0001 ;
+LHW R3 0x0800 ;
+LLW R4 0x0002 ;
+LLW R5 0x0001 ;
+LLW R7 0x0069 ;
+
+# looping until spart ready to send
+IM1_SPART_TX_NOT_READY_1 LOAD R8 R3 0x00 ;
+AND R0 R8 R5 ;
+B EQ IM1_SPART_TX_NOT_READY_1 ;
+
+STORE R7 R2 0x0000 ;
+
+GET_DATA1 LOAD R8 R3 0x00 ;
+AND R0 R8 R4 ;
+B EQ GET_DATA1 ;
+
+LOAD R9 R2 0x00 ;
+
+GET_DATA2 LOAD R8 R3 0x00 ;
+AND R0 R8 R4 ;
+B EQ GET_DATA2 ;
+
+LOAD R10 R2 0x00 ;
+
+ENQD0 R9 ;
+ENQD0 R10 ;
+
+DEQD0 R9 ;
+DEQD0 R10 ;
+
+IM1_SPART_TX_NOT_READY_2 LOAD R8 R3 0x00 ;
+AND R0 R8 R5 ;
+B EQ IM1_SPART_TX_NOT_READY_2 ;
+
+STORE R9 R2 0x0000 ;
+
+IM1_SPART_TX_NOT_READY_3 LOAD R8 R3 0x00 ;
+AND R0 R8 R5 ;
+B EQ IM1_SPART_TX_NOT_READY_3 ;
+
+STORE R10 R2 0x0000 ;
+B UNCOND IM1_SPART_TX_NOT_READY_1 ;
+
+
+
+
