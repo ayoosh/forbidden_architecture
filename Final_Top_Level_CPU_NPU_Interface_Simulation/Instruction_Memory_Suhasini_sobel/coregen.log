@@ -1,0 +1,14 @@
+INFO:sim:172 - Generating IP...
+Applying current project options...
+Finished applying current project options.
+Customizing IP...
+Release 14.7 - Xilinx CORE Generator IP GUI Launcher P.20131013 (nt64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+WARNING:coreutil - WARNING:sim - Attempt to set e isEnabled state to an invalid
+   value: tru.
+   ERROR:sim:938 - Error while preparing for IP customization
+   ERROR:sim - Failed to initialize IP model.
+An Error occurred during Customization.
+ERROR:sim - Failed to generate 'I_cache'.  ERROR: Customization failed.
+   An error occurred while opening the IP GUI
+Wrote CGP file for project 'I_cache'.
