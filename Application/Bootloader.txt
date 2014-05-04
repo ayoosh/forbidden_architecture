@@ -21,7 +21,7 @@ LHW R1 0x020F ;
 
 # Set the base address and offset to store image ;
 LLW R11 0x0000 ;
-LHW R11 0x0020 ;
+# LHW R11 0x0020 ;
 LLW R10 0x0000 ;
 
 
@@ -90,7 +90,7 @@ B NEQ IM1_GET_PIXEL ;
 FLUSH ;
 
 LLW R2 0x0000 ;
-LHW R2 0x0020 ;
+# LHW R2 0x0020 ;
 LLW R3 0x0001 ;
 LLW R4 0x0004 ;
 LHW R4 0x0800 ;

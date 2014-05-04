@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module top_module_nochipscope #
+module top_module #
 	(
 		parameter BANK_WIDTH              = 2,       
 														// # of memory bank addr bits.
@@ -248,11 +248,12 @@ module top_module_nochipscope #
          wire     [27:0]  spart_mem_data_addr;											
 	       wire              spart_mem_rw_data;             							
 	     wire               spart_mem_valid_data;				
-	    wire 				  spart_mem_ready_data;	
+	    wire 				  spart_mem_ready_data;
+
 		 
 		 // Cache CPU wires
 		 	// Cache wires
-		wire	[31:0]	cache_addr;
+		wire	[27:0]	cache_addr;
 		wire		[31:0]	cache_wr;
 		wire				cache_rw;
 		wire				cache_valid;
@@ -403,7 +404,7 @@ module top_module_nochipscope #
 		cache_controller Dcache_inst (
 		.clk 			(clk_in),
 		.rst_n 			(~gl_rst),
-		.cache_addr		(cache_addr[27:0]),
+		.cache_addr		(cache_addr),
 		.cache_wr		(cache_wr),
 		.cache_rw		(cache_rw),
 		.cache_valid	(cache_valid),
@@ -492,10 +493,10 @@ npu npu(
     .npu_config_fifo_full(npu_config_fifo_full)
     );	
 	 
-I_cache InstructionROM (
+Sobel_withoutNPU InstructionROM (
   .clka(clk_in), // input clka
-  .addra(cache_addr_instr[15:0]), // input [8 : 0] addra
-  .douta(cache_rd_instr[31:0]) // output [31 : 0] douta
+  .addra(cache_addr_instr), // input [8 : 0] addra
+  .douta(cache_rd_instr) // output [31 : 0] douta
 );
 
 
@@ -505,7 +506,8 @@ I_cache InstructionROM (
 		.rst(gl_rst),         // Asynchronous reset, tied to dip switch 0
 		.txd(txd),        // RS232 Transmit Data
 		.rxd(rxd),         // RS232 Receive Data
-	
+		
+		
 	// Signals from/to SPART Cache interface
 		.io_rw_data(spart_mem_rw_data),
 		.io_valid_data(spart_mem_valid_data),
@@ -539,8 +541,8 @@ I_cache InstructionROM (
 		.DATA(dataport),
 		.TRIG0(trigger)
 	);
-
-	//assign dataport[0] = clk_in;
+	
+	assign dataport[0] = clk0_tb;
 	assign dataport[256:1] = mem_data_wr2;
 	assign dataport[512:257] = mem_data_rd2;
 	assign dataport[540:513] = mem_data_addr2;
@@ -559,7 +561,25 @@ I_cache InstructionROM (
 	assign dataport[633:606] = mem_data_addr3;
 	
 	assign dataport[665:634] = cache_addr_instr;
-	assign dataport[697:666] = cache_rd_instr;  
+	assign dataport[697:666] = cache_rd_instr;
+
+	// assign dataport[708:700] = piso_out;
+	// assign dataport[709] = o_start_transmitter;
+	// assign dataport[710] = o_start_receiver;
+	// assign dataport[742:711] = o_data_to_be_transmitted;
+	
+	assign dataport[731:700] = npu_input_fifo;
+	assign dataport[732] = npu_input_fifo_we;
+	
+	assign dataport[758:733] = npu_config_fifo[25:0];
+    assign dataport[759] = npu_config_fifo_we;
+    assign dataport[760] = npu_output_fifo_re;
+	 //Outputs
+    assign dataport[792:761] = npu_output_data;
+    assign dataport[793] = npu_output_fifo_empty;
+    assign dataport[794] = npu_input_fifo_full;
+    assign dataport[795] = npu_config_fifo_full;
+	
 
 	assign dataport[824] = mem_ready_data3;
 	assign dataport[825] = mem_valid_data3;
@@ -575,8 +595,8 @@ I_cache InstructionROM (
 	assign dataport[833] = mc_wr_rdy;
 	assign dataport[881:850] = cache_rd;
 			
-
-   assign dataport[927:900]  = mem_start; 
+    assign dataport[927:900] = mem_start;
+ 
 	assign dataport[952] = scl_tri;
 	assign dataport[953] = sda_tri;
 	assign dataport[965:954] = D;
@@ -594,8 +614,6 @@ I_cache InstructionROM (
 	
 	assign dataport[976] = app_af_wren;
 	assign dataport[977] = app_wdf_wren;
-	
-
 	//  assign dataport[978] = state_output;
 	
 //	assign trigger[0] = clk0_tb;
