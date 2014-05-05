@@ -1,0 +1,103 @@
+
+
+# Infinitely send STACK POINTER value to DDR and READ BACK
+# R2 - DDR Address1, Keep incrementing the address by 8
+# R3 - Different Data written in memory 
+# R4 - Address Increment by 8
+# R5 - 
+# R6 - Memory mapped I/O address to send/receive data (32 bit)
+START_AGAIN LLW R2 0x0000 ;
+LHW R2 0x0C00 ;
+LLW R4 0x1000 ;
+
+# SPART Registers
+
+LLW R6 0x0000 ;
+LHW R6 0x0800 ;
+LLW R7 0x0001 ;
+LHW R7 0x0800 ;
+LLW R8 0x0002 ;
+LLW R9 0x0001 ;
+
+# Send the ASCII of character 'i'. When MATLAB
+# detects this, it will start sending the image1.
+LLW R14 0x0069 ;
+
+# Transmit 'i'
+
+IM1_SPART_TX_NOT_READY_1 LOAD R10 R7 0x00 ;
+AND R0 R10 R9 ;
+B EQ IM1_SPART_TX_NOT_READY_1 ;
+
+STORE R14 R6 0x0000 ;
+
+# Start receiving data
+
+SPART_RX_NOT_READY_1 LOAD R10 R7 0x00 ;
+AND R0 R10 R8 ;
+B EQ SPART_RX_NOT_READY_1 ;
+
+LOAD R15 R6 0x00 ;
+
+# NOPs by Rohit
+ADD R16 R8 R0 ;
+ADD R17 R9 R0 ;
+
+STORE R15 R2 ;
+
+ADD R2 R2 R9 ;
+
+SUB R4 R4 R9 ;
+
+B NEQ SPART_RX_NOT_READY_1 ;
+# End receiving data
+
+# Address initialization
+LLW R2 0x0000 ;
+LHW R2 0x0C00 ;
+# Count initialization
+LLW R4 0x1000 ;
+
+# Start transmitting data
+NEW_TX_DATA ADD R16 R8 R0 ; # NExt 6 instructions are NOPs. Lets see what this shit is
+ADD R17 R9 R0 ;
+ADD R16 R8 R0 ;
+ADD R17 R9 R0 ;
+ADD R16 R8 R0 ;
+ADD R17 R9 R0 ;
+
+
+LOAD R15 R2 0x00 ;
+# Check this bullshit. Why so many NOPs ?
+ADD R16 R8 R0 ;
+ADD R17 R9 R0 ;
+
+ADD R16 R8 R0 ;
+ADD R17 R9 R0 ;
+ADD R16 R8 R0 ;
+ADD R17 R9 R0 ;
+ADD R16 R8 R0 ;
+ADD R17 R9 R0 ;
+
+
+SPART_TX_NOT_READY_1 LOAD R10 R7 0x00 ;
+AND R0 R10 R9 ;
+B EQ SPART_TX_NOT_READY_1 ;
+
+STORE R15 R6 ;
+
+ADD R2 R2 R9 ;
+
+SUB R4 R4 R9 ;
+
+B NEQ NEW_TX_DATA ;
+# Looks like these are valid NOPs
+ADD R16 R8 R0 ;
+ADD R17 R9 R0 ;
+
+ADD R16 R8 R0 ;
+ADD R17 R9 R0 ;
+ADD R16 R8 R0 ;
+
+
+B UNCOND START_AGAIN ;
