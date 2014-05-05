@@ -43,7 +43,7 @@ Library XilinxCoreLib;
 ENTITY newInstructionMem IS
 	port (
 	clka: IN std_logic;
-	addra: IN std_logic_VECTOR(6 downto 0);
+	addra: IN std_logic_VECTOR(7 downto 0);
 	douta: OUT std_logic_VECTOR(31 downto 0));
 END newInstructionMem;
 
@@ -52,7 +52,7 @@ ARCHITECTURE newInstructionMem_a OF newInstructionMem IS
 component wrapped_newInstructionMem
 	port (
 	clka: IN std_logic;
-	addra: IN std_logic_VECTOR(6 downto 0);
+	addra: IN std_logic_VECTOR(7 downto 0);
 	douta: OUT std_logic_VECTOR(31 downto 0));
 end component;
 
@@ -82,24 +82,24 @@ end component;
 			c_has_mem_output_regs_a => 0,
 			c_load_init_file => 1,
 			c_xdevicefamily => "virtex5",
-			c_write_depth_b => 96,
-			c_write_depth_a => 96,
+			c_write_depth_b => 246,
+			c_write_depth_a => 246,
 			c_has_rstb => 0,
 			c_has_rsta => 0,
 			c_has_mux_output_regs_b => 0,
 			c_inita_val => "0",
 			c_has_mux_output_regs_a => 0,
-			c_addra_width => 7,
+			c_addra_width => 8,
 			c_has_softecc_input_regs_a => 0,
-			c_addrb_width => 7,
+			c_addrb_width => 8,
 			c_default_data => "0",
 			c_use_ecc => 0,
 			c_algorithm => 1,
 			c_disable_warn_bhv_range => 0,
 			c_write_width_b => 32,
 			c_write_width_a => 32,
-			c_read_depth_b => 96,
-			c_read_depth_a => 96,
+			c_read_depth_b => 246,
+			c_read_depth_a => 246,
 			c_byte_size => 9,
 			c_sim_collision_check => "ALL",
 			c_common_clk => 0,

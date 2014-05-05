@@ -51,32 +51,45 @@ fopen(s);
     
     while(1)
     %if (command == 100)
-        userin = input('Enter: o - output inversek2j\nx - exit local program, r - restart\n', 's');
+        for index = 1:1:2048
+                [data_receive_1, count] = fread(s,1, 'single');
+                B(1,index) = data_receive_1;             
+                [data_receive_2, count] = fread(s,1, 'single');
+                B(2,index) = data_receive_2;
+        end
+        userin = input('Enter: o - original image, a - sobel algo image, n - npu image\nx - exit local program, r - restart\n', 's');
         if (userin == 'o')
             datasend = 115;
             fwrite(s, datasend, 'uint32');
             fprintf('Sent Original image display command to FPGA\n');
-            
             while((count == 0)) 
                 [tics_o, count] = fread(s,1, 'uint32');
             end
-            tics_o
-        elseif (userin == 'n')
-            datasend = 117;
-            fwrite(s, datasend, 'uint32');
-            fprintf('Sent Algo image display command to FPGA\n');
-            while((count == 0)) 
-                [tics_n, count] = fread(s,1, 'uint32');
-            end
-            tics_n
-        elseif (userin == 'x')
-            break;
-        elseif (userin == 'r')
-            break;
-        else        
-            datasend = 0;
-            fwrite(s, datasend, 'uint32');
-            fprintf('Sent junk command to FPGA\n');
+%             tics_o
+%         elseif (userin == 'a')
+%             datasend = 116;
+%             fwrite(s, datasend, 'uint32');
+%             fprintf('Sent Algo image display command to FPGA\n');
+%             while((count == 0)) 
+%                 [tics_a, count] = fread(s,1, 'uint32');
+%             end
+%             tics_a
+%         elseif (userin == 'n')
+%             datasend = 117;
+%             fwrite(s, datasend, 'uint32');
+%             fprintf('Sent Algo image display command to FPGA\n');
+%             while((count == 0)) 
+%                 [tics_n, count] = fread(s,1, 'uint32');
+%             end
+%             tics_n
+%         elseif (userin == 'x')
+%             break;
+%         elseif (userin == 'r')
+%             break;
+%         else        
+%             datasend = 0;
+%             fwrite(s, datasend, 'uint32');
+%             fprintf('Sent junk command to FPGA\n');
         end
         
     end
