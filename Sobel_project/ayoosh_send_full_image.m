@@ -7,8 +7,8 @@ delete(instrfindall)
 % uint32 datasend;
 B = imread('emma_640_480', 'jpg');
 A=rgb2gray(B);
-% figure(1);
-% imshow(A);
+figure(1);
+imshow(A);
 [Am, An] = size(A);
 imgTrans = A';
 img1D = imgTrans(:);
@@ -16,7 +16,7 @@ img1D = uint32(img1D);
 
 
 
-%fopen(s);
+fopen(s);
 
 while(1)
    s = serial('COM1');
@@ -31,12 +31,11 @@ fopen(s);
     
     count = 0;
     command = 0;
-    
+    fprintf('Waiting for command\n');
     while((count == 0) || (command ~=105)) 
-        [command, count] = fread(s,1, 'uint32');
-    end
-    fprintf('Got command from FPGA\n');
-    command
+         [command, count] = fread(s,1, 'uint32');
+     end
+     fprintf('Got command from FPGA\n');
         
     if (command == 105)
         fprintf('Sending data\n');
@@ -50,7 +49,7 @@ fopen(s);
 %             fwrite(s, datasend, 'uint32');
 %         end
         fprintf('Done sending data\n');
-    end
+%    end
     
     while(1)
     %if (command == 100)
