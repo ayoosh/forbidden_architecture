@@ -1,0 +1,16 @@
+# Output products list for <instruction_ini>
+_xmsgs\pn_parser.xmsgs
+blk_mem_gen_ds512.pdf
+blk_mem_gen_readme.txt
+instruction_ini.asy
+instruction_ini.gise
+instruction_ini.mif
+instruction_ini.ngc
+instruction_ini.v
+instruction_ini.veo
+instruction_ini.vhd
+instruction_ini.vho
+instruction_ini.xco
+instruction_ini.xise
+instruction_ini_flist.txt
+instruction_ini_xmdf.tcl
