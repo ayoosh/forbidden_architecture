@@ -783,6 +783,7 @@ module Processor(
 		.iExRegRt			(ex_id_Offset[25:21]),
 		.iExMemRead			(ex_id_MemValid & ~ex_id_MemWrite),
 		.iExRetCmd			(ex_id_RetCmd),
+		.iCacheFlush		(ex_id_CacheFlush),
 		.iExNpuCfgOp		(ex_id_NpuCfgOp),
 		.iExNpuEnqOp		(ex_id_NpuEnqOp),
 		.iExNpuDeqOp		(ex_id_NpuDeqOp),
