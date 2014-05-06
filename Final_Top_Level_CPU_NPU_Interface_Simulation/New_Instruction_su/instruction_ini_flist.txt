@@ -6,6 +6,7 @@ instruction_ini.asy
 instruction_ini.gise
 instruction_ini.mif
 instruction_ini.ngc
+instruction_ini.sym
 instruction_ini.v
 instruction_ini.veo
 instruction_ini.vhd

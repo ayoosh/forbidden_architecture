@@ -1,0 +1,3 @@
+NEWPROJECT "I:/GitHub/forbidden_architecture/Final_Top_Level_CPU_NPU_Interface_Simulation/New_Instruction_su/coregen.cgp"
+SETPROJECT "I:/GitHub/forbidden_architecture/Final_Top_Level_CPU_NPU_Interface_Simulation/New_Instruction_su/coregen.cgp"
+LAUNCHXCO "I:/GitHub/forbidden_architecture/Final_Top_Level_CPU_NPU_Interface_Simulation/New_Instruction_su/instruction_ini.xco"

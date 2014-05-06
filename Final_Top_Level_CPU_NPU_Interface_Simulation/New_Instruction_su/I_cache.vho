@@ -29,16 +29,12 @@
 -- The following code must appear in the VHDL architecture header:
 
 ------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
-component instruction_ini
+component I_cache
 	port (
 	clka: IN std_logic;
-	addra: IN std_logic_VECTOR(9 downto 0);
+	addra: IN std_logic_VECTOR(8 downto 0);
 	douta: OUT std_logic_VECTOR(31 downto 0));
 end component;
-
--- Synplicity black box declaration
-attribute syn_black_box : boolean;
-attribute syn_black_box of instruction_ini: component is true;
 
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
 
@@ -46,15 +42,15 @@ attribute syn_black_box of instruction_ini: component is true;
 -- body. Substitute your own instance name and net names.
 
 ------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
-your_instance_name : instruction_ini
+your_instance_name : I_cache
 		port map (
 			clka => clka,
 			addra => addra,
 			douta => douta);
 -- INST_TAG_END ------ End INSTANTIATION Template ------------
 
--- You must compile the wrapper file instruction_ini.vhd when simulating
--- the core, instruction_ini. When compiling the wrapper file, be sure to
+-- You must compile the wrapper file I_cache.vhd when simulating
+-- the core, I_cache. When compiling the wrapper file, be sure to
 -- reference the XilinxCoreLib VHDL simulation library. For detailed
 -- instructions, please refer to the "CORE Generator Help".
 
