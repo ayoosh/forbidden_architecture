@@ -344,9 +344,9 @@ module Processor(
 				ex_id_MemValid		<= id_ex_MemValid;
 				ex_id_MemToReg		<= id_ex_MemToReg;
 				ex_id_CacheFlush	<= id_ex_CacheFlush;
-				ex_id_ZeroEn		<= rSemiStall ? 1'b0 : id_ex_ZeroEn;
-				ex_id_NegativeEn	<= rSemiStall ? 1'b0 : id_ex_NegativeEn;
-				ex_id_OverflowEn	<= rSemiStall ? 1'b0 : id_ex_OverflowEn;
+				ex_id_ZeroEn		<= id_ex_ZeroEn;
+				ex_id_NegativeEn	<= id_ex_NegativeEn;
+				ex_id_OverflowEn	<= id_ex_OverflowEn;
 				ex_id_WriteAddr		<= id_ex_WriteAddr;
 				ex_id_WriteEn		<= id_ex_WriteEn;
 				ex_id_Offset		<= id_ex_Offset;
@@ -783,6 +783,7 @@ module Processor(
 		.iExRegRt			(ex_id_Offset[25:21]),
 		.iExMemRead			(ex_id_MemValid & ~ex_id_MemWrite),
 		.iExRetCmd			(ex_id_RetCmd),
+		.iCacheFlush		(ex_id_CacheFlush),
 		.iExNpuCfgOp		(ex_id_NpuCfgOp),
 		.iExNpuEnqOp		(ex_id_NpuEnqOp),
 		.iExNpuDeqOp		(ex_id_NpuDeqOp),
@@ -807,7 +808,7 @@ module Processor(
 	);
 	
 	assign semiStall = semiStallH & ~branchMissPredict;
-	assign branchPredict = branchCmd & id_ex_BranchCmd;
+	assign branchPredict = branchCmd & id_ex_BranchCmd & ~semiStall & ~fullStall;
 	assign halt = haltPC;
 	
 	always @ (posedge clk) begin

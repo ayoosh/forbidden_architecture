@@ -493,7 +493,7 @@ npu npu(
     .npu_config_fifo_full(npu_config_fifo_full)
     );	
 	 
-Sobel_withoutNPU InstructionROM (
+instructions instructions (
   .clka(clk_in), // input clka
   .addra(cache_addr_instr), // input [8 : 0] addra
   .douta(cache_rd_instr) // output [31 : 0] douta
@@ -517,7 +517,7 @@ Sobel_withoutNPU InstructionROM (
 		.io_wr_data(spart_mem_data_wr)
     );
 
-
+/*
    // Clock generator for register file
 	Reg_clk_Gen Register_clock (
     .CLKIN_IN(clk), 
@@ -525,6 +525,15 @@ Sobel_withoutNPU InstructionROM (
     .CLKIN_IBUFG_OUT(CLKIN_IBUFG_OUT), 
     .CLK0_OUT(clk_in), 
     .CLK2X_OUT(CLK2X_OUT), 
+    .LOCKED_OUT(LOCKED_OUT)
+    );
+*/
+Reg_clk_Gen Register_clock (
+    .CLKIN_IN(clk), 
+    .RST_IN(rst), 
+    .CLKDV_OUT(clk_in), 
+    .CLKIN_IBUFG_OUT(CLKIN_IBUFG_OUT), 
+    .CLK0_OUT(CLK2X_OUT), 
     .LOCKED_OUT(LOCKED_OUT)
     );
 
