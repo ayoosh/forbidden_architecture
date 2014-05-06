@@ -240,8 +240,8 @@ module CPU_Dcache_dummy #(
 						//rom_addr <= 6'd0;
 						update_write <= 1;
 						// Update with new data
-				    	for(i = 0; i <64; i = i + 1)
-						temp_mem[i] <= temp_mem[i] + 32'd0;
+				    	for(i = 32; i <64; i = i + 1)
+						temp_mem[i] <= temp_mem[i] + 32'd2;
 						
 						end
 						

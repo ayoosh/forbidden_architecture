@@ -164,7 +164,7 @@ module top_module #
 	wire		[31:0]	cache_rd;
 	wire				cache_ready;
 	
-	//assign flush = 0;
+	assign flush = 0;
 	
 	// Error monitor
 	wire memory_read_error1;
@@ -327,9 +327,9 @@ module top_module #
 		.mem_rw_data1(cache_rw), 
 		.mem_valid_data1(cache_valid), 
 		.mem_ready_data1(cache_ready),
-		.rom_addr(rom_addr),
-		.rom_data(rom_data),
-		.flush(flush)
+	   .rom_addr(rom_addr),
+		.rom_data(rom_data)
+		//.flush(flush)
 	);
 	
 		DVI_dummy DVI_dummy (

@@ -12,6 +12,7 @@ module cache_memory #(
 	output							dirty_read,
 	output							hit,
 	output		[14:0]				replace_tag,
+	output							valid,
 	
 	// Inputs
 	input		[ADDR_WIDTH-1:0]	addr,
@@ -19,8 +20,9 @@ module cache_memory #(
 	input							dirty_write,
 	input							write_en,
 	input							clk,
-	input							rst_n
-);
+	input							rst_n,
+	input 							valid_bit_flush
+	);
 
 	function integer log2(input integer value);
 		begin
@@ -45,12 +47,13 @@ module cache_memory #(
 	wire	[INDEX_WIDTH-1:0]	addr_index;
 	wire	[OFFSET_WIDTH-1:0]	addr_offset;
 	
-	reg	[BLOCK_SIZE-1:0]	data;
-	reg	[TAG_WIDTH-1:0]	tag;
-	reg						dirty;
-	reg   [NUM_BLOCKS-1:0]  valid_bit;
-	wire						valid;
-		
+	reg		[BLOCK_SIZE-1:0]	data;
+	reg	    [TAG_WIDTH-1:0]		tag;
+	reg							dirty;
+	reg		[NUM_BLOCKS-1:0]	valid_bit;
+	
+	//wire						valid;
+	
 	integer						i;
 	
 	assign addr_tag		= addr[ADDR_WIDTH-1:ADDR_WIDTH-TAG_WIDTH];
@@ -60,36 +63,41 @@ module cache_memory #(
 	
 	assign data_read	= data;
 	assign dirty_read	= dirty;
-	assign valid      =  valid_bit[addr_index]; // New change
+	assign valid		= valid_bit[addr_index];
 	assign hit			= valid & (addr_tag == tag);
-		
-	always @ (negedge clk) begin
+	
+	//assign 	data		= memory[addr_index][MEMORY_SIZE-1:MEMORY_SIZE-BLOCK_SIZE];
+	//assign 	tag			= memory[addr_index][MEMORY_SIZE-BLOCK_SIZE-1:2];
+	//assign	dirty		= memory[addr_index][1]; 
+	
+	
+	always @ (posedge clk) begin
 	//always @ (posedge clk) begin // Changed to posedge from negedge - Problem write_en is high for just 1 cycle - NOT fixed
 		if(!rst_n) begin
-		//	for (i = 0; i < NUM_BLOCKS; i = i + 1)
-			//	memory[i][0] <= 1'b0;
-
+			//for (i = 0; i < NUM_BLOCKS; i = i + 1)
+				//memory[i][0] <= 1'b0;		
 			data		<= 0;
-			tag		<= 0;
+			tag			<= 0;
 			dirty		<= 0;
-			valid_bit		<= 0;
-			
+			valid_bit	<= 0;
 		end
-		else
-			begin
-			
-	 	data		<= memory[addr_index][MEMORY_SIZE-1:MEMORY_SIZE-BLOCK_SIZE];
-	 	tag			<= memory[addr_index][MEMORY_SIZE-BLOCK_SIZE-1:2];
-		dirty		<= memory[addr_index][1]; 
-	//	valid		<= memory[addr_index][0];			
-			
-			if (write_en)
-				begin
-				memory[addr_index] <= {data_write, addr_tag, dirty_write, 1'b1};
+		else begin
+			data		<= memory[addr_index][MEMORY_SIZE-1:MEMORY_SIZE-BLOCK_SIZE];
+			tag			<= memory[addr_index][MEMORY_SIZE-BLOCK_SIZE-1:2];
+			dirty		<= memory[addr_index][1]; 
+			if (write_en) begin
+				memory[addr_index] <= {data_write, addr_tag, dirty_write, 1'b1}; // Since we don't care about the last bit anymore we needn't look at this
+				//memory[addr_index][MEMORY_SIZE-1:1] <= {data_write, addr_tag, dirty_write};
 				valid_bit[addr_index] <= 1'b1;
-				end
-			end	
-	end	
+			end
+			/*
+			else if (!valid_bit_flush) begin
+				//memory[addr_index][MEMORY_SIZE-1:1] <= memory[addr_index][MEMORY_SIZE-1:1];
+				valid_bit[addr_index] <= valid_bit_flush;
+			end
+			*/
+		end
+	end
 	
 	
 endmodule
