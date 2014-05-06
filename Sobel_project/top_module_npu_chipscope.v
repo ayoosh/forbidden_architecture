@@ -498,9 +498,8 @@ npu npu(
     .npu_config_fifo_full(npu_config_fifo_full)
     );	
 	 
-Sobel_withoutNPU InstructionROM (
-  .clka(clk_in), // input clka
-  .addra(cache_addr_instr), // input [8 : 0] addra
+i_cache InstructionROM (
+  .clka(clk_in), // input clka,nput [8 : 0] addra
   .douta(cache_rd_instr) // output [31 : 0] douta
 );
 
@@ -512,11 +511,11 @@ Sobel_withoutNPU InstructionROM (
 		.txd(txd),        // RS232 Transmit Data
 		.rxd(rxd),         // RS232 Receive Data
 		
-		.piso_out(piso_out),
-		.o_start_transmitter(o_start_transmitter),
-		.o_start_receiver(o_start_receiver),
-		.o_data_to_be_transmitted(o_data_to_be_transmitted),
-		.o_data_rx(o_data_rx),
+//		.piso_out(piso_out),
+//		.o_start_transmitter(o_start_transmitter),
+//		.o_start_receiver(o_start_receiver),
+//		.o_data_to_be_transmitted(o_data_to_be_transmitted),
+//		.o_data_rx(o_data_rx),
 	// Signals from/to SPART Cache interface
 		.io_rw_data(spart_mem_rw_data),
 		.io_valid_data(spart_mem_valid_data),
