@@ -1,0 +1,262 @@
+# Tic Counter Reset
+LLW R2 0x0006 ;
+LHW R2 0x0800 ;
+STORE R0 R2 0x00 ; 
+
+# Inverse Kinematics, we only do forward function .. angles to position
+# Takes angles from memory and stores XY Cordinate of arm
+# R2 - Input location base address
+# R3 - Input Addr
+# R4 - Output Algo location base address
+# R5 - Output Addr
+# R6 - L1
+# R7 - L2
+# R8 - Loop Counter
+# R21 - value 2
+# R22 - value 2048 - 2
+
+LLW R2 0x0000 ;
+LHW R2 0x00c0 ;
+LLW R4 0x1000 ;
+LHW R4 0x00c0 ;
+LLW R6 0x0000 ;
+LHW R6 0x3f00 ;
+ADD R7 R0 R6 ; # L1 = L2 = 0.5
+
+LLW R21 0x0002 ;
+LLW R22 0x07FE ;
+ADD R8 R0 R0 ; # Loop counter
+
+# R9 - x
+# R10 - y
+# R11 - L1^2
+# R12 - L2^2
+# R13 - 2*L1*L2
+# R14 - x^2
+# R15 - y^2
+# R16 - theta 2
+# R17 - y * (l1 + l2 * cos(*theta2))
+# R18 - x * l2 * sin(*theta2)
+# R19 - x * x + y * y
+# R20 - theta1
+
+FMULT R11 R6 R6 ;
+FMULT R12 R7 R7 ;
+FMULT R13 R6 R7 ;
+FMULT R13 R13 R21 ;
+
+# Start of Algo loop
+IK_ALGO ADD R3 R2 R8 ;
+ADD R5 R4 R8 ;
+
+LOAD R9 R3 0x0 ;
+LOAD R10 R3 0x1 ;
+
+FMULT R14 R9 R9 ;
+FMULT R15 R10 R10 ;
+
+FADD R16 R14 R15 ;
+FSUB R16 R16 R11 ;
+FSUB R16 R16 R12 ;
+FDIV R16 R16 R13 ;
+FADD R30 R16 R0 ;
+CALL ACOS ;
+FADD R16 R29 R0 ;
+STORE R16 R5 0x0000 ;
+
+FADD R30 R16 R0 ;
+CALL COS ;
+FMULT R17 R29 R7 ;
+FADD R17 R17 R6 ;
+FMULT R17 R17 R10 ;
+
+FADD R30 R16 R0 ;
+CALL SIN ;
+FMULT R18 R7 R29 ;
+FMULT R18 R18 R9 ;
+FADD R19 R14 R15 ;
+
+FSUB R20 R17 R18 ;
+FDIV R20 R20 R19 ;
+
+FADD R30 R20 R0 ;
+CALL ASIN ;
+STORE R29 R5 0x0001 ;
+
+ADD R8 R8 R21 ;
+SUB R0 R8 R22 ;
+B LT IK_ALGO ;
+
+# Tic Counter store value
+LLW R2 0x0006 ;
+LHW R2 0x0800 ;
+LOAD R3 R2 0x00 ;
+LLW R2 0x3004 ;
+LHW R2 0x00C0 ;
+STORE R3 R2 0x00 ;
+
+# ################################################################
+# Now do the NPU Stuff
+# Tic Counter Reset
+LLW R2 0x0006 ;
+LHW R2 0x0800 ;
+STORE R0 R2 0x00 ; 
+
+# R2 - Input location base address
+# R3 - Input Addr
+# R4 - Output NPU location base address
+# R5 - Output Addr
+
+# R8 - Loop Counter
+# R9 - x
+# R10 - y
+# R11 - theta1
+# R12 - theta2
+# R21 - value 2
+# R22 - value 2048 - 2
+LLW R2 0x0000 ;
+LHW R2 0x00c0 ;
+LLW R4 0x2000 ;
+LHW R4 0x00c0 ;
+
+LLW R21 0x0002 ;
+LHW R21 0x0000 ;
+LLW R22 0x07FE ;
+ADD R8 R0 R0 ; # Loop counter
+
+IK_NPU ADD R3 R2 R8 ;
+ADD R5 R4 R8 ;
+
+LOAD R9 R3 0x0 ;
+LOAD R10 R3 0x1 ;
+
+ENQD0 R9 ;
+ENQD0 R10 ;
+
+DEQD0 R11 ;
+DEQD0 R12 ;
+
+STORE R11 R5 0x0 ;
+STORE R12 R5 0x1 ;
+
+ADD R8 R8 R21 ;
+SUB R0 R8 R22 ;
+B LT IK_NPU ;
+
+# Tic Counter store value
+LLW R2 0x0006 ;
+LHW R2 0x0800 ;
+LOAD R3 R2 0x00 ;
+LLW R2 0x3005 ;
+LHW R2 0x00C0 ;
+STORE R3 R2 0x00 ;
+
+
+# SIN function
+# R30 has angle in float radians, between -pi to +pi
+# R29 is return value
+# regs used R29, R28, R27, R26, R25
+
+SIN ADD R29 R0 R30 ; # Copy angle to R29
+FMULT R28 R30 R30 ; # R28 = angle^2
+
+FMULT R27 R30 R28 ; # R 27 = angle^3
+LLW R26 0x0000 ;
+LHW R26 0x40C0 ; # R26 = FLOAT 6
+FDIV R25 R27 R26 ;
+FSUB R29 R29 R25 ;
+
+FMULT R27 R27 R28 ; # R27 = angle^5
+LLW R26 0x0000 ;
+LHW R26 0x42f0 ; # R26 = FLOAT 120
+FDIV R25 R27 R26 ;
+FADD R29 R29 R25 ;
+
+FMULT R27 R27 R28 ; # R27 = angle^7
+LLW R26 0x8000 ;
+LHW R26 0x459d ; # R26 = FLOAT 5040
+FDIV R25 R27 R26 ;
+FSUB R29 R29 R25 ;
+
+FMULT R27 R27 R28 ; # R27 = angle^9
+LLW R26 0x3000 ;
+LHW R26 0x48b1 ; # R26 = FLOAT 362880
+FDIV R25 R27 R26 ;
+FADD R29 R29 R25 ;
+RET ;
+
+
+# COS function
+# R30 has angle in float radians, between -pi to +pi
+# R29 is return value
+# regs used R29, R28, R27, R26, R25
+
+COS LLW R29 0x0000 ; # R29 = 1
+LHW R29 0x3f80 ;
+FMULT R28 R30 R30 ; # R28 = angle^2
+
+LLW R26 0x0000 ;
+LHW R26 0x4000 ; # R26 = FLOAT 2
+FDIV R25 R28 R26 ;
+FSUB R29 R29 R25 ;
+
+FMULT R27 R28 R28 ; # R27 = angle^4
+LLW R26 0x0000 ;
+LHW R26 0x41c0 ; # R26 = FLOAT 24
+FDIV R25 R27 R26 ;
+FADD R29 R29 R25 ;
+
+FMULT R27 R27 R28 ; # R27 = angle^6
+LLW R26 0x0000 ;
+LHW R26 0x4434 ; # R26 = FLOAT 720
+FDIV R25 R27 R26 ;
+FSUB R29 R29 R25 ;
+
+FMULT R27 R27 R28 ; # R27 = angle^8
+LLW R26 0x8000 ;
+LHW R26 0x471d ; # R26 = FLOAT 40320
+FDIV R25 R27 R26 ;
+FADD R29 R29 R25 ;
+RET ;
+
+
+# ASIN function
+# R30 has value in float between -1 to +1
+# R29 is return value
+# regs used R29, R28, R27, R26
+
+ASIN FMULT R28 R30 R30 ; # R28 = value^2
+FADD R29 R0 R30 ;
+
+FMULT R27 R30 R28 ; # R27 = value^3
+LLW R26 0x0000 ;
+LHW R26 0x40c0 ; # R26 = FLOAT 6
+FDIV R26 R27 R26 ;
+FADD R29 R29 R26 ;
+
+FMULT R27 R27 R28 ; # R27 = value^5
+LLW R26 0x5555 ;
+LHW R26 0x4155 ; # R26 = FLOAT 13.3333333
+FDIV R26 R27 R26 ;
+FADD R29 R29 R26 ;
+
+FMULT R27 R27 R28 ; # R27 = value^7
+LLW R26 0x3333 ;
+LHW R26 0x41b3 ; # R26 = FLOAT 22.4
+FDIV R26 R27 R26 ;
+FADD R29 R29 R26 ;
+RET ;
+
+
+# ASIN function
+# R30 has value in float between -1 to +1
+# R29 is return value
+# regs used R29, R28, R27, R26
+
+ACOS CALL ASIN ;
+LLW R28 0x0fdb ;
+LHW R28 0x3fc9 ; # R28 = FLOAT pi/2
+FSUB R29 R28 R29 ;
+RET ;
+
+
