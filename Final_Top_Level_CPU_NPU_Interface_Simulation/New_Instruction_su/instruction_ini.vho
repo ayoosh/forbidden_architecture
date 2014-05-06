@@ -36,6 +36,10 @@ component instruction_ini
 	douta: OUT std_logic_VECTOR(31 downto 0));
 end component;
 
+-- Synplicity black box declaration
+attribute syn_black_box : boolean;
+attribute syn_black_box of instruction_ini: component is true;
+
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
 
 -- The following code must appear in the VHDL architecture
