@@ -2,7 +2,7 @@ clc;
 clear all;
 close all;
 delete(instrfindall)
-% uint32 datasend;
+
 B = imread('emma_640_480', 'jpg');
 A=rgb2gray(B);
 % figure(1);
@@ -22,57 +22,46 @@ while(1)
     set(s,'Parity', 'none');
     set(s, 'FlowControl', 'none');
     fopen(s);
-    
     count = 0;
-    command = 0;
     
-    while((count == 0) || (command ~=105))
-        [command, count] = fread(s,1, 'uint32');
+    fprintf('Sending data\n');
+    for index = 1:4:(640*480)
+        datasend = bitor(img1D(index), bitor(bitshift(img1D(index+1), 8), bitor(bitshift(img1D(index+2), 16), bitshift(img1D(index+3), 24))));
+        fwrite(s, datasend, 'uint32');
     end
-    fprintf('Got command from FPGA\n');
-    command
-    
-    if (command == 105)
-        fprintf('Sending data\n');
-        for index = 1:4:(640*480)
-            datasend = bitor(img1D(index), bitor(bitshift(img1D(index+1), 8), bitor(bitshift(img1D(index+2), 16), bitshift(img1D(index+3), 24))));
-            fwrite(s, datasend, 'uint32');
-        end
         %         fprintf('Sending extra data\n');
         %         for index = 1:4:(640*480)
         %             datasend = bitor(img1D(index), bitor(bitshift(img1D(index+1), 8), bitor(bitshift(img1D(index+2), 16), bitshift(img1D(index+3), 24))));
         %             fwrite(s, datasend, 'uint32');
         %         end
-        fprintf('Done sending data\n');
-    end
-    
+    fprintf('Done sending data\n');
+
     while(1)
-        %if (command == 100)
         userin = input('Enter: o - original image, a - sobel algo image, n - npu image\nx - exit local program, r - restart\n', 's');
         if (userin == 'o')
             datasend = 115;
             fwrite(s, datasend, 'uint32');
             fprintf('Sent Original image display command to FPGA\n');
-%             while((count == 0))
-%                 [tics_o, count] = fread(s,1, 'uint32');
-%             end
-%             tics_o
         elseif (userin == 'a')
             datasend = 116;
             fwrite(s, datasend, 'uint32');
             fprintf('Sent Algo image display command to FPGA\n');
-%             while((count == 0))
-%                 [tics_a, count] = fread(s,1, 'uint32');
-%             end
-%             tics_a
+			tics_a = 0;
+			count = 0;
+			while((count == 0))
+                [tics_a, count] = fread(s,1, 'uint32');
+            end
+            tics_a
         elseif (userin == 'n')
             datasend = 117;
             fwrite(s, datasend, 'uint32');
             fprintf('Sent Algo image display command to FPGA\n');
-%             while((count == 0))
-%                 [tics_n, count] = fread(s,1, 'uint32');
-%             end
-%             tics_n
+            tics_n = 0;
+			count = 0;
+			while((count == 0))
+                [tics_n, count] = fread(s,1, 'uint32');
+            end
+            tics_n
         elseif (userin == 'x')
             break;
         elseif (userin == 'r')
@@ -84,8 +73,7 @@ while(1)
         end
         
     end
-    
-    
+
     fclose(s);
     delete(s);
     clear s;
