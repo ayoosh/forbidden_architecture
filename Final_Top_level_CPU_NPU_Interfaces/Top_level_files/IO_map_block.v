@@ -98,10 +98,10 @@ module IO_map_address_block #(
   begin
 	if(rst)
 		tick_counter <= 32'd0;
-	else if(tick_counter == 32'd4294967295)  // Tick doesn't reset to zero on its own
-		tick_counter <= tick_counter;
 	else if(tick_addr & mem_valid_data & mem_rw_data)
       tick_counter <= 32'd0;	
+	else if(tick_counter == 32'd4294967295)  // Tick doesn't reset to zero on its own
+		tick_counter <= tick_counter;		
 	else
 		tick_counter <= tick_counter + 1;
   end
