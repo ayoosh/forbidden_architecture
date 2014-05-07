@@ -188,7 +188,7 @@ module cache_controller #(
 			COMPARE_TAG: begin
 				if (hit)											// HIT - if match and valid
 					NextState = IDLE;
-				else if (!hit & dirty_read[convert(lru)])
+				else if (!hit & (dirty_read[convert(lru)] & valid_cache_mem[convert(lru)]) )
 					NextState = WRITE_BACK;
 				else
 					NextState = ALLOCATE;
@@ -204,7 +204,7 @@ module cache_controller #(
 			
 			
 			WRITE_BACK: begin
-				if (mem_ready) begin
+				if (mem_ready | flush_int) begin  // flush_int for flush case
 					 if (flush_flag)
 					//	NextState = ((count[9:0] == 10'd1023)) ? IDLE : WRITE_BACK;
 					  NextState =  IDLE;
@@ -227,7 +227,7 @@ module cache_controller #(
 			State <= int_cache_valid ? NextState : IDLE;
 			//flush_flag <= cache_valid & (State == IDLE) & flush;
 		//	flush_flag <= cache_valid & flush;
-			lru <= ( (count[9:0] == 10'd1023) && flush_int ) ? ~lru : tag_matched ? way[0] ? 2'b10 : 2'b01 : lru;  // LRU must be exclusive. LRU = 1 means least recently used meaning Replace it!
+			lru <= ( (count[9:0] == 10'd1023) && flush_int && (State == WRITE_BACK) ) ? ~lru : tag_matched ? way[0] ? 2'b10 : 2'b01 : lru;  // LRU must be exclusive. LRU = 1 means least recently used meaning Replace it!
 		end
 	end		
 
@@ -267,8 +267,8 @@ module cache_controller #(
 	// Debug: Inverting convert lru
 	assign mem_wr = (State == WRITE_BACK) ? data_read[convert(lru)] : 256'h0;
 	assign mem_addr = (State == WRITE_BACK) ? {replace_tag[convert(lru)], counter, 3'b0} : (State == ALLOCATE) ? {addr_tag, addr_index, 3'b0} : 28'h0;
-	assign mem_rw =  flush_flag ? (dirty_read[convert(lru)] & valid_cache_mem[convert(lru)]) : (State == WRITE_BACK); // Changed
-	assign mem_valid_out = flush_flag ? (dirty_read[convert(lru)] & valid_cache_mem[convert(lru)]): (State == ALLOCATE) | (State == WRITE_BACK);
+	assign mem_rw =  ( flush_flag && (State == WRITE_BACK) ) ? (dirty_read[convert(lru)] & valid_cache_mem[convert(lru)]) : (State == WRITE_BACK); // Changed
+	assign mem_valid_out = ( flush_flag && (State == WRITE_BACK) ) ? (dirty_read[convert(lru)] & valid_cache_mem[convert(lru)]): (State == ALLOCATE) | (State == WRITE_BACK);
 	
 	assign tag_matched = (State == COMPARE_TAG) & hit;
 	//assign cache_flushed = (State == WRITE_BACK) & mem_ready & flush_flag & (count[9:0] == 1023);
