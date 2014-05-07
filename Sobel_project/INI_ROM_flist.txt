@@ -1,0 +1,16 @@
+# Output products list for <INI_ROM>
+INI_ROM.asy
+INI_ROM.gise
+INI_ROM.mif
+INI_ROM.ngc
+INI_ROM.v
+INI_ROM.veo
+INI_ROM.vhd
+INI_ROM.vho
+INI_ROM.xco
+INI_ROM.xise
+INI_ROM_flist.txt
+INI_ROM_xmdf.tcl
+_xmsgs\pn_parser.xmsgs
+blk_mem_gen_ds512.pdf
+blk_mem_gen_readme.txt
