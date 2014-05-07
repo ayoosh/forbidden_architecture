@@ -1,0 +1,16 @@
+# Output products list for <Sobel_withoutNPU>
+Sobel_withoutNPU.asy
+Sobel_withoutNPU.gise
+Sobel_withoutNPU.mif
+Sobel_withoutNPU.ngc
+Sobel_withoutNPU.v
+Sobel_withoutNPU.veo
+Sobel_withoutNPU.vhd
+Sobel_withoutNPU.vho
+Sobel_withoutNPU.xco
+Sobel_withoutNPU.xise
+Sobel_withoutNPU_flist.txt
+Sobel_withoutNPU_xmdf.tcl
+_xmsgs\pn_parser.xmsgs
+blk_mem_gen_ds512.pdf
+blk_mem_gen_readme.txt
