@@ -74,6 +74,7 @@ module ExecutionStage (
 	input			iNpuEnqOp,
 	input			iNpuDeqOp,
 	input	[31:0]	iNpuDataFifo,
+	input			iStall,
 	input			iClk,
 	input			iRst_n
 );
@@ -177,7 +178,7 @@ module ExecutionStage (
 	assign oNpuEnqOp		= iNpuEnqOp;
 	assign oNpuCfgOp		= iNpuCfgOp;
 	
-	assign oNpuConfigWe		= iNpuCfgOp;
-	assign oNpuDataWe		= iNpuEnqOp;
-	assign oNpuDataRe		= iNpuDeqOp;
+	assign oNpuConfigWe		= !iStall ? iNpuCfgOp : 1'b0;
+	assign oNpuDataWe		= !iStall ? iNpuEnqOp : 1'b0;
+	assign oNpuDataRe		= !iStall ? iNpuDeqOp : 1'b0;
 endmodule

@@ -469,6 +469,7 @@ module Processor(
 		.iNpuEnqOp			(ex_id_NpuEnqOp),
 		.iNpuDeqOp			(ex_id_NpuDeqOp),
 		.iNpuDataFifo		(npu_output_fifo),
+		.iStall				(semiStall | fullStall),
 		.iClk				(clk),
 		.iRst_n				(rst_n)
 	);
