@@ -205,9 +205,10 @@ module cache_controller #(
 			
 			WRITE_BACK: begin
 				if (mem_ready) begin
-					if (flush_flag)
-						NextState = ((count[9:0] == 10'd1023)) ? IDLE : WRITE_BACK;
-					else
+					// if (flush_flag)
+					//	NextState = ((count[9:0] == 10'd1023)) ? IDLE : WRITE_BACK;
+					 //  NextState =  IDLE;
+					// else
 						NextState = ALLOCATE;
 				end
 				else
