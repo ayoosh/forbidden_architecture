@@ -23,11 +23,11 @@
 --     appliances, devices, or systems. Use in such applications are          --
 --     expressly prohibited.                                                  --
 --                                                                            --
---     (c) Copyright 1995-2009 Xilinx, Inc.                                   --
+--     (c) Copyright 1995-2014 Xilinx, Inc.                                   --
 --     All rights reserved.                                                   --
 --------------------------------------------------------------------------------
--- You must compile the wrapper file i_cache.vhd when simulating
--- the core, i_cache. When compiling the wrapper file, be sure to
+-- You must compile the wrapper file I_cache.vhd when simulating
+-- the core, I_cache. When compiling the wrapper file, be sure to
 -- reference the XilinxCoreLib VHDL simulation library. For detailed
 -- instructions, please refer to the "CORE Generator Help".
 
@@ -38,89 +38,97 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
 -- synthesis translate_off
-Library XilinxCoreLib;
+LIBRARY XilinxCoreLib;
 -- synthesis translate_on
-ENTITY i_cache IS
-	port (
-	clka: IN std_logic;
-	addra: IN std_logic_VECTOR(8 downto 0);
-	douta: OUT std_logic_VECTOR(31 downto 0));
-END i_cache;
+ENTITY I_cache IS
+  PORT (
+    clka : IN STD_LOGIC;
+    addra : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+    douta : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+  );
+END I_cache;
 
-ARCHITECTURE i_cache_a OF i_cache IS
+ARCHITECTURE I_cache_a OF I_cache IS
 -- synthesis translate_off
-component wrapped_i_cache
-	port (
-	clka: IN std_logic;
-	addra: IN std_logic_VECTOR(8 downto 0);
-	douta: OUT std_logic_VECTOR(31 downto 0));
-end component;
+COMPONENT wrapped_I_cache
+  PORT (
+    clka : IN STD_LOGIC;
+    addra : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+    douta : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+  );
+END COMPONENT;
 
--- Configuration specification 
-	for all : wrapped_i_cache use entity XilinxCoreLib.blk_mem_gen_v4_2(behavioral)
-		generic map(
-			c_has_regceb => 0,
-			c_has_regcea => 0,
-			c_mem_type => 3,
-			c_rstram_b => 0,
-			c_rstram_a => 0,
-			c_has_injecterr => 0,
-			c_rst_type => "SYNC",
-			c_prim_type => 1,
-			c_read_width_b => 32,
-			c_initb_val => "0",
-			c_family => "virtex5",
-			c_read_width_a => 32,
-			c_disable_warn_bhv_coll => 0,
-			c_use_softecc => 0,
-			c_write_mode_b => "WRITE_FIRST",
-			c_init_file_name => "i_cache.mif",
-			c_write_mode_a => "WRITE_FIRST",
-			c_mux_pipeline_stages => 0,
-			c_has_softecc_output_regs_b => 0,
-			c_has_mem_output_regs_b => 0,
-			c_has_mem_output_regs_a => 0,
-			c_load_init_file => 1,
-			c_xdevicefamily => "virtex5",
-			c_write_depth_b => 512,
-			c_write_depth_a => 512,
-			c_has_rstb => 0,
-			c_has_rsta => 0,
-			c_has_mux_output_regs_b => 0,
-			c_inita_val => "0",
-			c_has_mux_output_regs_a => 0,
-			c_addra_width => 9,
-			c_has_softecc_input_regs_a => 0,
-			c_addrb_width => 9,
-			c_default_data => "0",
-			c_use_ecc => 0,
-			c_algorithm => 1,
-			c_disable_warn_bhv_range => 0,
-			c_write_width_b => 32,
-			c_write_width_a => 32,
-			c_read_depth_b => 512,
-			c_read_depth_a => 512,
-			c_byte_size => 9,
-			c_sim_collision_check => "ALL",
-			c_common_clk => 0,
-			c_wea_width => 1,
-			c_has_enb => 0,
-			c_web_width => 1,
-			c_has_ena => 0,
-			c_use_byte_web => 0,
-			c_use_byte_wea => 0,
-			c_rst_priority_b => "CE",
-			c_rst_priority_a => "CE",
-			c_use_default_data => 0);
+-- Configuration specification
+  FOR ALL : wrapped_I_cache USE ENTITY XilinxCoreLib.blk_mem_gen_v6_1(behavioral)
+    GENERIC MAP (
+      c_addra_width => 10,
+      c_addrb_width => 10,
+      c_algorithm => 1,
+      c_axi_id_width => 4,
+      c_axi_slave_type => 0,
+      c_axi_type => 1,
+      c_byte_size => 9,
+      c_common_clk => 0,
+      c_default_data => "0",
+      c_disable_warn_bhv_coll => 0,
+      c_disable_warn_bhv_range => 0,
+      c_family => "virtex5",
+      c_has_axi_id => 0,
+      c_has_ena => 0,
+      c_has_enb => 0,
+      c_has_injecterr => 0,
+      c_has_mem_output_regs_a => 0,
+      c_has_mem_output_regs_b => 0,
+      c_has_mux_output_regs_a => 0,
+      c_has_mux_output_regs_b => 0,
+      c_has_regcea => 0,
+      c_has_regceb => 0,
+      c_has_rsta => 0,
+      c_has_rstb => 0,
+      c_has_softecc_input_regs_a => 0,
+      c_has_softecc_output_regs_b => 0,
+      c_init_file_name => "I_cache.mif",
+      c_inita_val => "0",
+      c_initb_val => "0",
+      c_interface_type => 0,
+      c_load_init_file => 1,
+      c_mem_type => 3,
+      c_mux_pipeline_stages => 0,
+      c_prim_type => 1,
+      c_read_depth_a => 1024,
+      c_read_depth_b => 1024,
+      c_read_width_a => 32,
+      c_read_width_b => 32,
+      c_rst_priority_a => "CE",
+      c_rst_priority_b => "CE",
+      c_rst_type => "SYNC",
+      c_rstram_a => 0,
+      c_rstram_b => 0,
+      c_sim_collision_check => "ALL",
+      c_use_byte_wea => 0,
+      c_use_byte_web => 0,
+      c_use_default_data => 0,
+      c_use_ecc => 0,
+      c_use_softecc => 0,
+      c_wea_width => 1,
+      c_web_width => 1,
+      c_write_depth_a => 1024,
+      c_write_depth_b => 1024,
+      c_write_mode_a => "WRITE_FIRST",
+      c_write_mode_b => "WRITE_FIRST",
+      c_write_width_a => 32,
+      c_write_width_b => 32,
+      c_xdevicefamily => "virtex5"
+    );
 -- synthesis translate_on
 BEGIN
 -- synthesis translate_off
-U0 : wrapped_i_cache
-		port map (
-			clka => clka,
-			addra => addra,
-			douta => douta);
+U0 : wrapped_I_cache
+  PORT MAP (
+    clka => clka,
+    addra => addra,
+    douta => douta
+  );
 -- synthesis translate_on
 
-END i_cache_a;
-
+END I_cache_a;

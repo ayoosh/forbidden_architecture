@@ -23,111 +23,30 @@
 *     appliances, devices, or systems. Use in such applications are            *
 *     expressly prohibited.                                                    *
 *                                                                              *
-*     (c) Copyright 1995-2009 Xilinx, Inc.                                     *
+*     (c) Copyright 1995-2014 Xilinx, Inc.                                     *
 *     All rights reserved.                                                     *
 *******************************************************************************/
-// The synthesis directives "translate_off/translate_on" specified below are
-// supported by Xilinx, Mentor Graphics and Synplicity synthesis
-// tools. Ensure they are correct for your synthesis tool(s).
 
-// You must compile the wrapper file i_cache.v when simulating
-// the core, i_cache. When compiling the wrapper file, be sure to
+// The Xilinx LogiCORE IP Block Memory Generator replaces the Dual Port Block Memory and Single Port Block Memory LogiCOREs, but is not a direct drop-in replacement.  It should be used in all new Xilinx designs. The core supports RAM and ROM functions over a wide range of widths and depths. Use this core to generate block memories with symmetric or asymmetric read and write port widths, as well as cores which can perform simultaneous write operations to separate locations, and simultaneous read operations from the same location. For more information on differences in interface and feature support between this core and the Dual Port Block Memory and Single Port Block Memory LogiCOREs, please consult the data sheet.
+
+// Interfaces:
+//    AXI4_SLAVE_S_AXI
+//    AXILite_SLAVE_S_AXI
+
+// The following must be inserted into your Verilog file for this
+// core to be instantiated. Change the instance name and port connections
+// (in parentheses) to your own signal names.
+
+//----------- Begin Cut here for INSTANTIATION Template ---// INST_TAG
+I_cache your_instance_name (
+  .clka(clka), // input clka
+  .addra(addra), // input [9 : 0] addra
+  .douta(douta) // output [31 : 0] douta
+);
+// INST_TAG_END ------ End INSTANTIATION Template ---------
+
+// You must compile the wrapper file I_cache.v when simulating
+// the core, I_cache. When compiling the wrapper file, be sure to
 // reference the XilinxCoreLib Verilog simulation library. For detailed
 // instructions, please refer to the "CORE Generator Help".
-
-`timescale 1ns/1ps
-
-module i_cache(
-	clka,
-	addra,
-	douta);
-
-
-input clka;
-input [8 : 0] addra;
-output [31 : 0] douta;
-
-// synthesis translate_off
-
-      BLK_MEM_GEN_V4_2 #(
-		.C_ADDRA_WIDTH(9),
-		.C_ADDRB_WIDTH(9),
-		.C_ALGORITHM(1),
-		.C_BYTE_SIZE(9),
-		.C_COMMON_CLK(0),
-		.C_DEFAULT_DATA("0"),
-		.C_DISABLE_WARN_BHV_COLL(0),
-		.C_DISABLE_WARN_BHV_RANGE(0),
-		.C_FAMILY("virtex5"),
-		.C_HAS_ENA(0),
-		.C_HAS_ENB(0),
-		.C_HAS_INJECTERR(0),
-		.C_HAS_MEM_OUTPUT_REGS_A(0),
-		.C_HAS_MEM_OUTPUT_REGS_B(0),
-		.C_HAS_MUX_OUTPUT_REGS_A(0),
-		.C_HAS_MUX_OUTPUT_REGS_B(0),
-		.C_HAS_REGCEA(0),
-		.C_HAS_REGCEB(0),
-		.C_HAS_RSTA(0),
-		.C_HAS_RSTB(0),
-		.C_HAS_SOFTECC_INPUT_REGS_A(0),
-		.C_HAS_SOFTECC_OUTPUT_REGS_B(0),
-		.C_INITA_VAL("0"),
-		.C_INITB_VAL("0"),
-		.C_INIT_FILE_NAME("i_cache.mif"),
-		.C_LOAD_INIT_FILE(1),
-		.C_MEM_TYPE(3),
-		.C_MUX_PIPELINE_STAGES(0),
-		.C_PRIM_TYPE(1),
-		.C_READ_DEPTH_A(512),
-		.C_READ_DEPTH_B(512),
-		.C_READ_WIDTH_A(32),
-		.C_READ_WIDTH_B(32),
-		.C_RSTRAM_A(0),
-		.C_RSTRAM_B(0),
-		.C_RST_PRIORITY_A("CE"),
-		.C_RST_PRIORITY_B("CE"),
-		.C_RST_TYPE("SYNC"),
-		.C_SIM_COLLISION_CHECK("ALL"),
-		.C_USE_BYTE_WEA(0),
-		.C_USE_BYTE_WEB(0),
-		.C_USE_DEFAULT_DATA(0),
-		.C_USE_ECC(0),
-		.C_USE_SOFTECC(0),
-		.C_WEA_WIDTH(1),
-		.C_WEB_WIDTH(1),
-		.C_WRITE_DEPTH_A(512),
-		.C_WRITE_DEPTH_B(512),
-		.C_WRITE_MODE_A("WRITE_FIRST"),
-		.C_WRITE_MODE_B("WRITE_FIRST"),
-		.C_WRITE_WIDTH_A(32),
-		.C_WRITE_WIDTH_B(32),
-		.C_XDEVICEFAMILY("virtex5"))
-	inst (
-		.CLKA(clka),
-		.ADDRA(addra),
-		.DOUTA(douta),
-		.RSTA(),
-		.ENA(),
-		.REGCEA(),
-		.WEA(),
-		.DINA(),
-		.CLKB(),
-		.RSTB(),
-		.ENB(),
-		.REGCEB(),
-		.WEB(),
-		.ADDRB(),
-		.DINB(),
-		.DOUTB(),
-		.INJECTSBITERR(),
-		.INJECTDBITERR(),
-		.SBITERR(),
-		.DBITERR(),
-		.RDADDRECC());
-
-
-// synthesis translate_on
-
-endmodule
 
