@@ -23,34 +23,42 @@
 --     appliances, devices, or systems. Use in such applications are          --
 --     expressly prohibited.                                                  --
 --                                                                            --
---     (c) Copyright 1995-2009 Xilinx, Inc.                                   --
+--     (c) Copyright 1995-2014 Xilinx, Inc.                                   --
 --     All rights reserved.                                                   --
 --------------------------------------------------------------------------------
+
+-- The Xilinx LogiCORE IP Block Memory Generator replaces the Dual Port Block Memory and Single Port Block Memory LogiCOREs, but is not a direct drop-in replacement.  It should be used in all new Xilinx designs. The core supports RAM and ROM functions over a wide range of widths and depths. Use this core to generate block memories with symmetric or asymmetric read and write port widths, as well as cores which can perform simultaneous write operations to separate locations, and simultaneous read operations from the same location. For more information on differences in interface and feature support between this core and the Dual Port Block Memory and Single Port Block Memory LogiCOREs, please consult the data sheet.
+
+-- Interfaces:
+--    AXI4_SLAVE_S_AXI
+--    AXILite_SLAVE_S_AXI
+
 -- The following code must appear in the VHDL architecture header:
 
 ------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
-component i_cache
-	port (
-	clka: IN std_logic;
-	addra: IN std_logic_VECTOR(8 downto 0);
-	douta: OUT std_logic_VECTOR(31 downto 0));
-end component;
-
+COMPONENT I_cache
+  PORT (
+    clka : IN STD_LOGIC;
+    addra : IN STD_LOGIC_VECTOR(9 DOWNTO 0);
+    douta : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+  );
+END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
 
 -- The following code must appear in the VHDL architecture
 -- body. Substitute your own instance name and net names.
 
 ------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
-your_instance_name : i_cache
-		port map (
-			clka => clka,
-			addra => addra,
-			douta => douta);
+your_instance_name : I_cache
+  PORT MAP (
+    clka => clka,
+    addra => addra,
+    douta => douta
+  );
 -- INST_TAG_END ------ End INSTANTIATION Template ------------
 
--- You must compile the wrapper file i_cache.vhd when simulating
--- the core, i_cache. When compiling the wrapper file, be sure to
+-- You must compile the wrapper file I_cache.vhd when simulating
+-- the core, I_cache. When compiling the wrapper file, be sure to
 -- reference the XilinxCoreLib VHDL simulation library. For detailed
 -- instructions, please refer to the "CORE Generator Help".
 

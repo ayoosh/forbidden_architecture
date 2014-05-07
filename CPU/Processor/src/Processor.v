@@ -80,7 +80,7 @@ module Processor(
 		.iJumpCmd			(jumpCmd),
 		.iRetCmd			(retCmd),
 		.iFullStall			(fullStall),
-		.iStall				(rSemiStall),
+		.iSemiStall			(semiStall),
 		.iHalt				(haltPC),
 		.iClk				(clk),
 		.iRst_n				(rst_n)
@@ -808,7 +808,7 @@ module Processor(
 	);
 	
 	assign semiStall = semiStallH & ~branchMissPredict;
-	assign branchPredict = branchCmd & id_ex_BranchCmd & ~semiStall & ~fullStall;
+	assign branchPredict = branchCmd & id_ex_BranchCmd;
 	assign halt = haltPC;
 	
 	always @ (posedge clk) begin
