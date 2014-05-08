@@ -58,7 +58,7 @@ output [15 : 0] douta;
     .C_AXI_TYPE(1),
     .C_BYTE_SIZE(9),
     .C_COMMON_CLK(0),
-    .C_DEFAULT_DATA("80"),
+    .C_DEFAULT_DATA("F"),
     .C_DISABLE_WARN_BHV_COLL(0),
     .C_DISABLE_WARN_BHV_RANGE(0),
     .C_FAMILY("virtex5"),

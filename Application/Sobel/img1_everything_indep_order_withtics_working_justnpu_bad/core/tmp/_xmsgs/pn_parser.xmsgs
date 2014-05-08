@@ -8,10 +8,10 @@
 <!-- Copyright (c) 1995-2012 Xilinx, Inc.  All rights reserved.    -->
 
 <messages>
-<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;C:/Users/Ayoosh/Documents/GitHub/forbidden_architecture/Application/Sobel/img1_everything_indep_order_withtics/core/instructions.v&quot; into library work</arg>
+<msg type="info" file="ProjectMgmt" num="1845" ><arg fmt="%s" index="1">Analyzing Verilog file &quot;C:/Users/Ayoosh/Documents/GitHub/forbidden_architecture/Application/Sobel/img1_everything_indep_order_withtics_working_justnpu_bad/core/instructions.v&quot; into library work</arg>
 </msg>
 
-<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;C:/Users/Ayoosh/Documents/GitHub/forbidden_architecture/Application/Sobel/img1_everything_indep_order_withtics/core/instructions.vhd&quot; into library work</arg>
+<msg type="info" file="ProjectMgmt" num="1061" ><arg fmt="%s" index="1">Parsing VHDL file &quot;C:/Users/Ayoosh/Documents/GitHub/forbidden_architecture/Application/Sobel/img1_everything_indep_order_withtics_working_justnpu_bad/core/instructions.vhd&quot; into library work</arg>
 </msg>
 
 </messages>

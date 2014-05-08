@@ -128,17 +128,37 @@ LHW R4 0x0800 ;
 
 LLW R5 0x0005 ;
 LHW R5 0x0800 ;
+ADD R0 R0 R0 ;
+STORE R0 R5 0x00 ; # Shutdown DVI
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 
 STORE R2 R4 0x00 ;
 ADD R0 R0 R0 ;
-STORE R3 R5 0x00 ;
+STORE R3 R5 0x00 ; # Now start DVI
 
 B UNCOND COMMAND_GET ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 # ###############################################
 
 # #################################################3
 # Now start Algo part
 SHOW_ALGO ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
+LLW R5 0x0005 ;
+LHW R5 0x0800 ;
+ADD R0 R0 R0 ;
+STORE R0 R5 0x0000 ; # Shutdown DVI
 
 # Tic Counter Reset
 LLW R2 0x0006 ;
@@ -336,7 +356,7 @@ AND R0 R6 R5 ;
 B EQ IM1_TICS_ALGO_TX ;
 ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
-# LOAD R8 R7 0x0000 ;
+# LOAD R30 R7 0x0000 ;
 ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
 STORE R30 R2 0x0000 ; # make sure R30 has correct tic value from above
@@ -352,6 +372,10 @@ B UNCOND COMMAND_GET ;
 # ###################################################################
 # Sobel NPU For Image 1
 SHOW_NPU ADD R0 R0 R0 ;
+LLW R5 0x0005 ;
+LHW R5 0x0800 ;
+ADD R0 R0 R0 ;
+STORE R0 R5 0x00000 ; # Shutdown DVI
 
 # Tic Counter Reset
 LLW R2 0x0006 ;
@@ -359,7 +383,7 @@ LHW R2 0x0800 ;
 STORE R0 R2 0x00 ; 
 
 # R2 Input image start addr
-# R3 Output Image Algo start addr
+# R3 Output Image NPU start addr
 # R4 Row Limiter
 # R5 Column limiter
 # R6 Row iterator
@@ -391,23 +415,74 @@ LLW R21 0x0001 ;
 
 
 # Start by updating addresses
+ADD R0 R0 R0 ;
 SOBEL_IM1_NPU MULT R8 R6 R14 ;
-ADD R8 R8 R7 ;
+ADD R0 R0 R0 ;
+ADD R8 R8 R7 ; # R8 has current pixel's offset now
 ADD R12 R8 R2 ;
 SUB R12 R12 R21 ;
 ADD R13 R12 R14 ;
 SUB R11 R12 R14 ;
-ADD R8 R8 R3 ; # ALL Addresses updated
+ADD R8 R8 R3 ; # Now R8 becomes the output pixel address
+# ALL Addresses updated
 
 
 LOAD R22 R11 0x0000 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 LOAD R23 R12 0x0000 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 LOAD R24 R13 0x0000 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 LOAD R25 R11 0x0001 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 LOAD R26 R12 0x0001 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 LOAD R27 R13 0x0001 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 LOAD R28 R11 0x0002 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 LOAD R29 R12 0x0002 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 LOAD R30 R13 0x0002 ;
 
 ADD R0 R0 R0 ;
@@ -447,18 +522,39 @@ ADD R0 R0 R0 ;
 
 SUB R0 R16 R17 ;
 B LT SOBEL_IM1_NPU_0 ;
-STORE R18 R8 0x00 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
+STORE R18 R8 0x0000 ;
 B UNCOND SOBEL_IM1_NPU_255 ;
-SOBEL_IM1_NPU_0 STORE R0 R8 0x00 ;
+
+ADD R0 R0 R0 ; # This code should never execute
+ADD R0 R0 R0 ; # This code should never execute
+
+SOBEL_IM1_NPU_0 ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+STORE R0 R8 0x0000 ;
 
 # Increment iterators and jumps
-SOBEL_IM1_NPU_255 ADD R7 R7 R21 ;
+SOBEL_IM1_NPU_255 ADD R0 R0 R0 ;
+ADD R7 R7 R21 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 SUB R0 R7 R5 ;
 B LT SOBEL_IM1_NPU ;
-ADD R7 R0 R21 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
+ADD R7 R0 R21 ; # Reset Column iterator to 1
 ADD R6 R6 R21 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 SUB R0 R6 R4 ;
 B LT SOBEL_IM1_NPU ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 
 # Tic Counter store value
 LLW R2 0x0006 ;
@@ -502,12 +598,18 @@ AND R0 R6 R5 ;
 B EQ IM1_TICS_NPU_TX ;
 ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
-# LOAD R8 R7 0x0000 ;
+# LOAD R30 R7 0x0000 ;
 ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
-STORE R30 R2 0x0000 ;
+STORE R30 R2 0x0000 ; # Make sure R30 still has tics values
 ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
 
 B UNCOND COMMAND_GET ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 # ###################

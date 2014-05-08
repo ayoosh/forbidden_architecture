@@ -9,9 +9,9 @@ instructions.ngc
 instructions.sym
 instructions.v
 instructions.veo
-instructions.vhd
-instructions.vho
 instructions.xco
 instructions.xise
+instructions\doc\blk_mem_gen_ds512.pdf
+instructions\doc\blk_mem_gen_v6_1_vinfo.html
 instructions_flist.txt
 instructions_xmdf.tcl
