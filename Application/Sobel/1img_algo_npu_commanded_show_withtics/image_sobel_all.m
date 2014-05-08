@@ -75,7 +75,7 @@ while(1)
     end
 
     fclose(s);
-    delete(s);
+    delete(s);o
     clear s;
     if (userin ~= 'r')
         break;
