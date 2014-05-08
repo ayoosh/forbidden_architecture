@@ -1,0 +1,13 @@
+# Output products list for <xfifo_1>
+fifo_generator_readme.txt
+fifo_generator_ug175.pdf
+xfifo_1.asy
+xfifo_1.gise
+xfifo_1.ngc
+xfifo_1.sym
+xfifo_1.v
+xfifo_1.veo
+xfifo_1.xco
+xfifo_1.xise
+xfifo_1_flist.txt
+xfifo_1_xmdf.tcl
