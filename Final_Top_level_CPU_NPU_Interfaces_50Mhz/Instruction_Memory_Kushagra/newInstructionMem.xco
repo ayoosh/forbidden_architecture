@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 12.2
-# Date: Tue May 06 07:08:52 2014
+# Date: Thu May 08 07:00:25 2014
 #
 ##############################################################
 #
@@ -39,7 +39,7 @@ CSET additional_inputs_for_power_estimation=false
 CSET algorithm=Minimum_Area
 CSET assume_synchronous_clk=false
 CSET byte_size=9
-CSET coe_file=.\COE\Sobel_dum_dum.coe
+CSET coe_file=.\COE\Sobel_dum_dum_flush.coe
 CSET collision_warnings=ALL
 CSET component_name=newInstructionMem
 CSET disable_collision_warnings=false
@@ -85,9 +85,9 @@ CSET use_regcea_pin=false
 CSET use_regceb_pin=false
 CSET use_rsta_pin=false
 CSET use_rstb_pin=false
-CSET write_depth_a=256
+CSET write_depth_a=1024
 CSET write_width_a=32
 CSET write_width_b=32
 # END Parameters
 GENERATE
-# CRC: fd6fb460
+# CRC: 5da3dc04

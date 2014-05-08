@@ -42,7 +42,7 @@
             <spirit:configurableElementValue spirit:referenceId="parameter_enable_a">Always_Enabled</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_enable_b">Always_Enabled</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_port_a_enable_rate">100</spirit:configurableElementValue>
-            <spirit:configurableElementValue spirit:referenceId="parameter_write_depth_a">64</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_write_depth_a">1024</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_algorithm">Minimum_Area</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_output_reset_value_a">0</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_output_reset_value_b">0</spirit:configurableElementValue>
@@ -60,7 +60,7 @@
             <spirit:configurableElementValue spirit:referenceId="parameter_register_portb_output_of_memory_primitives">false</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_port_b_enable_rate">0</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_use_rsta_pin">false</spirit:configurableElementValue>
-            <spirit:configurableElementValue spirit:referenceId="parameter_coe_file">.\COE\Load_Store_DDR_cache_SPART_Assembly_code_Rohit.coe</spirit:configurableElementValue>
+            <spirit:configurableElementValue spirit:referenceId="parameter_coe_file">.\COE\sobelnpubare.coe</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_fill_remaining_memory_locations">false</spirit:configurableElementValue>
             <spirit:configurableElementValue spirit:referenceId="parameter_collision_warnings">ALL</spirit:configurableElementValue>
          </spirit:configurableElementValues>
@@ -101,8 +101,8 @@
                   <xilinx:file>
                      <xilinx:name>./newInstructionMem.mif</xilinx:name>
                      <xilinx:userFileType>mif</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:20:21 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x3A7981FC</xilinx:checkSum>
+                     <xilinx:timeStamp>Thu May 08 07:02:12 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x3C5ABC6E</xilinx:checkSum>
                   </xilinx:file>
                </xilinx:fileSet>
                <xilinx:fileSet>
@@ -110,8 +110,8 @@
                   <xilinx:file>
                      <xilinx:name>./newInstructionMem.xco</xilinx:name>
                      <xilinx:userFileType>xco</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:20:22 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x93637F4C</xilinx:checkSum>
+                     <xilinx:timeStamp>Thu May 08 07:02:12 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0xF82E4DF2</xilinx:checkSum>
                   </xilinx:file>
                </xilinx:fileSet>
                <xilinx:fileSet>
@@ -119,63 +119,63 @@
                   <xilinx:file>
                      <xilinx:name>./blk_mem_gen_ds512.pdf</xilinx:name>
                      <xilinx:userFileType>pdf</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:20:42 GMT 2014</xilinx:timeStamp>
+                     <xilinx:timeStamp>Thu May 08 07:02:31 GMT 2014</xilinx:timeStamp>
                      <xilinx:checkSum>0x7914E183</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./blk_mem_gen_readme.txt</xilinx:name>
                      <xilinx:userFileType>txt</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:20:42 GMT 2014</xilinx:timeStamp>
+                     <xilinx:timeStamp>Thu May 08 07:02:31 GMT 2014</xilinx:timeStamp>
                      <xilinx:checkSum>0x4F6653C3</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./newInstructionMem.asy</xilinx:name>
                      <xilinx:userFileType>asy</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:20:24 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x95AC6D35</xilinx:checkSum>
+                     <xilinx:timeStamp>Thu May 08 07:02:17 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0xFA510487</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./newInstructionMem.mif</xilinx:name>
                      <xilinx:userFileType>mif</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:20:24 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x3A7981FC</xilinx:checkSum>
+                     <xilinx:timeStamp>Thu May 08 07:02:17 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x3C5ABC6E</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./newInstructionMem.ngc</xilinx:name>
                      <xilinx:userFileType>ngc</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:20:56 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x29E420A6</xilinx:checkSum>
+                     <xilinx:timeStamp>Thu May 08 07:02:40 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x0C152B68</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./newInstructionMem.sym</xilinx:name>
                      <xilinx:userFileType>asy</xilinx:userFileType>
                      <xilinx:userFileType>unknown</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:20:42 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x3F498F81</xilinx:checkSum>
+                     <xilinx:timeStamp>Thu May 08 07:02:32 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x6948ED44</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./newInstructionMem.v</xilinx:name>
                      <xilinx:userFileType>verilog</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:20:42 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0xE5D4D4B3</xilinx:checkSum>
+                     <xilinx:timeStamp>Thu May 08 07:02:31 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0xE693FDBA</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./newInstructionMem.veo</xilinx:name>
                      <xilinx:userFileType>veo</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:20:42 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x89DDFD27</xilinx:checkSum>
+                     <xilinx:timeStamp>Thu May 08 07:02:31 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x3D7A8157</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./newInstructionMem.vhd</xilinx:name>
                      <xilinx:userFileType>vhdl</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:20:42 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0xF4BD438C</xilinx:checkSum>
+                     <xilinx:timeStamp>Thu May 08 07:02:31 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0xC8628A95</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./newInstructionMem.vho</xilinx:name>
                      <xilinx:userFileType>vho</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:20:42 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0xC5E332DF</xilinx:checkSum>
+                     <xilinx:timeStamp>Thu May 08 07:02:31 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0xE4EA5C5B</xilinx:checkSum>
                   </xilinx:file>
                </xilinx:fileSet>
                <xilinx:fileSet>
@@ -183,14 +183,14 @@
                   <xilinx:file>
                      <xilinx:name>./newInstructionMem.veo</xilinx:name>
                      <xilinx:userFileType>veo</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:20:57 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x89DDFD27</xilinx:checkSum>
+                     <xilinx:timeStamp>Thu May 08 07:02:40 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x3D7A8157</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./newInstructionMem.vho</xilinx:name>
                      <xilinx:userFileType>vho</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:20:57 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0xC5E332DF</xilinx:checkSum>
+                     <xilinx:timeStamp>Thu May 08 07:02:40 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0xE4EA5C5B</xilinx:checkSum>
                   </xilinx:file>
                </xilinx:fileSet>
                <xilinx:fileSet>
@@ -198,8 +198,8 @@
                   <xilinx:file>
                      <xilinx:name>./newInstructionMem.xco</xilinx:name>
                      <xilinx:userFileType>xco</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:21:03 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x3C4E3871</xilinx:checkSum>
+                     <xilinx:timeStamp>Thu May 08 07:02:46 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0xD6FDDEE7</xilinx:checkSum>
                   </xilinx:file>
                </xilinx:fileSet>
                <xilinx:fileSet>
@@ -208,7 +208,7 @@
                      <xilinx:name>./newInstructionMem_xmdf.tcl</xilinx:name>
                      <xilinx:userFileType>tclXmdf</xilinx:userFileType>
                      <xilinx:userFileType>tcl</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:21:03 GMT 2014</xilinx:timeStamp>
+                     <xilinx:timeStamp>Thu May 08 07:02:46 GMT 2014</xilinx:timeStamp>
                      <xilinx:checkSum>0x953E6825</xilinx:checkSum>
                   </xilinx:file>
                </xilinx:fileSet>
@@ -218,22 +218,22 @@
                      <xilinx:name>./_xmsgs/pn_parser.xmsgs</xilinx:name>
                      <xilinx:userFileType>ignore</xilinx:userFileType>
                      <xilinx:userFileType>unknown</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:21:05 GMT 2014</xilinx:timeStamp>
+                     <xilinx:timeStamp>Thu May 08 07:02:48 GMT 2014</xilinx:timeStamp>
                      <xilinx:checkSum>0x01ACC625</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./newInstructionMem.gise</xilinx:name>
                      <xilinx:userFileType>ignore</xilinx:userFileType>
                      <xilinx:userFileType>gise</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:21:05 GMT 2014</xilinx:timeStamp>
+                     <xilinx:timeStamp>Thu May 08 07:02:48 GMT 2014</xilinx:timeStamp>
                      <xilinx:checkSum>0xCBFA6DD6</xilinx:checkSum>
                   </xilinx:file>
                   <xilinx:file>
                      <xilinx:name>./newInstructionMem.xise</xilinx:name>
                      <xilinx:userFileType>ignore</xilinx:userFileType>
                      <xilinx:userFileType>xise</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:21:05 GMT 2014</xilinx:timeStamp>
-                     <xilinx:checkSum>0x49C55555</xilinx:checkSum>
+                     <xilinx:timeStamp>Thu May 08 07:02:48 GMT 2014</xilinx:timeStamp>
+                     <xilinx:checkSum>0x429FFB5F</xilinx:checkSum>
                   </xilinx:file>
                </xilinx:fileSet>
                <xilinx:fileSet>
@@ -246,7 +246,7 @@
                      <xilinx:userFileType>ignore</xilinx:userFileType>
                      <xilinx:userFileType>txtFlist</xilinx:userFileType>
                      <xilinx:userFileType>txt</xilinx:userFileType>
-                     <xilinx:timeStamp>Thu May 01 03:21:05 GMT 2014</xilinx:timeStamp>
+                     <xilinx:timeStamp>Thu May 08 07:02:48 GMT 2014</xilinx:timeStamp>
                      <xilinx:checkSum>0x5570CCF6</xilinx:checkSum>
                   </xilinx:file>
                </xilinx:fileSet>

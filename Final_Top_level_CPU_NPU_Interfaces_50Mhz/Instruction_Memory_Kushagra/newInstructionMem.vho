@@ -32,7 +32,7 @@
 component newInstructionMem
 	port (
 	clka: IN std_logic;
-	addra: IN std_logic_VECTOR(7 downto 0);
+	addra: IN std_logic_VECTOR(9 downto 0);
 	douta: OUT std_logic_VECTOR(31 downto 0));
 end component;
 

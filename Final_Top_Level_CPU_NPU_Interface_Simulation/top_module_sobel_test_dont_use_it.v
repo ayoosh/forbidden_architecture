@@ -264,7 +264,7 @@ module top_module #
 		
 		wire   state_output;
 		
-		wire [8:0]ram_address;
+		wire [15:0]ram_address;
 		wire [63:0]ram_data; 
 		
 		
@@ -273,7 +273,7 @@ module top_module #
 		reg [31:0] cycle_count;
 		wire icache_done;
 		
-		assign icache_done = (cycle_count == 32'd500) ? 1 : 0;
+		assign icache_done = (cycle_count == 32'd1000) ? 1 : 0;
 		
 	
 		always @(posedge clk_in)
@@ -281,7 +281,7 @@ module top_module #
 		
 		if(gl_rst)
 		cycle_count <= 32'd0;
-		else if(cycle_count == 32'd500)
+		else if(cycle_count == 32'd1000)
 		cycle_count <= cycle_count;
 		else if(mem_ready_data1)
 		cycle_count <= cycle_count + 1;
@@ -427,7 +427,7 @@ module top_module #
 	);
 
 // Instantiating ROM	
-rom_64_48 rom_image (
+rom64x38400 rom_image (
   .clka(clk_in), // input clka
   .addra(ram_address), // input [15 : 0] addra
   .douta(ram_data) // output [63 : 0] douta
@@ -505,7 +505,7 @@ rom_64_48 rom_image (
 	.npu_config_fifo_full(npu_config_fifo_full),
 	.clk(clk_in),
 	.clk_x2(CLK2X_OUT),
-	.rst_n(~gl_rst)
+	.rst_n(~(gl_rst | ~icache_done) )
 );
 
 
