@@ -69,7 +69,7 @@ END COMPONENT;
       c_axi_type => 1,
       c_byte_size => 9,
       c_common_clk => 0,
-      c_default_data => "80",
+      c_default_data => "F",
       c_disable_warn_bhv_coll => 0,
       c_disable_warn_bhv_range => 0,
       c_family => "virtex5",

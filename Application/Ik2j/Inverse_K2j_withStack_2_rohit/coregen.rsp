@@ -1,0 +1,2 @@
+SETPROJECT "I:/Xilinx_Projects/inversek2j_CPU/ipcore_dir/coregen.cgp"
+LAUNCHXCO "I:/Xilinx_Projects/inversek2j_CPU/ipcore_dir/inversek2j_CPU.xco"
