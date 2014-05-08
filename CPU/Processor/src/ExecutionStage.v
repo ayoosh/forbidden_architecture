@@ -87,6 +87,17 @@ module ExecutionStage (
 	
 	wire			zeroFlag, negativeFlag, overflowFlag;
 	reg				zeroEn, negativeEn, overflowEn;
+	
+	reg iNpuDeqOp_reg;
+	
+ 
+	always @ (posedge iClk) begin
+		if (!iRst_n) 
+			iNpuDeqOp_reg <= 0;
+		else
+         iNpuDeqOp_reg <= iNpuDeqOp;		
+	end
+	
 
 	// External modules declaration
 	AluMux AluMux_0 (
@@ -173,7 +184,7 @@ module ExecutionStage (
 
 	assign oNpuConfigFifo	= iNpuCfgOp ? iInstruction : 32'h0;
 	assign oNpuDataFifo		= iNpuEnqOp ? forwardSrc0 : 32'h0;
-	assign oExuResult		= iNpuDeqOp ? iNpuDataFifo : exuResult;
+	assign oExuResult		= iNpuDeqOp_reg ? iNpuDataFifo : exuResult;
 	
 	assign oNpuEnqOp		= iNpuEnqOp;
 	assign oNpuCfgOp		= iNpuCfgOp;
