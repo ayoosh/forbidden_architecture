@@ -24,7 +24,7 @@ module data_rd_wr  # (
 	parameter COL_WIDTH               = 10,       
 	parameter ROW_WIDTH               = 13,
 	parameter INPUT_ADDR_WIDTH			 = 31,
-	parameter WRITE_CYCLE_DELAY		 = 3
+	parameter WRITE_CYCLE_DELAY		 = 12
     )
 	(
    input                             	app_wdf_afull,          // output from MIG
