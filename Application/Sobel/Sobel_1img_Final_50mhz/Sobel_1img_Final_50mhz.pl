@@ -78,8 +78,38 @@ B LT IM1_GET_PIXEL ;
 # Image storage done
 
 # #################################################33
-# Now make copies of the image
-# Skipping for now. Let the edges be fringed big deal, if you have a problem talk to the HAND of the king
+# To handle image border make everything black
+# R2 Input image addr
+# R3 Output Image Algo addr
+# R4 Output Image NPU addr
+# R5 Input End address
+# R6 Input value
+# R7 1
+
+LLW R2 0x0000 ;
+LLW R3 0x0000 ;
+LHW R3 0x0040 ;
+LLW R4 0x0000 ;
+LHW R4 0x0060 ;
+LLW R7 0x0001 ;
+
+LLW R5 0xB000 ;
+LHW R5 0x0044 ;
+SOBEL_IM1_COPY_A ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+STORE R0 R3 0x0 ;
+ADD R3 R3 R7 ;
+SUB R0 R3 R5 ;
+B LT SOBEL_IM1_COPY_A ; 
+
+LLW R5 0xB000 ;
+LHW R5 0x0064 ;
+SOBEL_IM1_COPY_N ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+STORE R0 R4 0x0 ;
+ADD R4 R4 R7 ;
+SUB R0 R4 R5 ;
+B LT SOBEL_IM1_COPY_N ; 
 
 # ############################################
 # Get command to decide what to do
@@ -101,17 +131,25 @@ LOAD R6 R2 0x0000 ;
 LLW R7 0x0073 ;
 SUB R0 R6 R7 ;
 B EQ SHOW_ORIGINAL ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 
 LLW R7 0x0074 ;
 SUB R0 R6 R7 ;
 B EQ SHOW_ALGO ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 
 LLW R7 0x0075 ;
 SUB R0 R6 R7 ;
 B EQ SHOW_NPU ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 
 # If not matches anything just jump to getting commands
 B UNCOND COMMAND_GET ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 # #############################################################################
 
 # #################################################################################################################
@@ -133,8 +171,6 @@ STORE R0 R5 0x0000 ; # Shutdown DVI
 FLUSH ;
 
 LLW R2 0x0000 ;
-LHW R2 0x0000 ;
-
 LLW R3 0x0001 ;
 
 LLW R4 0x0004 ;
@@ -143,13 +179,6 @@ LHW R4 0x0800 ;
 LLW R5 0x0005 ;
 LHW R5 0x0800 ;
 
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
@@ -428,8 +457,8 @@ LLW R21 0x0001 ;
 
 
 # Start by updating addresses
-ADD R0 R0 R0 ;
-SOBEL_IM1_NPU MULT R8 R6 R14 ;
+SOBEL_IM1_NPU ADD R0 R0 R0 ;
+MULT R8 R6 R14 ;
 ADD R0 R0 R0 ;
 ADD R8 R8 R7 ; # R8 has current pixel's offset now
 ADD R12 R8 R2 ;
@@ -441,73 +470,15 @@ ADD R8 R8 R3 ; # Now R8 becomes the output pixel address
 
 
 LOAD R22 R11 0x0000 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-
 LOAD R23 R12 0x0000 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-
 LOAD R24 R13 0x0000 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-
 LOAD R25 R11 0x0001 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-
 LOAD R26 R12 0x0001 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-
 LOAD R27 R13 0x0001 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-
 LOAD R28 R11 0x0002 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-
 LOAD R29 R12 0x0002 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-
 LOAD R30 R13 0x0002 ;
 
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
 
@@ -523,37 +494,26 @@ ENQD0 R30 ;
 
 ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
 
 DEQD0 R16 ;
-
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
 
 SUB R0 R16 R17 ;
 B LT SOBEL_IM1_NPU_0 ;
-ADD R0 R0 R0 ;
 ADD R0 R0 R0 ;
 
 STORE R18 R8 0x0000 ;
 B UNCOND SOBEL_IM1_NPU_255 ;
 
 ADD R0 R0 R0 ; # This code should never execute
-ADD R0 R0 R0 ; # This code should never execute
 
 SOBEL_IM1_NPU_0 ADD R0 R0 R0 ;
-ADD R30 R30 R0 ; # Intention is a noop where R0 is not destination
 ADD R30 R30 R0 ; # Intention is a noop where R0 is not destination
 STORE R0 R8 0x0000 ;
 
 # Increment iterators and jumps
 SOBEL_IM1_NPU_255 ADD R0 R0 R0 ;
 ADD R7 R7 R21 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
 
 SUB R0 R7 R5 ;
 B LT SOBEL_IM1_NPU ;
@@ -562,8 +522,6 @@ ADD R0 R0 R0 ;
 
 ADD R7 R0 R21 ; # Reset Column iterator to 1
 ADD R6 R6 R21 ;
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
 
 SUB R0 R6 R4 ;
 B LT SOBEL_IM1_NPU ;
@@ -573,11 +531,13 @@ ADD R0 R0 R0 ;
 # Tic Counter store value
 LLW R2 0x0006 ;
 LHW R2 0x0800 ;
-LOAD R30 R2 0x00 ;
+LOAD R30 R2 0x00 ; # Beware, this value is used from this register a little later. Do not reuse register before that.
 LLW R2 0x3001 ;
 LHW R2 0x00C0 ;
 STORE R30 R2 0x00 ;
 
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 
 FLUSH ;
 
