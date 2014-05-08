@@ -808,7 +808,7 @@ module Processor(
 		.iRst_n				(rst_n)
 	);
 	
-	assign semiStall = semiStallH & ~branchMissPredict;
+	assign semiStall = semiStallH & ~branchMissPredict & ~fullStall;
 	assign branchPredict = branchCmd & id_ex_BranchCmd;
 	assign halt = haltPC;
 	
