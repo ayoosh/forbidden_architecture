@@ -44,14 +44,14 @@ module newInstructionMem(
 
 
 input clka;
-input [5 : 0] addra;
+input [9 : 0] addra;
 output [31 : 0] douta;
 
 // synthesis translate_off
 
       BLK_MEM_GEN_V4_2 #(
-		.C_ADDRA_WIDTH(6),
-		.C_ADDRB_WIDTH(6),
+		.C_ADDRA_WIDTH(10),
+		.C_ADDRB_WIDTH(10),
 		.C_ALGORITHM(1),
 		.C_BYTE_SIZE(9),
 		.C_COMMON_CLK(0),
@@ -79,8 +79,8 @@ output [31 : 0] douta;
 		.C_MEM_TYPE(3),
 		.C_MUX_PIPELINE_STAGES(0),
 		.C_PRIM_TYPE(1),
-		.C_READ_DEPTH_A(64),
-		.C_READ_DEPTH_B(64),
+		.C_READ_DEPTH_A(1024),
+		.C_READ_DEPTH_B(1024),
 		.C_READ_WIDTH_A(32),
 		.C_READ_WIDTH_B(32),
 		.C_RSTRAM_A(0),
@@ -96,8 +96,8 @@ output [31 : 0] douta;
 		.C_USE_SOFTECC(0),
 		.C_WEA_WIDTH(1),
 		.C_WEB_WIDTH(1),
-		.C_WRITE_DEPTH_A(64),
-		.C_WRITE_DEPTH_B(64),
+		.C_WRITE_DEPTH_A(1024),
+		.C_WRITE_DEPTH_B(1024),
 		.C_WRITE_MODE_A("WRITE_FIRST"),
 		.C_WRITE_MODE_B("WRITE_FIRST"),
 		.C_WRITE_WIDTH_A(32),

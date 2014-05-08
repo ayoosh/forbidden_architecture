@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module main_logic(clk_25mhz, clk_100mhz, rst, pixel_r, pixel_g, pixel_b, rd_fifo, fifo_empty, done, data_rd, mem_ready_data, data_wr, mem_data_addr, mem_rw_data, mem_valid_data, last_addr_update);
+module main_logic(clk_25mhz, clk_100mhz, rst, pixel_r, pixel_g, pixel_b, rd_fifo, fifo_empty, done, data_rd, mem_ready_data, data_wr, mem_data_addr, mem_rw_data, mem_valid_data, ram_wr_done);
     input clk_25mhz;
 	 input clk_100mhz;
     input rst;
@@ -36,7 +36,7 @@ module main_logic(clk_25mhz, clk_100mhz, rst, pixel_r, pixel_g, pixel_b, rd_fifo
 	output [27:0] mem_data_addr;
 	output  mem_rw_data;
 	output  mem_valid_data;
-	output  last_addr_update;
+	output  ram_wr_done;  // Use as reset for other modules
 	 
 	 wire [23:0] fifo_data;	 
 	 wire [23:0] rom_data;
@@ -47,23 +47,52 @@ module main_logic(clk_25mhz, clk_100mhz, rst, pixel_r, pixel_g, pixel_b, rd_fifo
 	 
 	 wire WEN;
 	 
-	// Write the data into FIFO only when FIFO is not full and reset is not set. 
-	//assign wr_en_fifo = (~full_fifo)&(~rst);
+	 wire [15:0] rom_addr;
+	 	 wire [15:0] rom_addr_rd;
+		 	 wire [15:0] rom_addr_wr;
+	 wire [63:0] rom_rd;
+	 wire [63:0] rom_write;
+	 wire rom_wen;
+	// wire ram_wr_done;  
 	
-	display display_inst(
+		assign rom_addr = rom_wen ? rom_addr_wr : rom_addr_rd;
+	 
+	write_rom write_rom(
 		.clk(clk_100mhz), 
 		.rst(rst), 
-		.fifo_full(full_fifo),
-		.data_out(rom_data),
-		
+		.data_out(rom_write),
 		.data_rd(data_rd),
 	   .mem_ready_data(mem_ready_data),
 	   .data_wr(data_wr),
 	   .mem_data_addr(mem_data_addr),
 	   .mem_rw_data(mem_rw_data),
 	   .mem_valid_data(mem_valid_data),
-	   .last_addr_update(last_addr_update),
+		.WEN(rom_wen),
+		.rom_addr_wr(rom_addr_wr),
+		.ram_wr_done(ram_wr_done)
+	);	
+	 
+	 this_is_sparta RAM_DVI (
+  .clka(clk_100mhz), // input clka
+  .wea(rom_wen), // input [0 : 0] wea
+  .addra(rom_addr), // input [15 : 0] addra
+  .dina(rom_write), // input [63 : 0] dina
+  .douta(rom_rd) // output [63 : 0] douta
+    );
+	 
+	// Write the data into FIFO only when FIFO is not full and reset is not set. 
+	//assign wr_en_fifo = (~full_fifo)&(~rst);
+	
+	display display_inst(
+		.clk(clk_100mhz), 
+		.rst(rst | ~ram_wr_done), 
+		.fifo_full(full_fifo),
+		.data_out(rom_data),
 		
+		.data_rd(rom_rd),
+	   .mem_data_addr(rom_addr_rd),
+	   .last_addr_update(last_addr_update),
+
 		.WEN(WEN),
 		.done(done)
 	);	
@@ -74,7 +103,7 @@ module main_logic(clk_25mhz, clk_100mhz, rst, pixel_r, pixel_g, pixel_b, rd_fifo
 	 assign rd_en_fifo = rd_fifo;
 	 
 	 xfifo_1 xclk_fifo(
-		.rst(rst),
+		.rst(rst | ~ram_wr_done),
 		.wr_clk(clk_100mhz),
 		.rd_clk(clk_25mhz),
 		.din(rom_data),

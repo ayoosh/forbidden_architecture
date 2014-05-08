@@ -1,44 +1,17 @@
 ##############################################################
-#
-# Xilinx Core Generator version 14.2
-# Date: Sat Apr 19 18:42:23 2014
-#
 ##############################################################
-#
-#  This file contains the customisation parameters for a
-#  Xilinx CORE Generator IP GUI. It is strongly recommended
-#  that you do not manually alter this file as it may cause
-#  unexpected and unsupported behavior.
-#
 ##############################################################
-#
-#  Generated from component: xilinx.com:ip:fifo_generator:6.2
-#
 ##############################################################
-#
-# BEGIN Project Options
-SET addpads = false
-SET asysymbol = true
-SET busformat = BusFormatAngleBracketNotRipped
-SET createndf = false
 SET designentry = Verilog
-SET device = xc5vlx110t
+SET BusFormat = BusFormatAngleBracketNotRipped
 SET devicefamily = virtex5
-SET flowvendor = Foundation_ISE
-SET formalverification = false
-SET foundationsym = false
-SET implementationfiletype = Ngc
+SET device = xc5vlx110t
 SET package = ff1136
-SET removerpms = false
-SET simulationfiles = Behavioral
 SET speedgrade = -1
-SET verilogsim = true
-SET vhdlsim = false
-# END Project Options
-# BEGIN Select
+SET FlowVendor = Foundation_ISE
+SET VerilogSim = True
+SET VHDLSim = True
 SELECT Fifo_Generator family Xilinx,_Inc. 6.2
-# END Select
-# BEGIN Parameters
 CSET almost_empty_flag=false
 CSET almost_full_flag=false
 CSET component_name=xfifo_1
@@ -83,9 +56,4 @@ CSET write_acknowledge_sense=Active_High
 CSET write_clock_frequency=1
 CSET write_data_count=false
 CSET write_data_count_width=10
-# END Parameters
-# BEGIN Extra information
 MISC pkg_timestamp=2012-07-21T06:31:03Z
-# END Extra information
-GENERATE
-# CRC: 73543d88

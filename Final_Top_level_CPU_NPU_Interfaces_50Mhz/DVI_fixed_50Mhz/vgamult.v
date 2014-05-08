@@ -44,6 +44,10 @@ module vgamult(clk_100mhz,  ext_rst, pixel_r, pixel_g, pixel_b, hsync, vsync, bl
 	output  mem_valid_data;
 	output  last_addr_update;
 	
+	
+	// Used as internal reset
+	wire ram_wr_done;
+	
 	// IO interface
 	input [27:0] mem_start;
 	input display_on;
@@ -96,7 +100,7 @@ module vgamult(clk_100mhz,  ext_rst, pixel_r, pixel_g, pixel_b, hsync, vsync, bl
 	 assign mem_data_addr = mem_start + mem_data_original_address;
 	 
 	 //DVI Interface
-	 assign dvi_rst = ~(rst|~locked_dcm);
+	 assign dvi_rst = ~(rst|~locked_dcm | ~ram_wr_done);
 	 assign D = (clk)? pixel_gbrg[23:12] : pixel_gbrg[11:0];
 	 assign sda_tri = (sda)? 1'bz: 1'b0;
 	 assign scl_tri = (scl)? 1'bz: 1'b0;
@@ -113,10 +117,10 @@ module vgamult(clk_100mhz,  ext_rst, pixel_r, pixel_g, pixel_b, hsync, vsync, bl
 
 	// diff_clk clk_diff1(clkn_100mhz,  rst, clkn_25mhz, clknin_ibufg_out, clkn_100mhz_buf, lockedn_dcm);
 	 vga_clk vga_clk_gen1(clk_100mhz, rst, clk_25mhz, clkin_ibufg_out, clk_100mhz_buf, locked_dcm);
-    vga_logic  vgal1(clk_25mhz, rst|~locked_dcm, blank, comp_sync, hsync, vsync, pixel_x, pixel_y, rd_fifo, fifo_empty, done);
+    vga_logic  vgal1(clk_25mhz, rst|~locked_dcm | ~ram_wr_done, blank, comp_sync, hsync, vsync, pixel_x, pixel_y, rd_fifo, fifo_empty, done);
 	 
 	 // Note that instead of using clk_100mhz as input, I am using clk_100mhz_buf as input. This is the output 
 	 // received from clk divider.
-	 main_logic main1(clk_25mhz, clk_100mhz, rst|~locked_dcm, pixel_r, pixel_g, pixel_b, rd_fifo, fifo_empty, done, data_rd, mem_ready_data, data_wr, mem_data_original_address, mem_rw_data, mem_valid_data, last_addr_update);
+	 main_logic main1(clk_25mhz, clk_100mhz, rst|~locked_dcm , pixel_r, pixel_g, pixel_b, rd_fifo, fifo_empty, done, data_rd, mem_ready_data, data_wr, mem_data_original_address, mem_rw_data, mem_valid_data, ram_wr_done);
 	 
 endmodule

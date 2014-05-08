@@ -3,12 +3,8 @@
 module display (
 input clk, rst, fifo_full, done,
 // Arbiter interface
-input [255:0]  data_rd,
-input mem_ready_data,
-output [255:0] data_wr,
-output  [27:0] mem_data_addr,
-output  mem_rw_data,
-output reg mem_valid_data,
+input [63:0]  data_rd,
+output  [15:0] mem_data_addr,
 output reg last_addr_update,
 // Output to FIFO
 output reg [23:0] data_out,
@@ -16,31 +12,26 @@ output  WEN
 );
 
 
-assign data_wr = 256'd0;  // Will never write always read
-assign mem_rw_data = 0;  // Will never issue write command
-
-
 // Max is 38400 [ 640*480/8 ]
-reg [18:0] addr_count;
+reg [15:0] addr_count;
 reg [3:0] write_counter;
 // count 8 times
 reg write_enabled;
 reg write_finish;
 reg wait_for_read;
-reg [255:0] temp_data;
+reg [63:0] temp_data;
 reg WEN_I;
 
 // WEN is asynchronous
 assign WEN =  (WEN_I) & ~fifo_full;
 
-assign mem_data_addr = {9'b0,addr_count[18:0]};
+assign mem_data_addr = addr_count;
 
 // Addr Counter always block
 always @(posedge clk)
 	begin
 	if(rst)
 		begin
-		mem_valid_data <= 0;  
 		last_addr_update <= 0;
 		addr_count <= 0;
 		temp_data <= 0;
@@ -48,25 +39,23 @@ always @(posedge clk)
 		wait_for_read <= 0;
 		end
 		
-	else	if(write_finish & ~wait_for_read)  // Issue new read command
+	else if(write_finish & ~wait_for_read)  // Issue new read command
 		begin
-		mem_valid_data <= 1;
 		wait_for_read <= 1;
 		end
 		
-	else if(wait_for_read & mem_ready_data) // received data
+	else if(wait_for_read & ~write_enabled & write_finish) // received data
 		begin
-		mem_valid_data <= 0;
 		write_enabled <= 1;
 		temp_data <= data_rd;
-			if( addr_count == 19'd307192 )
+			if( addr_count == 16'd38399 )
 				begin
-				addr_count <= 19'd0;
 				last_addr_update <= 1;
+				addr_count <= 16'd0;
 				end
 			else
 				begin
-				addr_count <= addr_count + 8;
+				addr_count <= addr_count + 1;
 				last_addr_update <= 0;
 				end
 		end
@@ -106,13 +95,13 @@ always @(posedge clk)
 			begin
 			case(write_counter)
 			3'd0 :  data_out <= {temp_data[7:0], temp_data[7:0], temp_data[7:0]}; 
-			3'd1 :  data_out <= {temp_data[39:32], temp_data[39:32], temp_data[39:32]}; 
-			3'd2 :  data_out <= {temp_data[71:64], temp_data[71:64], temp_data[71:64]}; 
-			3'd3 :  data_out <= {temp_data[103:96], temp_data[103:96], temp_data[103:96]}; 
-			3'd4 :  data_out <= {temp_data[135:128], temp_data[135:128], temp_data[135:128]}; 
-			3'd5 :  data_out <= {temp_data[167:160], temp_data[167:160], temp_data[167:160]}; 
-			3'd6 :  data_out <= {temp_data[199:192], temp_data[199:192], temp_data[199:192]}; 
-			3'd7 :  data_out <= {temp_data[231:224], temp_data[231:224], temp_data[231:224]}; 
+			3'd1 :  data_out <= {temp_data[15:8], temp_data[15:8], temp_data[15:8]}; 
+			3'd2 :  data_out <= {temp_data[23:16], temp_data[23:16], temp_data[23:16]}; 
+			3'd3 :  data_out <= {temp_data[31:24], temp_data[31:24], temp_data[31:24]}; 
+			3'd4 :  data_out <= {temp_data[39:32], temp_data[39:32], temp_data[39:32]}; 
+			3'd5 :  data_out <= {temp_data[47:40], temp_data[47:40], temp_data[47:40]}; 
+			3'd6 :  data_out <= {temp_data[55:48], temp_data[55:48], temp_data[55:48]}; 
+			3'd7 :  data_out <= {temp_data[63:56], temp_data[63:56], temp_data[63:56]};  
 			endcase
 			write_counter <= write_counter + 1;
 			WEN_I <= 1;
@@ -125,13 +114,13 @@ always @(posedge clk)
 			
 			case(write_counter)
 			3'd0 :  data_out <= {temp_data[7:0], temp_data[7:0], temp_data[7:0]}; 
-			3'd1 :  data_out <= {temp_data[39:32], temp_data[39:32], temp_data[39:32]}; 
-			3'd2 :  data_out <= {temp_data[71:64], temp_data[71:64], temp_data[71:64]}; 
-			3'd3 :  data_out <= {temp_data[103:96], temp_data[103:96], temp_data[103:96]}; 
-			3'd4 :  data_out <= {temp_data[135:128], temp_data[135:128], temp_data[135:128]}; 
-			3'd5 :  data_out <= {temp_data[167:160], temp_data[167:160], temp_data[167:160]}; 
-			3'd6 :  data_out <= {temp_data[199:192], temp_data[199:192], temp_data[199:192]}; 
-			3'd7 :  data_out <= {temp_data[231:224], temp_data[231:224], temp_data[231:224]}; 
+			3'd1 :  data_out <= {temp_data[15:8], temp_data[15:8], temp_data[15:8]}; 
+			3'd2 :  data_out <= {temp_data[23:16], temp_data[23:16], temp_data[23:16]}; 
+			3'd3 :  data_out <= {temp_data[31:24], temp_data[31:24], temp_data[31:24]}; 
+			3'd4 :  data_out <= {temp_data[39:32], temp_data[39:32], temp_data[39:32]}; 
+			3'd5 :  data_out <= {temp_data[47:40], temp_data[47:40], temp_data[47:40]}; 
+			3'd6 :  data_out <= {temp_data[55:48], temp_data[55:48], temp_data[55:48]}; 
+			3'd7 :  data_out <= {temp_data[63:56], temp_data[63:56], temp_data[63:56]}; 
 			endcase
 			write_counter <= write_counter + 1;
 			

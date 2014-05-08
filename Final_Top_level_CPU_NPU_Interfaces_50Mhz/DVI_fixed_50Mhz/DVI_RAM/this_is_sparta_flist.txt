@@ -1,0 +1,15 @@
+# Output products list for <this_is_sparta>
+blk_mem_gen_ds512.pdf
+blk_mem_gen_readme.txt
+this_is_sparta.asy
+this_is_sparta.gise
+this_is_sparta.ngc
+this_is_sparta.sym
+this_is_sparta.v
+this_is_sparta.veo
+this_is_sparta.vhd
+this_is_sparta.vho
+this_is_sparta.xco
+this_is_sparta.xise
+this_is_sparta_flist.txt
+this_is_sparta_xmdf.tcl
