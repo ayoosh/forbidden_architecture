@@ -1,0 +1,17 @@
+# Output products list for <inversek2j_2_npu>
+_xmsgs\pn_parser.xmsgs
+blk_mem_gen_ds512.pdf
+blk_mem_gen_readme.txt
+inversek2j_2_npu.asy
+inversek2j_2_npu.gise
+inversek2j_2_npu.mif
+inversek2j_2_npu.ngc
+inversek2j_2_npu.sym
+inversek2j_2_npu.v
+inversek2j_2_npu.veo
+inversek2j_2_npu.vhd
+inversek2j_2_npu.vho
+inversek2j_2_npu.xco
+inversek2j_2_npu.xise
+inversek2j_2_npu_flist.txt
+inversek2j_2_npu_xmdf.tcl

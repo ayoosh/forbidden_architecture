@@ -1,0 +1,3 @@
+NEWPROJECT "I:/inversek2j/instruction_rom_2_npu/ipcore_dir/coregen.cgp"
+SETPROJECT "I:/inversek2j/instruction_rom_2_npu/ipcore_dir/coregen.cgp"
+LAUNCHXCO "I:/inversek2j/instruction_rom_2_npu/ipcore_dir/inversek2j_2_npu.xco"
