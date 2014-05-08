@@ -6,6 +6,7 @@ inversek2j_2_npu.asy
 inversek2j_2_npu.gise
 inversek2j_2_npu.mif
 inversek2j_2_npu.ngc
+inversek2j_2_npu.sym
 inversek2j_2_npu.v
 inversek2j_2_npu.veo
 inversek2j_2_npu.vhd

@@ -56,6 +56,10 @@ utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path inversek2j_2
 utilities_xmdf::xmdfSetData $instance FileSet $fcount type ngc
 incr fcount
 
+utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path inversek2j_2_npu.sym
+utilities_xmdf::xmdfSetData $instance FileSet $fcount type symbol
+incr fcount
+
 utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path inversek2j_2_npu.v
 utilities_xmdf::xmdfSetData $instance FileSet $fcount type verilog
 incr fcount

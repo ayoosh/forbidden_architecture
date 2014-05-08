@@ -129,5 +129,9 @@ output [31 : 0] douta;
 
 // synthesis translate_on
 
+// XST black box declaration
+// box_type "black_box"
+// synthesis attribute box_type of inversek2j_2_npu is "black_box"
+
 endmodule
 
