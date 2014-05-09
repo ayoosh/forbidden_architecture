@@ -27,19 +27,20 @@ fopen(s);
     count = 0;
     command = 0;
     
-    while((count == 0) || (command ~=105)) 
-        [command, count] = fread(s,1, 'uint32');
-    end
-    fprintf('Got command from FPGA\n');
-    command
+   % while((count == 0) || (command ~=105)) 
+   %     [command, count] = fread(s,1, 'uint32');
+    % end
+    %fprintf('Got command from FPGA\n');
+    %command
         
-    if (command == 105)
+    %f (command == 105)
         fprintf('Sending data\n');
-        for index = 1:1:2048
-            datasend_1 = A(1,index);
+        for index = 1:1:2
+%             index = 1;
+            datasend_1 = A(index,1);
             fwrite(s, datasend_1, 'single');
-            datasend_2 = A(2,index);
-            fwrite(s, datasend_2, 'single');
+%             datasend_1 = A(2,1);
+%             fwrite(s, datasend_1, 'single');
         end
 %         fprintf('Sending extra data\n');
 %         for index = 1:4:(640*480)
@@ -47,15 +48,16 @@ fopen(s);
 %             fwrite(s, datasend, 'uint32');
 %         end
         fprintf('Done sending data\n');
-    end
+    %end
     
     while(1)
     %if (command == 100)
-        for index = 1:1:2048
+        for index = 1:1:2
+%                 index = 1;
                 [data_receive_1, count] = fread(s,1, 'single');
-                B(1,index) = data_receive_1;             
-                [data_receive_2, count] = fread(s,1, 'single');
-                B(2,index) = data_receive_2;
+                B(index,1) = data_receive_1;             
+%                 [data_receive_1, count] = fread(s,1, 'single');
+%                 B(2,index) = data_receive_1;
         end
 %         userin = input('Enter: o - original image, a - sobel algo image, n - npu image\nx - exit local program, r - restart\n', 's');
 %         if (userin == 'o')
@@ -90,7 +92,7 @@ fopen(s);
 %             datasend = 0;
 %             fwrite(s, datasend, 'uint32');
 %             fprintf('Sent junk command to FPGA\n');
-        end
+       % end
         
     end
     

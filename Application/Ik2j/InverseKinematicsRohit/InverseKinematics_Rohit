@@ -18,6 +18,18 @@ LHW R7 0x0800 ;
 LLW R8 0x0002 ;
 LLW R9 0x0001 ;
 
+LLW R17 0x0069 ;
+
+IKJ_SPART_TX_NOT_READY_1 LOAD R18 R7 0x00 ;
+AND R0 R18 R9 ;
+B EQ IKJ_SPART_TX_NOT_READY_1 ;
+
+STORE R17 R6 ;
+
+# NOPs between LOAD and STORE
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 SPART_RX_NOT_READY_1 LOAD R10 R7 0x00 ;
 AND R0 R10 R8 ;
 B EQ SPART_RX_NOT_READY_1 ;
@@ -25,10 +37,20 @@ B EQ SPART_RX_NOT_READY_1 ;
 LOAD R15 R6 0x00 ;
 
 # NOPs between LOAD and STORE
-ADD R16 R8 R0 ;
-ADD R17 R9 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 
 STORE R15 R2 ;
+
+# NOPs between two LOADs
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
+SPART_TX_NOT_READY_2 LOAD R10 R7 0x00 ;
+AND R0 R10 R9 ;
+B EQ SPART_TX_NOT_READY_2 ;
+
+STORE R4 R6 0x00 ;
 
 # Increment to the next address location by one.
 ADD R2 R2 R9 ;
@@ -65,12 +87,15 @@ B NEQ SPART_RX_NOT_READY_1 ;
 # R21 - value 2
 # R22 - value 2048 - 2
 
+LLW R1 0x000F ;
+LHW R1 0x0000 ;
+
 LLW R2 0x0000 ;
-LHW R2 0x00c0 ;
+LHW R2 0x00C0 ;
 LLW R4 0x1000 ;
-LHW R4 0x00c0 ;
+LHW R4 0x00C0 ;
 LLW R6 0x0000 ;
-LHW R6 0x3f00 ;
+LHW R6 0x3F00 ;
 ADD R7 R0 R6 ; # L1 = L2 = 0.5
 
 LLW R21 0x0002 ;
@@ -91,8 +116,27 @@ ADD R8 R0 R0 ; # Loop counter
 # R20 - theta1
 
 FMULT R11 R6 R6 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FMULT R12 R7 R7 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FMULT R13 R6 R7 ;
+
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FMULT R13 R13 R21 ;
 
 # Start of Algo loop
@@ -102,35 +146,183 @@ ADD R5 R4 R8 ;
 LOAD R9 R3 0x0 ;
 LOAD R10 R3 0x1 ;
 
+# NOP between load and floating point operation
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FMULT R14 R9 R9 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FMULT R15 R10 R10 ;
 
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FADD R16 R14 R15 ;
+
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FSUB R16 R16 R11 ;
+
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FSUB R16 R16 R12 ;
+
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FDIV R16 R16 R13 ;
+
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FADD R30 R16 R0 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 CALL ACOS ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FADD R16 R29 R0 ;
+
+# NOPs between floating point operation and store
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 STORE R16 R5 0x0000 ;
 
 FADD R30 R16 R0 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 CALL COS ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FMULT R17 R29 R7 ;
+
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FADD R17 R17 R6 ;
+
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FMULT R17 R17 R10 ;
 
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FADD R30 R16 R0 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 CALL SIN ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FMULT R18 R7 R29 ;
+
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FMULT R18 R18 R9 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FADD R19 R14 R15 ;
 
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FSUB R20 R17 R18 ;
+
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FDIV R20 R20 R19 ;
 
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FADD R30 R20 R0 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 CALL ASIN ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 STORE R29 R5 0x0001 ;
 
 ADD R8 R8 R21 ;
@@ -148,7 +340,7 @@ B LT IK_ALGO ;
 
 # ####################################################
 # End of inversek2j algorithm for CPU.
-# Start of inversek2j algorithm for CPU.
+# Start of inversek2j algorithm for NPU.
 # ################################################
 
 # ################################################################
@@ -170,34 +362,34 @@ B LT IK_ALGO ;
 # R12 - theta2
 # R21 - value 2
 # R22 - value 2048 - 2
-LLW R2 0x0000 ;
-LHW R2 0x00c0 ;
-LLW R4 0x2000 ;
-LHW R4 0x00c0 ;
+# LLW R2 0x0000 ;
+# LHW R2 0x00c0 ;
+# LLW R4 0x2000 ;
+# LHW R4 0x00c0 ;
 
-LLW R21 0x0002 ;
-LHW R21 0x0000 ;
-LLW R22 0x07FE ;
-ADD R8 R0 R0 ; # Loop counter
+# LLW R21 0x0002 ;
+# LHW R21 0x0000 ;
+# LLW R22 0x07FE ;
+# ADD R8 R0 R0 ; # Loop counter
 
-IK_NPU ADD R3 R2 R8 ;
-ADD R5 R4 R8 ;
+# IK_NPU ADD R3 R2 R8 ;
+# ADD R5 R4 R8 ;
 
-LOAD R9 R3 0x0 ;
-LOAD R10 R3 0x1 ;
+# LOAD R9 R3 0x0 ;
+# LOAD R10 R3 0x1 ;
 
-ENQD0 R9 ;
-ENQD0 R10 ;
+# ENQD0 R9 ;
+# ENQD0 R10 ;
 
-DEQD0 R11 ;
-DEQD0 R12 ;
+# DEQD0 R11 ;
+# DEQD0 R12 ;
 
-STORE R11 R5 0x0 ;
-STORE R12 R5 0x1 ;
+# STORE R11 R5 0x0 ;
+# STORE R12 R5 0x1 ;
 
-ADD R8 R8 R21 ;
-SUB R0 R8 R22 ;
-B LT IK_NPU ;
+# ADD R8 R8 R21 ;
+# SUB R0 R8 R22 ;
+# B LT IK_NPU ;
 
 # Tic Counter store value
 # LLW R2 0x0006 ;
@@ -220,29 +412,78 @@ B LT IK_NPU ;
 SIN ADD R29 R0 R30 ; # Copy angle to R29
 FMULT R28 R30 R30 ; # R28 = angle^2
 
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FMULT R27 R30 R28 ; # R 27 = angle^3
 LLW R26 0x0000 ;
 LHW R26 0x40C0 ; # R26 = FLOAT 6
 FDIV R25 R27 R26 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FSUB R29 R29 R25 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 
 FMULT R27 R27 R28 ; # R27 = angle^5
 LLW R26 0x0000 ;
-LHW R26 0x42f0 ; # R26 = FLOAT 120
+LHW R26 0x42F0 ; # R26 = FLOAT 120
 FDIV R25 R27 R26 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FADD R29 R29 R25 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 
 FMULT R27 R27 R28 ; # R27 = angle^7
 LLW R26 0x8000 ;
-LHW R26 0x459d ; # R26 = FLOAT 5040
+LHW R26 0x459D ; # R26 = FLOAT 5040
 FDIV R25 R27 R26 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FSUB R29 R29 R25 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 
 FMULT R27 R27 R28 ; # R27 = angle^9
 LLW R26 0x3000 ;
-LHW R26 0x48b1 ; # R26 = FLOAT 362880
+LHW R26 0x48B1 ; # R26 = FLOAT 362880
 FDIV R25 R27 R26 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FADD R29 R29 R25 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 RET ;
 
 
@@ -252,31 +493,73 @@ RET ;
 # regs used R29, R28, R27, R26, R25
 
 COS LLW R29 0x0000 ; # R29 = 1
-LHW R29 0x3f80 ;
+LHW R29 0x3F80 ;
 FMULT R28 R30 R30 ; # R28 = angle^2
 
 LLW R26 0x0000 ;
 LHW R26 0x4000 ; # R26 = FLOAT 2
 FDIV R25 R28 R26 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FSUB R29 R29 R25 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 
 FMULT R27 R28 R28 ; # R27 = angle^4
 LLW R26 0x0000 ;
-LHW R26 0x41c0 ; # R26 = FLOAT 24
+LHW R26 0x41C0 ; # R26 = FLOAT 24
 FDIV R25 R27 R26 ;
+
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FADD R29 R29 R25 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 
 FMULT R27 R27 R28 ; # R27 = angle^6
 LLW R26 0x0000 ;
 LHW R26 0x4434 ; # R26 = FLOAT 720
 FDIV R25 R27 R26 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FSUB R29 R29 R25 ;
 
 FMULT R27 R27 R28 ; # R27 = angle^8
 LLW R26 0x8000 ;
-LHW R26 0x471d ; # R26 = FLOAT 40320
+LHW R26 0x471D ; # R26 = FLOAT 40320
 FDIV R25 R27 R26 ;
+
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 FADD R29 R29 R25 ;
+
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+
 RET ;
 
 
@@ -286,25 +569,65 @@ RET ;
 # regs used R29, R28, R27, R26
 
 ASIN FMULT R28 R30 R30 ; # R28 = value^2
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 FADD R29 R0 R30 ;
-
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 FMULT R27 R30 R28 ; # R27 = value^3
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 LLW R26 0x0000 ;
-LHW R26 0x40c0 ; # R26 = FLOAT 6
+LHW R26 0x40C0 ; # R26 = FLOAT 6
 FDIV R26 R27 R26 ;
+
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 FADD R29 R29 R26 ;
 
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 FMULT R27 R27 R28 ; # R27 = value^5
 LLW R26 0x5555 ;
 LHW R26 0x4155 ; # R26 = FLOAT 13.3333333
 FDIV R26 R27 R26 ;
-FADD R29 R29 R26 ;
 
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+FADD R29 R29 R26 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 FMULT R27 R27 R28 ; # R27 = value^7
 LLW R26 0x3333 ;
-LHW R26 0x41b3 ; # R26 = FLOAT 22.4
+LHW R26 0x41B3 ; # R26 = FLOAT 22.4
 FDIV R26 R27 R26 ;
+
+# NOPs between two floating point operations
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 FADD R29 R29 R26 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 RET ;
 
 
@@ -314,9 +637,13 @@ RET ;
 # regs used R29, R28, R27, R26
 
 ACOS CALL ASIN ;
-LLW R28 0x0fdb ;
-LHW R28 0x3fc9 ; # R28 = FLOAT pi/2
+LLW R28 0x0FDB ;
+LHW R28 0x3FC9 ; # R28 = FLOAT pi/2
 FSUB R29 R28 R29 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
+ADD R0 R0 R0 ;
 RET ;
 
 # #########################################################
@@ -324,6 +651,7 @@ RET ;
 # CPU has finished computing inverse kinematics values.
 # #########################################################
 # Start address for storing inversek2j input data.
+# LLW R2 0x1000 ;
 LLW R2 0x1000 ;
 LHW R2 0x00C0 ;
 
@@ -339,13 +667,13 @@ LHW R7 0x0800 ;
 LLW R8 0x0002 ;
 LLW R9 0x0001 ;
 
-LLW R17 0x0069 ;
+LLW R17 0x0068 ;
 
-IM1_SPART_TX_NOT_READY_1 LOAD R8 R3 0x00 ;
-AND R0 R8 R5 ;
-B EQ IM1_SPART_TX_NOT_READY_1 ;
+IKJ_SPART_TX_NOT_READY_2 LOAD R18 R7 0x00 ;
+AND R0 R18 R9 ;
+B EQ IKJ_SPART_TX_NOT_READY_2 ;
 
-STORE R17 R2 0x0000 ;
+STORE R17 R6 ;
 
 # NOPs between LOAD and STORE
 ADD R0 R0 R0 ;
@@ -364,10 +692,6 @@ ADD R0 R0 R0 ;
 SPART_TX_NOT_READY_1 LOAD R10 R7 0x00 ;
 AND R0 R10 R9 ;
 B EQ SPART_TX_NOT_READY_1 ;
-
-# NOPs between BRANCH and STORE
-ADD R0 R0 R0 ;
-ADD R0 R0 R0 ;
 
 STORE R15 R6 0x00 ;
 
