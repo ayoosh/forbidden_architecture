@@ -1,0 +1,190 @@
+# First comes the config file
+# then series of LHW and LLW and then set of ENQD and then set of DEQD
+# 1. x = -0.39581   y = -0.0087662  th1 =  0.33354     th2 = 2.3822
+# 2. x = -0.39579   y =-0.0087775   th1 = 0.33245      th2 = 2.3823
+# 3. x =-0.98867    y = -0.0087513  th1 = 0.044725     th2 = 0.2645
+# 4. x = -0.96843   y = -0.090251   th1 = -1.0386      th2 = 0.41891
+# 5. x = -0.995     y = 0.070545    th1 = 1.0857       th2 = 0.14648
+# 6. x = -0.98935   y = -0.0043935  th1 = 0.10159      th2 = 0.25832
+# 7. x = -0.99374   y = 0.035169    th1 = 0.54018      th2 = 0.21346
+# 8. x = -0.98866   y = -0.0087811  th1 = 0.044335	   th2 = 0.26454
+# 9. x = -0.96842   y = -0.09028    th1 = -1.0391	   th2 = 0.41897
+# 10. x = -0.995    y = 0.070515    th1 = 1.0847	   th2 = 0.14659
+
+# R21 - SPART Address
+# R22 -  SPART Status address
+# R23 - SPART Read Mask
+# R24 - SPART Write Mask / 1
+# R25 - Value read from SPART status register.
+
+LLW R21 0x0000 ;
+LHW R21 0x0800 ;
+LLW R22 0x0001 ;
+LHW R22 0x0800 ;
+LLW R23 0x0002 ;
+LLW R24 0x0001 ;
+
+# values 1
+LLW R1 0xa79c ;
+LHW R1 0xbeca ;
+
+LLW R2 0xa01c ;
+LHW R2 0xbc0f ;
+
+# values 2
+LLW R3 0xa4fd ;
+LHW R3 0xbeca ;
+
+LLW R4 0xcf81 ;
+LHW R4 0xbc0f ;
+
+# values 3
+LLW R5 0x197a ;
+LHW R5 0xbf7d ;
+
+LLW R6 0x619d ;
+LHW R6 0xbc0f ;
+
+# values 4
+LLW R7 0xeb07 ;
+LHW R7 0xbf77 ;
+
+LLW R8 0xd584 ;
+LHW R8 0xbdb8 ;
+
+# values 5
+LLW R9 0xb852 ;
+LHW R9 0xbf7e ;
+
+LLW R10 0x79e6 ;
+LHW R10 0x3d90 ;
+
+# values 6
+LLW R11 0x460b ;
+LHW R11 0xbf7d ;
+
+LLW R12 0xf759 ;
+LHW R12 0xbb8f ;
+
+# values 7
+LLW R13 0x65bf ;
+LHW R13 0xbf7e ;
+
+LLW R14 0x0d5f ;
+LHW R14 0x3d10 ;
+
+# values 8
+LLW R15 0x18d2 ;
+LHW R15 0xbf7d ;
+
+LLW R16 0xde9a ;
+LHW R16 0xbc0f ;
+
+# values 9
+LLW R17 0xea60 ;
+LHW R17 0xbf77 ;
+
+LLW R18 0xe4b8 ;
+LHW R18 0xbdb8 ;
+
+# values 10
+LLW R19 0xb852 ;
+LHW R19 0xbf7e ;
+
+LLW R20 0x6a2b ;
+LHW R20 0x3d90 ;
+
+ENQD0 R1 ;
+ENQD0 R2 ;
+ENQD0 R3 ;
+ENQD0 R4 ;
+ENQD0 R5 ;
+ENQD0 R6 ;
+ENQD0 R7 ;
+ENQD0 R8 ;
+ENQD0 R9 ;
+ENQD0 R10 ;
+ENQD0 R11 ;
+ENQD0 R12 ;
+ENQD0 R13 ;
+ENQD0 R14 ;
+ENQD0 R15 ;
+ENQD0 R16 ;
+ENQD0 R17 ;
+ENQD0 R18 ;
+ENQD0 R19 ;
+ENQD0 R20 ;
+
+DEQD0 R1 ;
+DEQD0 R2 ;
+DEQD0 R3 ;
+DEQD0 R4 ;
+DEQD0 R5 ;
+DEQD0 R6 ;
+DEQD0 R7 ;
+DEQD0 R8 ;
+DEQD0 R9 ;
+DEQD0 R10 ;
+DEQD0 R11 ;
+DEQD0 R12 ;
+DEQD0 R13 ;
+DEQD0 R14 ;
+DEQD0 R15 ;
+DEQD0 R16 ;
+DEQD0 R17 ;
+DEQD0 R18 ;
+DEQD0 R19 ;
+DEQD0 R20 ;
+
+IM1_SPART_TX_NOT_READY_1 LOAD R25 R22 0x00 ;
+AND R0 R25 R24 ;
+B EQ IM1_SPART_TX_NOT_READY_1 ;
+
+STORE R1 R21 0x0000 ;
+
+IM1_SPART_TX_NOT_READY_2 LOAD R25 R22 0x00 ;
+AND R0 R25 R24 ;
+B EQ IM1_SPART_TX_NOT_READY_2 ;
+
+STORE R2 R21 0x0000 ;
+
+IM1_SPART_TX_NOT_READY_3 LOAD R25 R22 0x00 ;
+AND R0 R25 R24 ;
+B EQ IM1_SPART_TX_NOT_READY_3 ;
+
+STORE R3 R21 0x0000 ;
+
+IM1_SPART_TX_NOT_READY_4 LOAD R25 R22 0x00 ;
+AND R0 R25 R24 ;
+B EQ IM1_SPART_TX_NOT_READY_4 ;
+
+STORE R4 R21 0x0000 ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
