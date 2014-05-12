@@ -1,0 +1,7 @@
+Original - 
+ALgo - 34849979
+NPU  - 63128971
+
+Opt 1 (Load rearrangement)
+Algo - 34824838
+NPU  - 35245170

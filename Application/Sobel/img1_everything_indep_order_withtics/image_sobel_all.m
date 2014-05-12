@@ -83,8 +83,14 @@ while(1)
     delete(s);
     clear s;
     if (userin ~= 'r')
+        fclose(s);
+        delete(s);r
         break;
     end
 end
+
+fclose(s);
+delete(s);
+clear s;
 
 
