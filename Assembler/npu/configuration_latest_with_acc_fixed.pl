@@ -66,7 +66,6 @@ $sch_count= 0 ;
 $schedule_buffer_count;
 @offset_array;
 
-#DO NOT MODIFY BELOW THIS !!! "INI" will KILL you
 $input_count = sprintf("%04x",$input); #Input count hex
 $output_count1 = sprintf("%04x",$output_count);
 $layer_count_for_split = $layer_count;
@@ -212,6 +211,7 @@ $weight_7_start_address =0;
 
 $layer_sch_count = 0;
 $offset_count=$#offset_array; #This is count for offset array
+
 for $v(0..8191){
 	$o = sprintf("%04x", 0x0000);
 	$weight_buf_fin_0[$v] = $o;
@@ -224,7 +224,6 @@ for $v(0..8191){
 	$weight_buf_fin_7[$v] = $o;
 	$scheduling_buffer[$v] = $o;
 }
-
 
 $present_schedule[$layer_sch_count] = 0x0000;
 $present_schedule[$layer_sch_count+1] = $present_schedule[$layer_sch_count];
@@ -262,6 +261,7 @@ for $u(2..($cur_input+1)){
 }
 
 print "No. -- Sch -- W0 -- W1 ----------\n"; 
+
 #writing into offset and scheduling buffer--------------------------------------
 $p=0;
 for $pu($layer_start_address..($layer_start_address + $layer_sch_count)){
@@ -278,8 +278,6 @@ for $pu($layer_start_address..($layer_start_address + $layer_sch_count)){
 		$weight_buf_fin_5[$pu] =$wei;
 		$weight_buf_fin_6[$pu] =$wei;
 		$weight_buf_fin_7[$pu] =$wei;
-
-#		print "$pu-$scheduling_buffer[$pu]-$weight_buf_fin_0[$pu]-$weight_buf_fin_1[$pu]-$weight_buf_fin_2[$pu]-$weight_buf_fin_3[$pu]-$weight_buf_fin_4[$pu]-$weight_buf_fin_5[$pu]-$weight_buf_fin_6[$pu]-$weight_buf_fin_7[$pu] \n"; 
 
 		$p++;
 }
@@ -318,20 +316,14 @@ while($layer_count > 0)
 		
                 $weight_buf_fin_7[$s] = $present_weight_7[$p];
 		
-#	        print "$s - $scheduling_buffer[$s] -  $weight_buf_fin_0[$s] - $weight_buf_fin_1[$s-$values] -$weight_buf_fin_2[$s-$values] -  $weight_buf_fin_3[$s-$values] - $weight_buf_fin_4[$s-$values] - $weight_buf_fin_5[$s-$values] - $weight_buf_fin_6[$s-$values] - $weight_buf_fin_7[$s-$values] \n";  
 		$p = $p + 1;
 	} 
 
-#	print "End of layer $cur_layer--------------------------------------------- \n\n";
 	$layer_start_address = $layer_start_address + $layer_sch_count + 1; #This becomes start address for the next layer
 	$layer_count = $layer_count - 1;
 	$cur_layer = $cur_layer + 1 ; 
 }	
 
-
-#print "Configuration done for all intermediate layers..................................................\n";
-
-#print "Values for output scaling............................................. \n";
 $sigmoid_function = $output_sigmoid;
 $layer_sch_count = 0;
 $present_schedule[$layer_sch_count] = 0x0000;
@@ -350,12 +342,6 @@ for $p(0..($cur_input-1)){
         $layer_sch_count = $layer_sch_count + 1;
 }
 
-#print "This is the area of interest: \n";
-#for $rut(0..$layer_sch_count){
- #       $tio = sprintf("%04x", $present_schedule[$rut]);
- #       print "$tio\n";
-#}
-
 print "\nThis is where value is changing \n";
 
 $present_schedule[$layer_sch_count] = $present_schedule[$layer_sch_count] & $buf{"clear_sigmoid_fifo_read_enable"};
@@ -365,12 +351,6 @@ $present_schedule[$layer_sch_count+3] = $present_schedule[$layer_sch_count+3] & 
 
 $layer_sch_count = $layer_sch_count + 3;
 
-#for $rut(0..$layer_sch_count){
-#	$tio = sprintf("%04x", $present_schedule[$rut]);
-#	print "$tio\n";
-
-#}
-#generating offset buffer and weight 0 buffer-------------------------------
 for $doni(0..$layer_sch_count){
         $present_weight_0[$doni] = sprintf("%04x", 0x0000);
 	set_sigmoid_function_2();
@@ -382,14 +362,12 @@ for $u(2..($cur_input+1)){
         $weight_0_addr++;
 }
 
- 
 $p= 0 ;
 for $s($layer_start_address..($layer_start_address + $layer_sch_count)) {
-        $in_hex = sprintf("%04x", $present_schedule[$p]) ;
-        $scheduling_buffer[$s] = $in_hex ;
+    $in_hex = sprintf("%04x", $present_schedule[$p]) ;
+    $scheduling_buffer[$s] = $in_hex ;
 
-#        $w_0_hex = sprintf("%04x", $present_weight_0[$p]);
-        $weight_buf_fin_0[$s] = $present_weight_0[$p];
+    $weight_buf_fin_0[$s] = $present_weight_0[$p];
 
 	$weig = sprintf("%04x", 0x0000);
 	$weight_buf_fin_1[$s] = $weig;
@@ -399,16 +377,13 @@ for $s($layer_start_address..($layer_start_address + $layer_sch_count)) {
 	$weight_buf_fin_5[$s] = $weig;
 	$weight_buf_fin_6[$s] = $weig;
 	$weight_buf_fin_7[$s] = $weig;
-        $p++;
+    $p++;
 
 	print " $s -- $scheduling_buffer[$s] -- $weight_buf_fin_0[$s] --$weight_buf_fin_1[$s] --$weight_buf_fin_2[$s] -- $weight_buf_fin_3[$s] -- $weight_buf_fin_4[$s] -- $weight_buf_fin_5[$s] -- $weight_buf_fin_6[$s] -- $weight_buf_fin_7[$s] \n";
 
 }
 
 $layer_start_address = $layer_start_address + $layer_sch_count + 1;
-
-
-
 
 print "\n\n\n Finally................ \n";
 for $yt(0..($layer_start_address-1)){
@@ -423,7 +398,6 @@ for $yt(0..($layer_start_address-1)){
 
 	$schedule[$yt] = $scheduling_buffer[$yt];
 
-#	print "$yt - $schedule[$yt]-$weight_buf_final_0[$yt]-$weight_buf_final_1[$yt]-$weight_buf_final_2[$yt]-$weight_buf_final_3[$yt]-$weight_buf_final_4[$yt]-$weight_buf_final_5[$yt]-$weight_buf_final_6[$yt]-$weight_buf_final_7[$yt]\n";
 }
 
 $ui =sprintf("%04x", 0x0000);
@@ -447,16 +421,11 @@ $weight_buf_fin_count_6  = $#weight_buf_final_6;
 $weight_buf_fin_count_7  = $#weight_buf_final_7;
 $scheduling_buffer_count = $#schedule;	
 
-#-----------------------------------------------------------------
-#From here its about picking values from the arrays and creating the output array of 32 bit
-
 print $output_conf "memory_initialization_radix=16;\nmemory_initialization_vector=\n";
 
 
 #first will be all 32 1s
 $destination[0]="83ffffff"; #first 6 bits are 100000 in enqc0
-#print $destination[$line_number];
-#print "\n";
 
 print $output_conf "$destination[$line_number], \n";
 print $out_sak "$destination[$line_number]\n";
@@ -468,13 +437,9 @@ $line_number =$line_number+1;
 $inter="100000"."1001"."000000".$input_format ; 
 $parameter = 7;
 convert();
-#print $destination[$line_number];
-#print "\n";
-#
-#
+
 print $output_conf "$destination[$line_number], \n";
 print $out_sak "$destination[$line_number]\n";
-
 
 $line_number =$line_number+1;
 
@@ -483,9 +448,6 @@ $line_number =$line_number+1;
 $inter="100000"."1010"."000000".$output_format ; 
 $parameter = 7;
 convert();
-#print $destination[$line_number];
-#print "\n";
-#
 print $output_conf "$destination[$line_number], \n";
 print $out_sak "$destination[$line_number]\n";
 
@@ -497,9 +459,6 @@ $line_number =$line_number + 1;
 $inter="100000"."1011"."000000".$input_count ; 
 $parameter = 3;
 convert();
-#print $destination[$line_number];
-#print "\n";
-#
 print $output_conf "$destination[$line_number], \n";
 print $out_sak "$destination[$line_number] \n";
 
@@ -510,9 +469,6 @@ $line_number =$line_number+1;
 $inter="100000"."1100"."000000".$output_count1 ;  
 $parameter = 3;
 convert();
-#print $destination[$line_number];
-#print "\n";
-#
 print $output_conf "$destination[$line_number], \n";
 print $out_sak "$destination[$line_number]\n";
 
@@ -532,8 +488,6 @@ for $wb_count(0..$weight_buf_fin_count_0)
 	$inter= $common."0000".$common1.$weight_buf_final_0[$wb_count];
 	$parameter = 3;
 	convert();
-	#print $destination[$line_number];
-	#print "\n";
 	print $output_conf "$destination[$line_number], \n";
 	print $out_sak "$destination[$line_number]\n";
 
@@ -544,15 +498,13 @@ print "Writing into WB0 successful !! \n";
 #for weight buffer 1
 for $wb_count(0..$weight_buf_fin_count_1)
 {
-        $inter= $common."0001".$common1.$weight_buf_final_1[$wb_count];
+    $inter= $common."0001".$common1.$weight_buf_final_1[$wb_count];
 	$parameter = 3;
 	convert();
- 	#      print $destination[$line_number];
-        #print "\n";
-        print $output_conf "$destination[$line_number], \n";
+    print $output_conf "$destination[$line_number], \n";
 	print $out_sak "$destination[$line_number]\n";
 
-        $line_number =$line_number+1;
+    $line_number =$line_number+1;
 }
 print "Writing into WB1 successful !! \n";
 
@@ -560,16 +512,12 @@ print "Writing into WB1 successful !! \n";
 #for weight buffer 2
 for $wb_count(0..$weight_buf_fin_count_2)
 {
-        $inter= $common."0010".$common1.$weight_buf_final_2[$wb_count];
-        $parameter = 3;
-        convert();
-#        print $destination[$line_number];
-#        print "\n";
+    $inter= $common."0010".$common1.$weight_buf_final_2[$wb_count];
+    $parameter = 3;
+    convert();
 	print $output_conf "$destination[$line_number], \n";
 	print $out_sak "$destination[$line_number]\n";
-
-
-        $line_number =$line_number+1;
+	$line_number =$line_number+1;
 }
 print "Writing into WB2 successful !! \n";
 
@@ -577,15 +525,13 @@ print "Writing into WB2 successful !! \n";
 #for weight buffer 3
 for $wb_count(0..$weight_buf_fin_count_3)
 {
-        $inter= $common."0011".$common1.$weight_buf_final_3[$wb_count];
-        $parameter = 3;
-        convert();
-       # print $destination[$line_number];
-       # print "\n";
-        print $output_conf "$destination[$line_number], \n";
+    $inter= $common."0011".$common1.$weight_buf_final_3[$wb_count];
+    $parameter = 3;
+    convert();
+    print $output_conf "$destination[$line_number], \n";
 	print $out_sak "$destination[$line_number]\n";
 
-        $line_number =$line_number+1;
+    $line_number =$line_number+1;
 }
 print "Writing into WB3 successful !! \n";
 
@@ -593,15 +539,13 @@ print "Writing into WB3 successful !! \n";
 #for weight buffer 4
 for $wb_count(0..$weight_buf_fin_count_4)
 {
-        $inter= $common."0100".$common1.$weight_buf_final_4[$wb_count];
-        $parameter = 3;
-        convert();
-#        print $destination[$line_number];
-#        print "\n";
+    $inter= $common."0100".$common1.$weight_buf_final_4[$wb_count];
+    $parameter = 3;
+    convert();
 	print $output_conf "$destination[$line_number], \n";
 	print $out_sak "$destination[$line_number]\n";
 
-        $line_number =$line_number+1;
+    $line_number =$line_number+1;
 }
 print "Writing into WB4 successful !! \n";
 
@@ -612,10 +556,8 @@ for $wb_count(0..$weight_buf_fin_count_5)
         $inter= $common."0101".$common1.$weight_buf_final_5[$wb_count];
         $parameter = 3;
         convert();
-#        print $destination[$line_number];
-#        print "\n";
-	print $output_conf "$destination[$line_number], \n";
-	print $out_sak "$destination[$line_number]\n";
+		print $output_conf "$destination[$line_number], \n";
+		print $out_sak "$destination[$line_number]\n";
 
         $line_number =$line_number+1;
 }
@@ -629,10 +571,8 @@ for $wb_count(0..$weight_buf_fin_count_6)
         $inter= $common."0110".$common1.$weight_buf_final_6[$wb_count];
         $parameter = 3;
         convert();
-#        print $destination[$line_number];
-#        print "\n";
-	print $output_conf "$destination[$line_number], \n";
-	print $out_sak "$destination[$line_number]\n";
+		print $output_conf "$destination[$line_number], \n";
+		print $out_sak "$destination[$line_number]\n";
 
         $line_number =$line_number+1;
 }
@@ -645,10 +585,8 @@ for $wb_count(0..$weight_buf_fin_count_7)
         $inter= $common."0111".$common1.$weight_buf_final_7[$wb_count];
         $parameter = 3;
         convert();
-#        print $destination[$line_number];
-#        print "\n";
-	print $output_conf "$destination[$line_number], \n";
-	print $out_sak "$destination[$line_number]\n";
+		print $output_conf "$destination[$line_number], \n";
+		print $out_sak "$destination[$line_number]\n";
 
         $line_number =$line_number+1;
 }
@@ -674,8 +612,6 @@ for $sch_count(0..$scheduling_buffer_count)
         $line_number =$line_number+1;
 }
 print "Scheduling logic written successfully !!\n";
-
-#print $output_conf "Writing into schedule ends \n";
 
 #-------------------------------------------------------
 print "\n Offset array starts here \n";
@@ -740,7 +676,7 @@ sub set_sigmoid_function_in()
 {
         switch($sigmoid_function){
         case 0 {}
-        case 1 { #print "\n \n I am in this\n\n";
+        case 1 { 
 			$present_schedule[$yuvi] = $present_schedule[$yuvi] | 0x4000 ; }
         case 2 {$present_schedule[$yuvi] = $present_schedule[$yuvi] | 0x8000 ;}
         case 3 {$present_schedule[$yuvi] = $present_schedule[$yuvi] | 0xc000 ;}
@@ -766,9 +702,6 @@ sub create_schedule_weight_offset(){
 	$neuron_cur = $cur_neurons;
 	$layer_sch_count=0;
 	$present_schedule[$layer_sch_count] = 0x0000 ;
-
-#	set_output_pe(); #for every layer, select the output pe at which the the values become available
-#        set_sigmoid_function(); #for every layer, sigmoid 
 
 	$present_schedule[$layer_sch_count + 1] = $present_schedule[$layer_sch_count];
 
@@ -983,7 +916,6 @@ start1:
         if($count < $layer_sch_count) {
                 goto start1;}
         end1:
-#	print "Present weight_address 1 is $weight_1_addr \n";
 }
 
 sub set_weight_2(){
@@ -1122,11 +1054,6 @@ start7:
         if($count < $layer_sch_count) {
                 goto start7; }
 end7:
-#	for $kf(0..$layer_sch_count)
-#	{
-#		$ug = sprintf("%04x", $present_weight_7[$kf]);
-#		print "Weight 7 == $ug \n";
-#	}
 }
 
 

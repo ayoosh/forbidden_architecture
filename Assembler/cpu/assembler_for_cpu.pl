@@ -1,10 +1,8 @@
 use Switch;
-#use Strict;
 
 open(DATA, $ARGV[0]) or die "Can't open";
 @string = <DATA>;
 
-#start_address is in decimal......................................................
 $start_address = hex($ARGV[1]);
 
 open my $overwrite, '>>', 'machine_code.txt' or die "error trying to overwrite: $!";
@@ -25,7 +23,6 @@ my @machine_code;
                 "DEQD0" => "100101", "DEQD1" => "101101", "DEQD2" => "110101", "DEQD3" => "111101");
 
 %registers = ("R0" => "00000", "R1" => "00001", "R2" => "00010", "R3" => "00011","R4" => "00100","R5" => "00101","R6" => "00110","R7" => "00111", "R8" => "01000", "R9" => "01001","R10" => "01010", "R11" => "01011", "R12" => "01100", "R13" => "01101","R14" => "01110","R15" => "01111", "R16" => "10000","R17" => "10001","R18" => "10010","R19" => "10011","R20" => "10100","R21" => "10101","R22" => "10110","R23" => "10111","R24" => "11000","R25" => "11001", "R26" => "11010","R27" => "11011","R28" => "11100", "R29" => "11101", "R30" => "11110", "R31" => "11111");
-
 
 %branch = ("NEQ"=>"000","EQ"=>"001","GT"=>"010","LT"=>"011","GTE"=>"100","LTE"=>"101","OVFL"=>"110","UNCOND"=>"111");
 my %labels;
@@ -95,7 +92,7 @@ while($line_number<$line_count)
                     $error = $line_number + 1;
                 	die "Division instruction at the line $error\n ";
                  }
-		#Correct till here - expecte operands are 3---------------------------------------------------------------------------
+		#Correct till here - expects operands are 3---------------------------------------------------------------------------
 
                 case "NOT"  { append_2(); }
 		case "FTOI" { append_2(); }
@@ -149,7 +146,6 @@ while($line_number<$line_count)
 		case "LHW" { append_10(); }
 		case "LLW" { append_10(); }
 
-	#needs 
 	}
 
 	print "Source is $string[$line_number]";	
@@ -259,7 +255,6 @@ sub append_2 {
 }
 
 
-                                                                   
 sub append_3 {
 	$shift = $instruction[$current_entry+3] + 0.0 ;
 	$error = $line_number + 1;
@@ -338,58 +333,29 @@ sub append_10{
 
 
 sub convert{
-        $result = "";
+    $result = "";
 
-        for $j(0..$parameter)
+    for $j(0..$parameter)
+    {
+        $number = substr($destination, ($j*4), 4);
+        switch($number)
         {
-                $number = substr($destination, ($j*4), 4);
-                switch($number)
-                {
-                case "0000" {   $result = $result."0"; }
-                case "0001" {   $result = $result."1"; }
-                case "0010" {   $result = $result."2"; }
-                case "0011" {   $result = $result."3"; }
-                case "0100" {   $result = $result."4"; }
-                case "0101" {   $result = $result."5"; }
-                case "0110" {   $result = $result."6"; }
-                case "0111" {   $result = $result."7"; }
-                case "1000" {   $result = $result."8"; }
-                case "1001" {   $result = $result."9"; }
-                case "1010" {   $result = $result."A"; }
-                case "1011" {   $result = $result."B"; }
-                case "1100" {   $result = $result."C"; }
-                case "1101" {   $result = $result."D"; }
-                case "1110" {   $result = $result."E"; }
-                case "1111" {   $result = $result."F"; }
-      		}
-	}
-	if( $parameter == 6) {
-		$result= $result.substr($destination, 28,2);
-	}
-	if ($parameter == 0)
-	{
-		$dummy = substr($destination,4, 3);
-		switch($dummy)
-		{
-		case "010" { $inter = "4"; }
-		case "011" { $inter = "5"; }
-		case "012" { $inter = "6"; }
-		case "013" { $inter = "7"; }
-		#call till here
-		case "100" { $inter = "8"; }
-		case "101" { $inter = "9"; }
-		case "102" { $inter = "A"; }
-		case "103" { $inter = "B"; }
-		#return till here
-		case "000" { $inter = "0"; }
-		case "001" { $inter = "1"; }
-		case "002" { $inter = "2"; }
-		case "003" { $inter = "3"; }
+            case "0000" {   $result = $result."0"; }
+            case "0001" {   $result = $result."1"; }
+            case "0010" {   $result = $result."2"; }
+            case "0011" {   $result = $result."3"; }
+            case "0100" {   $result = $result."4"; }
+            case "0101" {   $result = $result."5"; }
+            case "0110" {   $result = $result."6"; }
+            case "0111" {   $result = $result."7"; }
+            case "1000" {   $result = $result."8"; }
+            case "1001" {   $result = $result."9"; }
+            case "1010" {   $result = $result."A"; }
+            case "1011" {   $result = $result."B"; }
+            case "1100" {   $result = $result."C"; }
+            case "1101" {   $result = $result."D"; }
+            case "1110" {   $result = $result."E"; }
+            case "1111" {   $result = $result."F"; }
 		}
-		$result = $result.$inter.substr($destination,7,6);
-	}
-	if($parameter == 3)
-	{
-		$result = $result.substr($destination, 16, 4);
 	}
 }
